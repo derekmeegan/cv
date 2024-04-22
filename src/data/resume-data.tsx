@@ -118,6 +118,8 @@ export const RESUME_DATA = {
       ],
       description: "Sharing my networth and financial decisions",
       link: {
+        label: "",
+        href: "",
         // label: "folio-social.com",
         // href: "https://folio-social.com/",
       },
@@ -134,6 +136,8 @@ export const RESUME_DATA = {
       description:
         "Easily consolidate martial arts team competition schedule through SMS",
       link: {
+        label: "",
+        href: "",
         // label: "monito.dev",
         // href: "https://monito.dev/",
       },
@@ -143,14 +147,20 @@ export const RESUME_DATA = {
       techStack: ["Work Project", "T-SQL", "GCP", "Python", "Pandas", "React"],
       description:
         "Store, analyze, and report earnings information for earners on Uber Platform",
-      link: {},
+      link: {
+        label: "",
+        href: "",
+      },
     },
     {
       title: "Employee Preference Optimization",
       techStack: ["Work Project", "T-SQL", "Azure", "Python", "Dash"],
       description:
         "Optimize employee benefit packages to minimize costs and maximize employee satisfaction",
-      link: {},
+      link: {
+        label: "",
+        href: "",
+      },
     },
     {
       title: "Initiative Prioritization Application",
@@ -164,7 +174,10 @@ export const RESUME_DATA = {
       ],
       description:
         "Inform steering comittee on ongoing firm initiatives, utilizing SmartSheet backend via API connection",
-      link: {},
+      link: {
+        label: "",
+        href: "",
+      },
     },
     // {
     //   title: "Jarocki.me",
