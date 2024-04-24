@@ -209,7 +209,10 @@ export default function Page() {
           <div className="flex flex-col gap-5">
             {RESUME_DATA.students.map((student) => {
               return (
-                <Card className="flex flex-col overflow-hidden border border-muted p-3">
+                <Card
+                  className="flex flex-col overflow-hidden border border-muted p-3"
+                  key={student.name}
+                >
                   <CardContent className="mt-auto flex">
                     <div className="flex w-full flex-row gap-5 ">
                       <Avatar className="size-32">
@@ -230,7 +233,7 @@ export default function Page() {
                         </div>
                         <ul>
                           {student.achievements.map((achievement) => {
-                            return <li>{achievement}</li>;
+                            return <li key={achievement}>{achievement}</li>;
                           })}
                         </ul>
                       </div>
