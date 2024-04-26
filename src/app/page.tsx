@@ -22,7 +22,7 @@ export default function Page() {
   return (
     <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
       <section className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-6">
-        <div className="flex flex-row gap-1 font-mono text-sm ">
+        <div className="flex flex-row gap-1 font-mono text-sm text-muted-foreground">
           <button onClick={() => setActiveContent("About")}>About</button>
           <div> | </div>
           <button onClick={() => setActiveContent("Students")}>Students</button>
@@ -220,9 +220,9 @@ export default function Page() {
                         <AvatarFallback>{student.name}</AvatarFallback>
                       </Avatar>
                       <div className="mt-2 w-full">
-                        <div className="mb-5 flex w-full flex-row items-start justify-between justify-items-center">
+                        <div className="mb-3 flex w-full flex-row items-start justify-between justify-items-center">
                           <p
-                            style={{ fontSize: "30px" }}
+                            style={{ fontSize: "30px", lineHeight: "32px" }}
                             className="text-card-foreground"
                           >
                             {student.name}
@@ -230,6 +230,11 @@ export default function Page() {
                           <p className="text-md">
                             {student.start} - {student.end}
                           </p>
+                        </div>
+                        <div className="mb-2 flex flex-wrap gap-1">
+                          {student.divisions.map((division) => {
+                            return <Badge key={division}>{division}</Badge>;
+                          })}
                         </div>
                         <ul>
                           {student.achievements.map((achievement) => {
