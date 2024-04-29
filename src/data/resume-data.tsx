@@ -304,7 +304,7 @@ export const RESUME_DATA = {
       end: "",
       achievements: [
         "Overall Weapons Winnder, Ocean State Grand Nationals 2024",
-        "Gold Medal Winner, World Karate Championships 2024",
+        "Gold Medal Winner, World Karate Championships 2023",
         "NASKA World Champion",
       ],
       divisions: ["Traditional Weapons", "CMX Weapons"],
@@ -318,6 +318,18 @@ export const RESUME_DATA = {
       achievements: ["ATA World Champion", "NASKA Top 10 Competitor"],
       divisions: ["Traditional Weapons", "Traditional Forms", "CMX Weapons"],
       image: "images/erica.png",
+    },
+    {
+      name: "Wyatt Mak",
+      alt: "WM",
+      start: "Oct 2023",
+      end: "",
+      achievements: [
+        "2 Time Grand Champion, NY Tournament",
+        "NASKA Top 10 Competitor",
+      ],
+      divisions: ["CMX Weapons", "Point Fighting"],
+      image: "images/wyatt.png",
     },
   ],
 } as const;
