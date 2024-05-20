@@ -257,6 +257,7 @@ export const RESUME_DATA = {
       end: "",
       achievements: [
         "Overall Weapons Grand Champion, Quebec Open 2023",
+        "Overall Weapons Grand Champion, Pan American Internationals 2024",
         "NASKA World Champion",
       ],
       divisions: ["Traditional Weapons", "CMX Weapons"],
