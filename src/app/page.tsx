@@ -220,7 +220,7 @@ export default function Page() {
                         <AvatarFallback>{student.name}</AvatarFallback>
                       </Avatar>
                       <div className="mt-2 w-full">
-                        <div className="mb-3 flex w-full flex-row items-start justify-between justify-items-center">
+                        <div className="mb-3 flex w-full flex-col items-start justify-between md:flex-row">
                           <p
                             style={{ fontSize: "30px", lineHeight: "32px" }}
                             className="text-card-foreground"
@@ -233,7 +233,14 @@ export default function Page() {
                         </div>
                         <div className="mb-2 flex flex-wrap gap-1">
                           {student.divisions.map((division) => {
-                            return <Badge key={division}>{division}</Badge>;
+                            return (
+                              <Badge
+                                style={{ width: "fit-content" }}
+                                key={division}
+                              >
+                                {division}
+                              </Badge>
+                            );
                           })}
                         </div>
                         <ul>
