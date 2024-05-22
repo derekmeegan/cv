@@ -245,6 +245,7 @@ export const RESUME_DATA = {
       achievements: [
         "Team Captain, Amerikick National Team",
         "Overall Weapons Winnder, Ocean State Grand Nationals 2024",
+        "Overall Weapons Winnder, Pan American Internationals 2024",
         "NASKA World Champion",
       ],
       divisions: ["CMX Weapons", "CMX Forms"],
