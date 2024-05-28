@@ -212,7 +212,7 @@ export default function Page() {
                       ? 1
                       : 0,
                   )
-                  .reduce((partialSum, a) => partialSum + a, 0)}
+                  .reduce((partialSum, a) => partialSum + a, 0 as number)}
               </p>
               <p>|</p>
               <p>
