@@ -107,12 +107,12 @@ export const RESUME_DATA = {
   ],
   projects: [
     {
-      title: "Folio",
+      title: "Folio Social",
       techStack: [
         "Side Project",
-        "TypeScript",
-        "Next.js",
+        "React",
         "SQL",
+        "Supabase",
         "Pandas",
         "Plaid API",
       ],
@@ -122,6 +122,22 @@ export const RESUME_DATA = {
         href: "",
         // label: "folio-social.com",
         // href: "https://folio-social.com/",
+      },
+    },
+    {
+      title: "AmeriGPT",
+      techStack: [
+        "Side Project",
+        "Streamlit",
+        "Python",
+        "OpenAI API",
+        "Google Places API",
+      ],
+      description:
+        "Chatbot for the Amerikick Internationals with functionality to query ruleset, local resturants, and event details with natural language.",
+      link: {
+        label: "",
+        href: "",
       },
     },
     {
