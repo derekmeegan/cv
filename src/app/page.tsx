@@ -1,12 +1,6 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CommandMenu } from "@/components/command-menu";
 import { Section } from "@/components/ui/section";
@@ -15,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import React, { useState } from "react";
-import Image from "next/image";
 
 export default function Page() {
   const [activeContent, setActiveContent] = useState("About");
@@ -207,6 +200,32 @@ export default function Page() {
         )}
         {activeContent === "Students" && (
           <div className="flex flex-col gap-5">
+            <div className="text-md flex flex-row justify-between font-mono text-muted-foreground">
+              <p>Total Students: {RESUME_DATA.students.length}</p>
+              <p>|</p>
+              <p>
+                World Champions:{" "}
+                {RESUME_DATA.students
+                  .map((student) =>
+                    (student.achievements.join("").match(/Overall/g) || [])
+                      .length > 0
+                      ? 1
+                      : 0,
+                  )
+                  .reduce((partialSum, a) => partialSum + a, 0)}
+              </p>
+              <p>|</p>
+              <p>
+                Overall Wins:{" "}
+                {RESUME_DATA.students
+                  .map(
+                    (student) =>
+                      (student.achievements.join("").match(/Overall/g) || [])
+                        .length,
+                  )
+                  .reduce((partialSum, a) => partialSum + a, 0)}
+              </p>
+            </div>
             {RESUME_DATA.students.map((student) => {
               return (
                 <Card

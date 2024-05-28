@@ -241,6 +241,19 @@ export const RESUME_DATA = {
   ],
   students: [
     {
+      name: "Alessandra Alinea",
+      alt: "AA",
+      start: "Sep 2018",
+      end: "Aug 2023",
+      achievements: [
+        "Creative Challenge Champion, Amerikick Internationals 2022",
+        "Overall Weapons Winner, Amerikick Internationals 2023",
+        "NASKA World Champion",
+      ],
+      divisions: ["Traditional Weapons", "Traditional Forms", "CMX Weapons"],
+      image: "images/aleegator.png",
+    },
+    {
       name: "Matthew Shamet",
       alt: "MS",
       start: "Feb 2019",
@@ -322,7 +335,7 @@ export const RESUME_DATA = {
       end: "",
       achievements: [
         "Overall Weapons Winnder, Ocean State Grand Nationals 2024",
-        "Gold Medal Winner, World Karate Championships 2023",
+        "Overall Weapons Winnder, Quebec Open 2024",
         "NASKA World Champion",
       ],
       divisions: ["Traditional Weapons", "CMX Weapons"],
@@ -348,6 +361,18 @@ export const RESUME_DATA = {
       ],
       divisions: ["CMX Weapons", "Point Fighting"],
       image: "images/wyatt.png",
+    },
+    {
+      name: "Lola Granger",
+      alt: "LG",
+      start: "Jan 2024",
+      end: "",
+      achievements: [
+        "Open Forms Grand Champion, NY Tournaments 2024",
+        "NASKA Top 10 Competitor",
+      ],
+      divisions: ["CMX Weapons"],
+      image: "images/lola.png",
     },
   ],
 } as const;
