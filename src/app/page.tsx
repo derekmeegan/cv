@@ -200,9 +200,9 @@ export default function Page() {
         )}
         {activeContent === "Students" && (
           <div className="flex flex-col gap-5">
-            <div className="text-md flex flex-row justify-between font-mono text-muted-foreground">
+            <div className="text-md flex flex-col justify-between font-mono text-muted-foreground md:flex-row">
               <p>Total Students: {RESUME_DATA.students.length}</p>
-              <p>|</p>
+              <p className="hidden md:block">|</p>
               <p>
                 World Champions:{" "}
                 {RESUME_DATA.students
@@ -214,7 +214,7 @@ export default function Page() {
                   )
                   .reduce((partialSum, a) => partialSum + a, 0 as number)}
               </p>
-              <p>|</p>
+              <p className="hidden md:block">|</p>
               <p>
                 Overall Wins:{" "}
                 {RESUME_DATA.students
