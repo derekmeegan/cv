@@ -345,7 +345,7 @@ export const RESUME_DATA = {
       name: "Erica Goldt",
       alt: "HL",
       start: "Aug 2023",
-      end: "",
+      end: "Jun 2024",
       achievements: ["ATA World Champion", "NASKA Top 10 Competitor"],
       divisions: ["Traditional Weapons", "Traditional Forms", "CMX Weapons"],
       image: "images/erica.png",
