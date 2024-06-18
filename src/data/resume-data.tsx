@@ -125,7 +125,7 @@ export const RESUME_DATA = {
       },
     },
     {
-      title: "AmeriGPT",
+      title: "AmerikickGPT",
       techStack: [
         "Side Project",
         "Streamlit",
