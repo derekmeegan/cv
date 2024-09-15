@@ -107,7 +107,7 @@ export const RESUME_DATA = {
       start: "June 2021",
       end: "Current",
       description:
-        "I currently lead the development of a proprietary reporting system for managing earnings data for millions of drivers and merchants at Uber. Previously, I assisted in developing business intelligence applications to provide tailored solutions to internal stakeholders and clients. Additionally, I lead presentations on advanced technologies like machine learning and APIs, engaging a variety of audiences across the organization.",
+        "I lead the development of an in-house reporting platform for a global ride-share client, replacing a third-party vendor, saving over $1 million annually, and improving U.S. regulatory compliance. I manage and expand a cross-functional data analytics team from 5 to 18 members, directly supervising 7, resulting in a 3x growth in project headcount and enhanced delivery of data-driven solutions. I develop and automate workflows by integrating third-party APIs, enhancing data quality, reducing audits and IRS fees, and saving over 200 person-hours annually. Additionally, I extend reporting workflows to meet new regulatory requirements, leading to $100,000 in quarterly savings, and oversee the implementation of a Looker dashboard to improve customer inquiry management and operational efficiency.",
     },
     {
       company: "Uventex",
@@ -118,7 +118,7 @@ export const RESUME_DATA = {
       start: "August 2019",
       end: "April 2020",
       description:
-        "I worked directly under the CEO at a sports management and CRM company, where I assisted with social media content, facilitated sales, and conceptualized technical solutions. I collaborated with clients and stakeholders to translate business requirements into user stories for development. Additionally, I managed client relationships through demos and onboarding processes, ensuring a smooth transition and clear communication at all stages.",
+        "I worked directly under the CEO at a sports management and CRM company, where I assisted with social media content creation, facilitated sales, and conceptualized technical solutions by translating business requirements into user stories for development. I collaborated with clients and stakeholders to drive sales initiatives and managed client relationships, overseeing demos and onboarding processes to enhance customer satisfaction and drive adoption, ensuring smooth transitions and clear communication throughout.",
     },
   ],
   skills: [
@@ -229,49 +229,6 @@ export const RESUME_DATA = {
         href: "",
       },
     },
-    // {
-    //   title: "Jarocki.me",
-    //   techStack: ["Side Project", "Next.js", "MDX"],
-    //   description:
-    //     "My personal website and blog. Built with Next.js and Notion API",
-    //   logo: JarockiMeLogo,
-    //   link: {
-    //     label: "github.com",
-    //     href: "https://jarocki.me/",
-    //   },
-    // },
-    // {
-    //   title: "Minimal",
-    //   techStack: ["Side Project", "Next.js", "Puppeteer"],
-    //   description:
-    //     "Minimalist calendars, habit trackers and planners generator",
-    //   logo: Minimal,
-    //   link: {
-    //     label: "useminimal.com",
-    //     href: "https://useminimal.com/",
-    //   },
-    // },
-    // {
-    //   title: "Barepapers",
-    //   techStack: ["Side Project", "Next.js", "Puppeteer"],
-    //   description:
-    //     "Generates beautiful wallpapers using random shapes and gradients",
-    //   logo: BarepapersLogo,
-    //   link: {
-    //     label: "barepapers.com",
-    //     href: "https://barepapers.com/",
-    //   },
-    // },
-    // {
-    //   title: "Year progress",
-    //   techStack: ["Side Project", "TypeScript", "Next.js"],
-    //   description: "Tracks current year progress and displays a countdown",
-    //   logo: YearProgressLogo,
-    //   link: {
-    //     label: "getyearprogress.com",
-    //     href: "https://getyearprogress.com/",
-    //   },
-    // },
   ],
   students: [
     {

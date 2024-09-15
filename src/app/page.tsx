@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import React, { useState } from "react";
+import Students from "@/components/sections/students";
 
 export default function Page() {
   const [activeContent, setActiveContent] = useState("About");
@@ -247,7 +248,7 @@ export default function Page() {
                   .reduce((partialSum, a) => partialSum + a, 0)}
               </p>
             </div>
-            {RESUME_DATA.students.map((student) => {
+            {/* {RESUME_DATA.students.map((student) => {
               return (
                 <Card
                   className="flex flex-col overflow-hidden border border-muted p-3"
@@ -293,7 +294,8 @@ export default function Page() {
                   </CardContent>
                 </Card>
               );
-            })}
+            })} */}
+            <Students />
           </div>
         )}
       </section>
