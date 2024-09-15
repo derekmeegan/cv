@@ -65,6 +65,38 @@ export const RESUME_DATA = {
       end: "2022",
     },
   ],
+  certifications: [
+    {
+      name: "Version Control with Git",
+      content:
+        "Covers fundamentals of Git for version control, including branching, merging, and collaborative workflows.",
+      year: "2024",
+    },
+    {
+      name: "Azure Data Fundamentals",
+      content:
+        "Introduces core data concepts and services within Microsoft Azure, including relational and non-relational databases, and big data solutions.",
+      year: "2023",
+    },
+    {
+      name: "Alteryx Core",
+      content:
+        "Focuses on building workflows for data preparation, blending, and advanced analytics using Alteryx Designer.",
+      year: "2021",
+    },
+    {
+      name: "Fast.ai",
+      content:
+        "Explores practical deep learning techniques with Python, utilizing the Fast.ai library for building machine learning models.",
+      year: "(WIP)",
+    },
+    {
+      name: "Google Cloud Foundational Certification",
+      content:
+        "Covers Google Cloud services, infrastructure, and solutions for building and deploying applications on GCP.",
+      year: "(WIP)",
+    },
+  ],
   work: [
     {
       company: "Grant Thornton",
@@ -107,6 +139,24 @@ export const RESUME_DATA = {
   ],
   projects: [
     {
+      title: "AmerikickGPT",
+      techStack: [
+        "Side Project",
+        "Streamlit",
+        "Python",
+        "OpenAI API",
+        "Google Places API",
+        "Selenium",
+        "GCP",
+      ],
+      description:
+        "Chatbot for the Amerikick Internationals with functionality to query ruleset, local resturants, and event details with natural language.",
+      link: {
+        label: "",
+        href: "",
+      },
+    },
+    {
       title: "Folio Social",
       techStack: [
         "Side Project",
@@ -122,22 +172,6 @@ export const RESUME_DATA = {
         href: "",
         // label: "folio-social.com",
         // href: "https://folio-social.com/",
-      },
-    },
-    {
-      title: "AmeriGPT",
-      techStack: [
-        "Side Project",
-        "Streamlit",
-        "Python",
-        "OpenAI API",
-        "Google Places API",
-      ],
-      description:
-        "Chatbot for the Amerikick Internationals with functionality to query ruleset, local resturants, and event details with natural language.",
-      link: {
-        label: "",
-        href: "",
       },
     },
     {
