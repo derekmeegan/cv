@@ -5,7 +5,29 @@ import { RESUME_DATA } from "@/data/resume-data";
 
 export default function Students() {
   return (
-    <div>
+    <div className="flex flex-col gap-5">
+      <div className="text-md flex flex-col justify-between font-mono text-muted-foreground md:flex-row">
+        <p>Total Students: {RESUME_DATA.students.length}</p>
+        <p>
+          World Champions:{" "}
+          {RESUME_DATA.students
+            .map((student) =>
+              (student.achievements.join("").match(/Overall/g) || []).length > 0
+                ? 1
+                : 0,
+            )
+            .reduce((partialSum, a) => partialSum + a, 0 as number)}
+        </p>
+        <p>
+          Overall Wins:{" "}
+          {RESUME_DATA.students
+            .map(
+              (student) =>
+                (student.achievements.join("").match(/Overall/g) || []).length,
+            )
+            .reduce((partialSum, a) => partialSum + a, 0)}
+        </p>
+      </div>
       {RESUME_DATA.students.map((student) => {
         return (
           <Card
@@ -50,7 +72,6 @@ export default function Students() {
           </Card>
         );
       })}
-      ;
     </div>
   );
 }
