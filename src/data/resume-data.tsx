@@ -193,10 +193,10 @@ export const RESUME_DATA = {
       },
     },
     {
-      title: "uTax",
+      title: "<redacted>",
       techStack: ["Work Project", "T-SQL", "GCP", "Python", "Pandas", "React"],
       description:
-        "Store, analyze, and report earnings information for earners on Uber Platform",
+        "Store, analyze, and report earnings information for earners on global rideshare platform",
       link: {
         label: "",
         href: "",
