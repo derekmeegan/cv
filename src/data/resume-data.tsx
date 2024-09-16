@@ -27,12 +27,11 @@ import {
 export const RESUME_DATA = {
   name: "Derek Meegan",
   initials: "DJM",
-  location: "Philadelphia, PA, USA",
-  locationLink: "https://www.google.com/maps/place/Philadelphia,+PA/",
-  about:
-    "Data and Analytics Senior Associate at Grant Thornton Co-Head Coach of the Amerikick National Team",
+  location: "Los Angeles, CA | Philadelphia, PA",
+  locationLink: "https://www.google.com/maps/place/USA",
+  about: "Data and Analytics Senior Associate at Grant Thornton",
   summary:
-    "I'm an experienced data, analytics, and cloud engineering professional at Grant Thornton, with a Bachelor's in Management Information Systems and Economics from Temple University, and a certificate in Political Science. I specialize in data engineering and cloud solutions, continually seeking to advance my expertise. Additionally, I'm a private martial arts instructor who has trained numerous champions in the North American Sport Karate Association Circuit.",
+    "I am a seasoned data, analytics, and cloud engineering professional at Grant Thornton, holding a Bachelor's degree in Management Information Systems and Economics from Temple University. I specialize in creating innovative data solutions that drive efficiency and compliance, while leading teams to achieve significant cost savings and project growth. Outside of work, I am a dedicated martial arts instructor, mentoring championship-winning athletes in the North American Sport Karate Association Circuit.",
   avatarUrl: "https://avatars.githubusercontent.com/derekmeegan",
   personalWebsiteUrl: "https://derekmeegan.com",
   contact: {
@@ -102,7 +101,7 @@ export const RESUME_DATA = {
       company: "Grant Thornton",
       link: "https://parabol.co",
       badges: ["Remote"],
-      title: "Digital Consulting Intern → Data and Analytics Senior Associate",
+      title: "Data and Analytics Senior Associate",
       logo: ParabolLogo,
       start: "June 2021",
       end: "Current",
