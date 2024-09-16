@@ -156,7 +156,7 @@ export const RESUME_DATA = {
       },
     },
     {
-      title: "Folio Social",
+      title: "Folio Graph",
       techStack: [
         "Side Project",
         "React",
@@ -165,7 +165,8 @@ export const RESUME_DATA = {
         "Pandas",
         "Plaid API",
       ],
-      description: "Sharing my networth and financial decisions",
+      description:
+        "A finance-oriented social media platform that connects users based on common investments",
       link: {
         label: "",
         href: "",
