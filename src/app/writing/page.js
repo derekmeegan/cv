@@ -46,10 +46,9 @@ export default async function MediumArticles() {
     "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@derekmeegan",
   );
   const data = await res.json();
-  const articles = data.items;
   return (
     <div className="flex flex-col gap-5">
-      {articles.map((article) => {
+      {data.items.map((article) => {
         return (
           <Card
             className="flex flex-col overflow-hidden border border-muted p-3"
@@ -86,17 +85,5 @@ export default async function MediumArticles() {
         );
       })}
     </div>
-    // <section>
-    //   <ul>
-    //     {items.map((item, index) => (
-    //       <div key={index}>
-    //         <a href={item.link} target={"_blank"}>
-    //           <h3>{item.title}</h3>
-    //         </a>
-    //         <br />
-    //       </div>
-    //     ))}
-    //   </ul>
-    // </section>
   );
 }
