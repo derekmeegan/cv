@@ -138,6 +138,16 @@ export const RESUME_DATA = {
   ],
   projects: [
     {
+      title: "EventAppFinder",
+      techStack: ["Side Project", "SEO", "Marketing"],
+      description:
+        "A directory app that helps event managers find the best digital tools.",
+      link: {
+        label: "",
+        href: "eventappfinder.com",
+      },
+    },
+    {
       title: "AmerikickGPT",
       techStack: [
         "Side Project",
