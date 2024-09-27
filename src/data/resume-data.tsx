@@ -144,7 +144,7 @@ export const RESUME_DATA = {
         "A directory app that helps event managers find the best digital tools.",
       link: {
         label: "",
-        href: "eventappfinder.com",
+        href: "https://eventappfinder.com",
       },
     },
     {
