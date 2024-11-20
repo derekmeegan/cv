@@ -93,7 +93,7 @@ export const RESUME_DATA = {
       name: "Google Cloud Foundational Certification",
       content:
         "Covers Google Cloud services, infrastructure, and solutions for building and deploying applications on GCP.",
-      year: "(WIP)",
+      year: "2024",
     },
   ],
   work: [
