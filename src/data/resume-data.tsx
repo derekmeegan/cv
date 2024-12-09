@@ -138,6 +138,16 @@ export const RESUME_DATA = {
   ],
   projects: [
     {
+      title: "KeywordGenie",
+      techStack: ["Side Project", "SEO", "NextJS", 'Serverless', 'OpenAI API', 'Google Keyword API'],
+      description:
+        "A micro-saas that uses AI and Google data to provide better keyword suggestions for SEO.",
+      link: {
+        label: "",
+        href: "https://thekeywordgenie.com/",
+      },
+    },
+    {
       title: "EventAppFinder",
       techStack: ["Side Project", "SEO", "Marketing"],
       description:
