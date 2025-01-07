@@ -138,6 +138,16 @@ export const RESUME_DATA = {
   ],
   projects: [
     {
+      title: "PARALLAX",
+      techStack: ["Side Project", "AI Agent", "Crypto", 'Virtuals.io', "Base"],
+      description:
+        "PARALLAX (Policy Advocacy & Regulated Adoption Liaison for Accelerating Crypto eXchanges) is an autonomous AI agent dedicated to driving forward cryptocurrency adoption, regulation, and strategic investments.",
+      link: {
+        label: "",
+        href: "https://app.virtuals.io/prototypes/0x9e17790698B15ba4BF796195DA206D76eBeeD678",
+      },
+    },
+    {
       title: "KeywordGenie",
       techStack: ["Side Project", "SEO", "NextJS", 'Serverless', 'OpenAI API', 'Google Keyword API'],
       description:
