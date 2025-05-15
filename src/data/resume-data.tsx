@@ -31,7 +31,7 @@ export const RESUME_DATA = {
   locationLink: "https://www.google.com/maps/place/USA",
   about: "Data and Analytics Senior Associate at Grant Thornton",
   summary:
-    "At my core, I am a builder. At Grant Thornton, I architect innovative systems that enhance operational efficiency, leading initiatives to achieve significant project growth and cost savings. My drive for innovation extends beyond my corporate role; I build a lot outside of work, primarily focusing on web scraping, building serverless automation tools, and more recently, exploring developing agents. My commitment to community and mentorship is vital to me. I am proud to co-organize Code and Coffee Philadelphia, a thriving developer collective, and to serve as a co-coach for the Amerikick National Team, guiding martial arts athletes to championship success in the North American Sport Karate Association Circuit.",
+    "At my core, I am a builder. At Grant Thornton, I architect innovative systems that enhance operational efficiency, leading initiatives to achieve significant project growth and cost savings. My drive for innovation extends beyond my corporate role; I build a lot outside of work, primarily focusing on web scraping, serverless automation tools, and more recently, AI agents. My commitment to community and mentorship is vital to me. I am proud to co-organize Code and Coffee Philadelphia, a thriving developer collective, and to serve as a co-coach for the Amerikick National Team, guiding martial arts athletes to championship success in the North American Sport Karate Association Circuit.",
   avatarUrl: "https://avatars.githubusercontent.com/derekmeegan",
   personalWebsiteUrl: "https://derekmeegan.com",
   contact: {
