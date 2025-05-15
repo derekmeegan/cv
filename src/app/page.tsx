@@ -27,6 +27,19 @@ export default async function Page() {
             </a>
           </p>
           <div className="flex gap-x-1 pt-1 font-mono text-sm text-muted-foreground print:hidden">
+          {RESUME_DATA.contact.social.map((social) => (
+              <Button
+                key={social.name}
+                className="size-8"
+                variant="outline"
+                size="icon"
+                asChild
+              >
+                <a href={social.url}>
+                  <social.icon className="size-4" />
+                </a>
+              </Button>
+            ))}
             {RESUME_DATA.contact.email ? (
               <Button className="size-8" variant="outline" size="icon" asChild>
                 <a href={`mailto:${RESUME_DATA.contact.email}`}>
@@ -41,19 +54,6 @@ export default async function Page() {
                 </a>
               </Button>
             ) : null}
-            {RESUME_DATA.contact.social.map((social) => (
-              <Button
-                key={social.name}
-                className="size-8"
-                variant="outline"
-                size="icon"
-                asChild
-              >
-                <a href={social.url}>
-                  <social.icon className="size-4" />
-                </a>
-              </Button>
-            ))}
           </div>
           <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex">
             {RESUME_DATA.contact.email ? (
@@ -79,6 +79,22 @@ export default async function Page() {
         <p className="text-pretty font-mono text-sm text-muted-foreground">
           {RESUME_DATA.summary}
         </p>
+      </Section>
+      <Section className="print-force-new-page scroll-mb-16">
+        <h2 className="text-xl font-bold">Projects</h2>
+        <div className="-mx-3 grid grid-cols-1 gap-3 print:grid-cols-3 print:gap-2 md:grid-cols-2 lg:grid-cols-3">
+          {RESUME_DATA.projects.map((project) => {
+            return (
+              <ProjectCard
+                key={project.title}
+                title={project.title}
+                description={project.description}
+                tags={project.techStack}
+                link={"link" in project ? project.link.href : undefined}
+              />
+            );
+          })}
+        </div>
       </Section>
       <Section>
         <h2 className="text-xl font-bold">Work Experience</h2>
@@ -118,22 +134,6 @@ export default async function Page() {
           );
         })}
       </Section>
-      <Section className="print-force-new-page scroll-mb-16">
-        <h2 className="text-xl font-bold">Projects</h2>
-        <div className="-mx-3 grid grid-cols-1 gap-3 print:grid-cols-3 print:gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {RESUME_DATA.projects.map((project) => {
-            return (
-              <ProjectCard
-                key={project.title}
-                title={project.title}
-                description={project.description}
-                tags={project.techStack}
-                link={"link" in project ? project.link.href : undefined}
-              />
-            );
-          })}
-        </div>
-      </Section>
       <Section>
         <h2 className="text-xl font-bold">Skills</h2>
         <div className="flex flex-wrap gap-1">
@@ -158,6 +158,8 @@ export default async function Page() {
                 </div>
               </CardHeader>
               <CardContent className="mt-2">{education.degree}</CardContent>
+              <CardContent className="mt-2"><span className="font-semibold">Majors:</span> {education.major} | <span className="font-semibold">Minor:</span> {education.minor}</CardContent>
+              <CardContent className="mt-2"><span className="font-semibold">GPA:</span> {education.gpa} | <span className="font-semibold">Honors:</span> {education.honors}</CardContent>
             </Card>
           );
         })}
