@@ -31,12 +31,10 @@ export const RESUME_DATA = {
   locationLink: "https://www.google.com/maps/place/USA",
   about: "Data and Analytics Senior Associate at Grant Thornton",
   summary:
-    "I am a seasoned data, analytics, and cloud engineering professional at Grant Thornton, holding a Bachelor's degree in Management Information Systems and Economics from Temple University. I specialize in creating innovative data solutions that drive efficiency and compliance, while leading teams to achieve significant cost savings and project growth. Outside of work, I am a dedicated martial arts instructor, mentoring championship-winning athletes in the North American Sport Karate Association Circuit.",
+    "At my core, I am a builder. At Grant Thornton, I architect innovative systems that enhance operational efficiency, leading initiatives to achieve significant project growth and cost savings. My drive for innovation extends beyond my corporate role; I build a lot outside of work, primarily focusing on web scraping, building serverless automation tools, and more recently, exploring developing agents. My commitment to community and mentorship is vital to me. I am proud to co-organize Code and Coffee Philadelphia, a thriving developer collective, and to serve as a co-coach for the Amerikick National Team, guiding martial arts athletes to championship success in the North American Sport Karate Association Circuit.",
   avatarUrl: "https://avatars.githubusercontent.com/derekmeegan",
   personalWebsiteUrl: "https://derekmeegan.com",
   contact: {
-    email: "derekmeegan@gmail.com",
-    tel: "+16615930925",
     social: [
       {
         name: "GitHub",
@@ -49,22 +47,34 @@ export const RESUME_DATA = {
         icon: LinkedInIcon,
       },
       {
-        name: "Instagram",
-        url: "https://www.instagram.com/derekmeegan/",
-        icon: InstagramIcon,
-      },
+        name: "X",
+        url: "https://x.com/derekmeegan",
+        icon: XIcon,
+      }
     ],
+    email: "derekmeegan@gmail.com",
+    tel: "+16615930925",
   },
   education: [
     {
       school: "Temple University",
       degree:
-        "Bachelor's of Business Administration | Majors:  Economics and Management Information Systems | Minor: Political Science",
+        "Bachelor's of Business Administration",
+      major: "Economics and Management Information Systems",
+      minor: "Political Science",
+      gpa: "3.92",
+      honors: "Summa cum laude",
       start: "2018",
       end: "2022",
     },
   ],
   certifications: [
+    {
+      name: "Google Cloud Foundational Certification",
+      content:
+        "Covers Google Cloud services, infrastructure, and solutions for building and deploying applications on GCP.",
+      year: "2024",
+    },
     {
       name: "Version Control with Git",
       content:
@@ -83,18 +93,6 @@ export const RESUME_DATA = {
         "Focuses on building workflows for data preparation, blending, and advanced analytics using Alteryx Designer.",
       year: "2021",
     },
-    {
-      name: "Fast.ai",
-      content:
-        "Explores practical deep learning techniques with Python, utilizing the Fast.ai library for building machine learning models.",
-      year: "(WIP)",
-    },
-    {
-      name: "Google Cloud Foundational Certification",
-      content:
-        "Covers Google Cloud services, infrastructure, and solutions for building and deploying applications on GCP.",
-      year: "2024",
-    },
   ],
   work: [
     {
@@ -110,7 +108,7 @@ export const RESUME_DATA = {
     },
     {
       company: "Uventex",
-      link: "https://clevertech.biz",
+      link: "https://www.uventexlabs.com/",
       badges: ["Remote"],
       title: "Marketing and Sales Engineer",
       logo: ClevertechLogo,
@@ -121,22 +119,110 @@ export const RESUME_DATA = {
     },
   ],
   skills: [
-    "JavaScript",
-    "Python",
-    "Presto SQL",
-    "T-SQL",
-    "Spark",
-    "Pandas",
-    "Data Visualization (Plotly)",
-    "Business Process Automation",
-    "GCP",
+    "AWS",
     "Azure",
-    "git",
-    "HTML5",
+    "Blockchain Development",
+    "Business Process Automation",
     "CSS3",
+    "CI/CD",
+    "Data Analysis",
+    "Data Visualization",
+    "DeFi",
+    "Docker",
+    "GCP",
+    "Git",
+    "HTML5",
+    "JavaScript",
+    "NextJS",
+    "Node.js",
+    "Pandas",
+    "Playwright",
+    "Python",
     "React",
+    "Serverless",
+    "Solidity",
+    "Spark",
+    "Supabase",
+    "SQL",
+    "TailwindCSS",
+    "TypeScript",
+    "Vercel",
+    "Vite",
+    "Web Scraping"
   ],
   projects: [
+    {
+      "title": "Serverless Web Scraping",
+      "techStack": [
+        "Serverless",
+        "AWS",
+        "Web Scraping",
+        "Browserbase",
+        "Python",
+        "Docker",
+        "CI/CD"
+      ],
+      "description": "A template for deploying Playwright browser automation tasks on AWS Lambda, utilizing Browserbase for headless browser management. Includes an asynchronous API, job status tracking, and CI/CD with GHA.",
+      "link": {
+        "label": "View on GitHub",
+        "href": "https://github.com/derekmeegan/browserbase-lambda-playwright"
+      }
+    },
+    {
+      "title": "Polymarket Watcher",
+      "techStack": [
+        "Serverless",
+        "AWS",
+        "Python",
+        "Polymarket API",
+        "Twitter API",
+        "Data Analysis",
+        "AWS CDK"
+      ],
+      "description": "A serverless application monitoring prediction markets for significant price changes and automatically tweeting alerts. Built on AWS, it features advanced signal analysis and confidence scoring.",
+      "link": {
+        "label": "X Account",
+        "href": "https://x.com/pmarket_watcher"
+      }
+    },
+    {
+      "title": "Swoupon",
+      "techStack": [
+        "DeFi",
+        "React",
+        "Vite",
+        "Node.js API",
+        "Solidity",
+        "Moralis SDK",
+        "Hardhat",
+        "TailwindCSS",
+        "Vercel"
+      ],
+      "description": "A DeFi dApp for token swaps featuring the 'Swoupon' rewards system. Its backend utilizes a Node.js/Moralis API for data, while core tokenomics are driven by a Solidity/Hardhat smart contract library. Deployed on Vercel.",
+      "link": {
+        "label": "View dApp",
+        "href": "https://swoopon.vercel.app/"
+      }
+    },
+    {
+      "title": "Mark Venaglia Portfolio",
+      "techStack": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "TailwindCSS",
+        "Supabase",
+        "PWA",
+        "Vercel",
+        "Cal.com",
+        "Stripe"
+      ],
+      "description": "A personal portfolio website for artist Mark Venaglia, showcasing artwork and NYC tours. Features an admin dashboard for content management, all powered by Supabase and deployed on Vercel.",
+      "link": {
+        "label": "Visit Website",
+        "href": "https://markvenaglia.com/"
+      }
+    },
     {
       title: "KeywordGenie",
       techStack: ["Side Project", "SEO", "NextJS", 'Serverless', 'OpenAI API', 'Google Keyword API'],
@@ -148,19 +234,8 @@ export const RESUME_DATA = {
       },
     },
     {
-      title: "EventAppFinder",
-      techStack: ["Side Project", "SEO", "Marketing"],
-      description:
-        "A directory app that helps event managers find the best digital tools.",
-      link: {
-        label: "",
-        href: "https://eventappfinder.com",
-      },
-    },
-    {
       title: "AmerikickGPT",
       techStack: [
-        "Side Project",
         "Streamlit",
         "Python",
         "OpenAI API",
@@ -170,80 +245,6 @@ export const RESUME_DATA = {
       ],
       description:
         "Chatbot for the Amerikick Internationals with functionality to query ruleset, local resturants, and event details with natural language.",
-      link: {
-        label: "",
-        href: "",
-      },
-    },
-    {
-      title: "Folio Graph",
-      techStack: [
-        "Side Project",
-        "React",
-        "SQL",
-        "Supabase",
-        "Pandas",
-        "Plaid API",
-      ],
-      description:
-        "A finance-oriented social media platform that connects users based on common investments",
-      link: {
-        label: "",
-        href: "",
-        // label: "folio-social.com",
-        // href: "https://folio-social.com/",
-      },
-    },
-    {
-      title: "Co-Coach",
-      techStack: [
-        "Side Project",
-        "Serverless",
-        "Twilio",
-        "Google Sheets",
-        "Regex",
-      ],
-      description:
-        "Easily consolidate martial arts team competition schedule through SMS",
-      link: {
-        label: "",
-        href: "",
-        // label: "monito.dev",
-        // href: "https://monito.dev/",
-      },
-    },
-    {
-      title: "<redacted>",
-      techStack: ["Work Project", "T-SQL", "GCP", "Python", "Pandas", "React"],
-      description:
-        "Store, analyze, and report earnings information for earners on global rideshare platform",
-      link: {
-        label: "",
-        href: "",
-      },
-    },
-    {
-      title: "Employee Preference Optimization",
-      techStack: ["Work Project", "T-SQL", "Azure", "Python", "Dash"],
-      description:
-        "Optimize employee benefit packages to minimize costs and maximize employee satisfaction",
-      link: {
-        label: "",
-        href: "",
-      },
-    },
-    {
-      title: "Initiative Prioritization Application",
-      techStack: [
-        "Work Project",
-        "T-SQL",
-        "Azure",
-        "Python",
-        "Dash",
-        "SmartSheet",
-      ],
-      description:
-        "Inform steering comittee on ongoing firm initiatives, utilizing SmartSheet backend via API connection",
       link: {
         label: "",
         href: "",
