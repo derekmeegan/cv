@@ -70,6 +70,12 @@ export const RESUME_DATA = {
   ],
   certifications: [
     {
+      name: "Six Sigma Green Belt",
+      content:
+        "Covers Six Sigma principles, tools, and methodologies for process improvement and quality management.",
+      year: "2025",
+    },
+    {
       name: "Google Cloud Foundational Certification",
       content:
         "Covers Google Cloud services, infrastructure, and solutions for building and deploying applications on GCP.",
