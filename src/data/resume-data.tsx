@@ -76,13 +76,7 @@ export const RESUME_DATA = {
       content:
         "Introduces core data concepts and services within Microsoft Azure, including relational and non-relational databases, and big data solutions.",
       year: "2023",
-    },
-    {
-      name: "Alteryx Core",
-      content:
-        "Focuses on building workflows for data preparation, blending, and advanced analytics using Alteryx Designer.",
-      year: "2021",
-    },
+    }
   ],
   work: [
     {
