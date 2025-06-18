@@ -1,37 +1,21 @@
 import {
-  AmbitLogo,
-  BarepapersLogo,
-  BimLogo,
-  CDGOLogo,
   ClevertechLogo,
-  ConsultlyLogo,
-  EvercastLogo,
-  Howdy,
-  JarockiMeLogo,
-  JojoMobileLogo,
-  Minimal,
-  MobileVikingsLogo,
-  MonitoLogo,
-  NSNLogo,
   ParabolLogo,
-  TastyCloudLogo,
-  YearProgressLogo,
 } from "@/images/logos";
 import {
   GitHubIcon,
   LinkedInIcon,
   XIcon,
-  InstagramIcon,
 } from "@/components/icons";
 
 export const RESUME_DATA = {
   name: "Derek Meegan",
   initials: "DJM",
-  location: "Los Angeles, CA | Philadelphia, PA",
+  location: "San Francisco, CA",
   locationLink: "https://www.google.com/maps/place/USA",
-  about: "Data and Analytics Senior Associate at Grant Thornton",
+  about: "Customer Engineer at Browserbase",
   summary:
-    "At my core, I am a builder. At Grant Thornton, I architect innovative systems that enhance operational efficiency, leading initiatives to achieve significant project growth and cost savings. My drive for innovation extends beyond my corporate role; I build a lot outside of work, primarily focusing on web scraping, serverless automation tools, and more recently, AI agents. My commitment to community and mentorship is vital to me. I am proud to co-organize Code and Coffee Philadelphia, a thriving developer collective, and to serve as a co-coach for the Amerikick National Team, guiding martial arts athletes to championship success in the North American Sport Karate Association Circuit.",
+    "I like to build apps, automate boring stuff, and solve problems. I recently joined Browserbase as a Customer Engineer.",
   avatarUrl: "https://avatars.githubusercontent.com/derekmeegan",
   personalWebsiteUrl: "https://derekmeegan.com",
   contact: {
@@ -102,19 +86,30 @@ export const RESUME_DATA = {
   ],
   work: [
     {
+      company: "Browserbase",
+      link: "https://www.browserbase.com",
+      badges: [],
+      title: "Customer Engineer",
+      logo: ParabolLogo,
+      start: "June 2025",
+      end: "Current",
+      description:
+        "",
+    },
+    {
       company: "Grant Thornton",
-      link: "https://parabol.co",
+      link: "https://www.grantthornton.com",
       badges: ["Remote"],
       title: "Data and Analytics Senior Associate",
       logo: ParabolLogo,
       start: "June 2021",
-      end: "Current",
+      end: "June 2025",
       description:
         "I lead the development of an in-house reporting platform for a global ride-share client, replacing a third-party vendor, saving over $1 million annually, and improving U.S. regulatory compliance. I manage and expand a cross-functional data analytics team from 5 to 18 members, directly supervising 7, resulting in a 3x growth in project headcount and enhanced delivery of data-driven solutions. I develop and automate workflows by integrating third-party APIs, enhancing data quality, reducing audits and IRS fees, and saving over 200 person-hours annually. Additionally, I extend reporting workflows to meet new regulatory requirements, leading to $100,000 in quarterly savings, and oversee the implementation of a Looker dashboard to improve customer inquiry management and operational efficiency.",
     },
     {
       company: "Uventex",
-      link: "https://www.uventexlabs.com/",
+      link: "https://www.uventexlabs.com",
       badges: ["Remote"],
       title: "Marketing and Sales Engineer",
       logo: ClevertechLogo,
@@ -157,6 +152,25 @@ export const RESUME_DATA = {
     "Web Scraping"
   ],
   projects: [
+    {
+      "title": "Uber Eats Wrapped",
+      "techStack": [
+        "Serverless",
+        "Vercel",
+        "React",
+        "Python",
+        "Stagehand",
+        "Docker",
+        "Browserbase",
+        "CI/CD",
+        "AWS",
+      ],
+      "description": "Let an AI agent analyze your Uber Eats order history and generate a personalized summary of your eating habits.",
+      "link": {
+        "label": "Try it out",
+        "href": "https://ubereatswrappedfrontend.vercel.app/"
+      }
+    },
     {
       "title": "Serverless Web Scraping",
       "techStack": [
