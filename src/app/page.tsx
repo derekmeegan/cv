@@ -81,7 +81,7 @@ export default async function Page() {
         </p>
       </Section>
       <Section>
-        <h2 className="text-xl font-bold">Work Experience</h2>
+        <h2 className="text-xl font-bold">Experience</h2>
         {RESUME_DATA.work.map((work) => {
           return (
             <Card key={work.company}>

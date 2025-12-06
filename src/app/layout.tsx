@@ -29,7 +29,7 @@ export default function RootLayout({
         <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
           <section className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-6">
             <div className="flex flex-row gap-10 font-mono text-sm text-muted-foreground">
-              <Link href="/">Resume</Link>
+              <Link href="/">About</Link>
               <Link href="/students">Students</Link>
               <Link href="/writing">Writing</Link>
             </div>
