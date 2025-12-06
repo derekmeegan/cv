@@ -35,21 +35,21 @@ export default async function Page() {
                 size="icon"
                 asChild
               >
-                <a href={social.url}>
+                <a href={social.url} aria-label={social.name}>
                   <social.icon className="size-4" />
                 </a>
               </Button>
             ))}
             {RESUME_DATA.contact.email ? (
               <Button className="size-8" variant="outline" size="icon" asChild>
-                <a href={`mailto:${RESUME_DATA.contact.email}`}>
+                <a href={`mailto:${RESUME_DATA.contact.email}`} aria-label="Email">
                   <MailIcon className="size-4" />
                 </a>
               </Button>
             ) : null}
             {RESUME_DATA.contact.tel ? (
               <Button className="size-8" variant="outline" size="icon" asChild>
-                <a href={`tel:${RESUME_DATA.contact.tel}`}>
+                <a href={`tel:${RESUME_DATA.contact.tel}`} aria-label="Phone">
                   <PhoneIcon className="size-4" />
                 </a>
               </Button>
