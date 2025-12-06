@@ -1,7 +1,18 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-function formatDate(dateString) {
+interface Article {
+  title: string;
+  link: string;
+  pubDate: string;
+  categories: string[];
+}
+
+interface RSSResponse {
+  items: Article[];
+}
+
+function formatDate(dateString: string): string {
   const date = new Date(dateString);
 
   const monthNames = [
@@ -23,9 +34,8 @@ function formatDate(dateString) {
   const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
 
-  // Helper function to add ordinal suffix
-  const getOrdinal = (day) => {
-    if (day > 3 && day < 21) return "th"; // For 11th, 12th, 13th, etc.
+  const getOrdinal = (day: number): string => {
+    if (day > 3 && day < 21) return "th";
     switch (day % 10) {
       case 1:
         return "st";
@@ -45,7 +55,7 @@ export default async function MediumArticles() {
   const res = await fetch(
     "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@derekmeegan",
   );
-  const data = await res.json();
+  const data: RSSResponse = await res.json();
   return (
     <div className="flex flex-col gap-5">
       {data.items.map((article) => {

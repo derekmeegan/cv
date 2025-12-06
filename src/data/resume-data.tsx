@@ -1,8 +1,4 @@
 import {
-  ClevertechLogo,
-  ParabolLogo,
-} from "@/images/logos";
-import {
   GitHubIcon,
   LinkedInIcon,
   XIcon,
@@ -84,7 +80,6 @@ export const RESUME_DATA = {
       link: "https://www.browserbase.com",
       badges: [],
       title: "Customer Engineer",
-      logo: ParabolLogo,
       start: "June 2025",
       end: "Current",
       description:
@@ -95,7 +90,6 @@ export const RESUME_DATA = {
       link: "https://www.grantthornton.com",
       badges: ["Remote"],
       title: "Data and Analytics Senior Associate",
-      logo: ParabolLogo,
       start: "June 2021",
       end: "June 2025",
       description:
@@ -106,7 +100,6 @@ export const RESUME_DATA = {
       link: "https://www.uventexlabs.com",
       badges: ["Remote"],
       title: "Marketing and Sales Engineer",
-      logo: ClevertechLogo,
       start: "August 2019",
       end: "April 2020",
       description:

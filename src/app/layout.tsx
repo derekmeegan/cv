@@ -3,7 +3,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Inter } from "next/font/google";
 import { RESUME_DATA } from "@/data/resume-data";
-import { CommandMenu } from "@/components/command-menu";
 import Link from "next/link";
 
 import "./globals.css";
@@ -37,18 +36,6 @@ export default function RootLayout({
             {children}
           </section>
         </main>
-        <CommandMenu
-          links={[
-            {
-              url: RESUME_DATA.personalWebsiteUrl,
-              title: "Personal Website",
-            },
-            ...RESUME_DATA.contact.social.map((socialMediaLink) => ({
-              url: socialMediaLink.url,
-              title: socialMediaLink.name,
-            })),
-          ]}
-        />
       </body>
       <Analytics />
       <SpeedInsights />
