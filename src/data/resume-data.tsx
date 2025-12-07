@@ -9,7 +9,7 @@ export const RESUME_DATA = {
   initials: "DJM",
   location: "San Francisco, CA",
   locationLink: "https://www.google.com/maps/place/USA",
-  about: "Customer Engineer at Browserbase",
+  about: "Customer Engineer Lead at Browserbase",
   summary:
     "I like to build apps, automate boring stuff, and solve interesting problems. I am a martial artist of 19 years. I like to read, periodically write articles, and enjoy the natural and human-made beauty of Earth. I like working in mutlidisciplinary roles and self-describe as a generalist. I currently work at Browserbase as a Customer Engineer Lead.",
   avatarUrl: "https://avatars.githubusercontent.com/derekmeegan",
