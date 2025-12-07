@@ -153,7 +153,7 @@ export const RESUME_DATA = {
       "description": "A digital garden where people plant virtual flowers carrying messages of kindness. Built for the Web Dev Challenge on CodeTV.",
       "link": {
         "label": "Visit Garden",
-        // "href": "https://digigarden-pi.vercel.app/"
+        "href": "" //"https://digigarden-pi.vercel.app/"
       }
     },
     {
