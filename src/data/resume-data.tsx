@@ -93,7 +93,7 @@ export const RESUME_DATA = {
       start: "June 2021",
       end: "June 2025",
       description:
-        "I lead the development of an in-house reporting platform for a global ride-share client, replacing a third-party vendor, saving over $1 million annually, and improving U.S. regulatory compliance. I manage and expand a cross-functional data analytics team from 5 to 18 members, directly supervising 7, resulting in a 3x growth in project headcount and enhanced delivery of data-driven solutions. I develop and automate workflows by integrating third-party APIs, enhancing data quality, reducing audits and IRS fees, and saving over 200 person-hours annually. Additionally, I extend reporting workflows to meet new regulatory requirements, leading to $100,000 in quarterly savings, and oversee the implementation of a Looker dashboard to improve customer inquiry management and operational efficiency.",
+        "I led the development of an in-house reporting platform for a global ride-share client, replacing a third-party vendor, saving over $1 million annually, and improving U.S. regulatory compliance. I managed and expanded a cross-functional data analytics team from 5 to 18 members, directly supervising 7, resulting in a 3x growth in project headcount and enhanced delivery of data-driven solutions. I developed and automated workflows by integrating third-party APIs, enhancing data quality, reducing audits and IRS fees, and saving over 200 person-hours annually. Additionally, I extended reporting workflows to meet new regulatory requirements, leading to $100,000 in quarterly savings, and oversaw the implementation of a Looker dashboard to improve customer inquiry management and operational efficiency.",
     },
     {
       company: "Uventex",
