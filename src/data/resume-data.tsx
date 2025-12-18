@@ -79,11 +79,11 @@ export const RESUME_DATA = {
       company: "Browserbase",
       link: "https://www.browserbase.com",
       badges: [],
-      title: "Customer Engineer Lead",
+      title: "Customer Engineer",
       start: "June 2024",
       end: "Current",
       description:
-        "Designated Customer Engineer Lead within three months of joining, I defined and systematized our customer engineering motion—establishing operating verticals and cross-functional interfaces with sales and product. I lead development of internal tools including a browser performance benchmarking system, a customer account management application that enables faster session debugging and provides sales with easy and safe access to customer data, and an agentic support system that keeps our internal knowledge bank up to date, democratizing know-how learned from customer interactions and reducing time to support resolution. I personally handle enterprise accounts, working hands-on in customer infrastructure to ensure success and drive enterprise ARR. I have also directly contributed to our core product offerings, including Stagehand, our open source web automation framework, and Director, our agentic web automation tool.",
+        "I defined and systematized our customer engineering motion—establishing operating verticals and cross-functional interfaces with sales and product. I lead development of internal tools including a browser performance benchmarking system, a customer account management application that enables faster session debugging and provides sales with easy and safe access to customer data, and an agentic support system that keeps our internal knowledge bank up to date, democratizing know-how learned from customer interactions and reducing time to support resolution. I personally handle enterprise accounts, working hands-on in customer infrastructure to ensure success and drive enterprise ARR. I have also directly contributed to our core product offerings, including Stagehand, our open source web automation framework, and Director, our agentic web automation tool.",
     },
     {
       company: "Grant Thornton",
