@@ -9,9 +9,9 @@ export const RESUME_DATA = {
   initials: "DJM",
   location: "San Francisco, CA",
   locationLink: "https://www.google.com/maps/place/USA",
-  about: "Customer Engineer Lead at Browserbase",
+  about: "Software Engineer at Browserbase",
   summary:
-    "I like to build apps, automate boring stuff, and solve interesting problems. I am a martial artist of 19 years. I like to read, periodically write articles, and enjoy the natural and human-made beauty of Earth. I like working in mutlidisciplinary roles and self-describe as a generalist. I currently work at Browserbase as a Customer Engineer Lead.",
+    "I like to build apps, automate boring stuff, and solve interesting problems. I am a martial artist of 19 years. I like to read, periodically write articles, and enjoy the natural and human-made beauty of Earth. I like working in mutlidisciplinary roles and self-describe as a generalist. I currently work at Browserbase as a Software Engineer.",
   avatarUrl: "https://avatars.githubusercontent.com/derekmeegan",
   personalWebsiteUrl: "https://derekmeegan.com",
   contact: {
@@ -79,9 +79,18 @@ export const RESUME_DATA = {
       company: "Browserbase",
       link: "https://www.browserbase.com",
       badges: [],
-      title: "Customer Engineer",
-      start: "June 2024",
+      title: "Software Engineer",
+      start: "May 2026",
       end: "Current",
+      description: "",
+    },
+    {
+      company: "Browserbase",
+      link: "https://www.browserbase.com",
+      badges: [],
+      title: "Customer Engineer Lead",
+      start: "June 2025",
+      end: "April 2026",
       description:
         "I defined and systematized our customer engineering motion—establishing operating verticals and cross-functional interfaces with sales and product. I lead development of internal tools including a browser performance benchmarking system, a customer account management application that enables faster session debugging and provides sales with easy and safe access to customer data, and an agentic support system that keeps our internal knowledge bank up to date, democratizing know-how learned from customer interactions and reducing time to support resolution. I personally handle enterprise accounts, working hands-on in customer infrastructure to ensure success and drive enterprise ARR. I have also directly contributed to our core product offerings, including Stagehand, our open source web automation framework, and Director, our agentic web automation tool.",
     },
