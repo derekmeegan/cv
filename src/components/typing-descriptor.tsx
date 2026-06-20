@@ -4,6 +4,11 @@ import * as React from "react";
 
 interface TypingDescriptorProps {
   descriptors: string[];
+  children?: React.ReactNode;
+}
+
+function punctuate(descriptor: string) {
+  return descriptor.endsWith(".") ? descriptor : `${descriptor}.`;
 }
 
 const TYPING_DELAY_MS = 48;
@@ -11,16 +16,25 @@ const DELETING_DELAY_MS = 28;
 const TYPED_PAUSE_DELAY_MS = 1200;
 const DELETED_PAUSE_DELAY_MS = 450;
 
-export function TypingDescriptor({ descriptors }: TypingDescriptorProps) {
+export function TypingDescriptor({
+  descriptors,
+  children,
+}: TypingDescriptorProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
   const [descriptorIndex, setDescriptorIndex] = React.useState(0);
   const [characterCount, setCharacterCount] = React.useState(0);
   const [isDeleting, setIsDeleting] = React.useState(false);
 
   const descriptor = descriptors[descriptorIndex] ?? "";
-  const punctuatedDescriptor = descriptor.endsWith(".")
-    ? descriptor
-    : `${descriptor}.`;
+  const punctuatedDescriptor = punctuate(descriptor);
+  // Reserve space for the longest descriptor so the paragraph never grows when
+  // a longer descriptor wraps to a new line. The text is monospace, so the
+  // longest by character count is also the widest (and therefore the tallest).
+  const longestDescriptor = descriptors.reduce(
+    (longest, current) => (current.length > longest.length ? current : longest),
+    "",
+  );
+  const punctuatedLongestDescriptor = punctuate(longestDescriptor);
   const visibleDescriptor = prefersReducedMotion
     ? punctuatedDescriptor
     : punctuatedDescriptor.slice(0, characterCount);
@@ -98,12 +112,19 @@ export function TypingDescriptor({ descriptors }: TypingDescriptorProps) {
   }
 
   return (
-    <>
-      <span aria-hidden="true">
-        {visibleDescriptor}
-        <span className="inline-block w-[0.6ch] animate-pulse">|</span>
+    <span className="grid">
+      <span className="[grid-area:1/1]">
+        {children}
+        <span aria-hidden="true">
+          {visibleDescriptor}
+          <span className="inline-block w-[0.6ch] animate-pulse">|</span>
+        </span>
+        <span className="sr-only">{descriptors.join(", ")}</span>
       </span>
-      <span className="sr-only">{descriptors.join(", ")}</span>
-    </>
+      <span aria-hidden="true" className="invisible [grid-area:1/1]">
+        {children}
+        {punctuatedLongestDescriptor}
+      </span>
+    </span>
   );
 }
