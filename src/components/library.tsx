@@ -216,7 +216,7 @@ function LibraryStack({
   return (
     <div className="relative min-h-[18rem] overflow-visible px-1 pb-2 pt-0">
       <div className="flex min-h-[18rem] items-end justify-center pb-3 pt-2">
-        <div className="flex w-full max-w-sm flex-col items-center justify-end">
+        <div className="relative flex w-full max-w-sm flex-col items-center justify-end">
           {stack.books.map((book, index) => {
             const size = spineSize(book);
             const isSelected = selectedBookId === book.id;
@@ -256,8 +256,9 @@ function LibraryStack({
           })}
           <div
             aria-hidden="true"
-            className="mt-1 shrink-0"
+            className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2"
             style={{
+              marginTop: 4,
               width: baseWidth * 1.14,
               height: 42,
               background:
