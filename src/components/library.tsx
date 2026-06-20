@@ -256,12 +256,14 @@ function LibraryStack({
           })}
           <div
             aria-hidden="true"
-            className="mt-2 shrink-0"
+            className="mt-1 shrink-0"
             style={{
-              width: baseWidth * 0.92,
-              height: 18,
-              background:
-                "radial-gradient(50% 50% at 50% 50%, rgba(2,6,23,0.26), rgba(2,6,23,0) 72%)",
+              width: baseWidth * 1.04,
+              height: 34,
+              background: [
+                "radial-gradient(42% 46% at 50% 42%, rgba(2,6,23,0.34), rgba(2,6,23,0) 72%)",
+                "radial-gradient(72% 92% at 50% 48%, rgba(2,6,23,0.16), rgba(2,6,23,0) 76%)",
+              ].join(", "),
             }}
           />
         </div>
