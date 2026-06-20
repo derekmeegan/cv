@@ -208,6 +208,11 @@ function LibraryStack({
   onHoverBook: (bookId: string | null) => void;
   onSelectBook: (stack: BookStack, book: Book) => void;
 }) {
+  const baseWidth = stack.books.reduce(
+    (width, book) => Math.max(width, spineSize(book).width),
+    0,
+  );
+
   return (
     <div className="relative min-h-[18rem] overflow-visible px-1 pb-2 pt-0">
       <div className="flex min-h-[18rem] items-end justify-center pb-3 pt-2">
@@ -249,6 +254,11 @@ function LibraryStack({
               </ViewTransition>
             );
           })}
+          <div
+            aria-hidden="true"
+            className="mt-2 shrink-0 rounded-[50%] bg-slate-950/25 blur-md"
+            style={{ width: baseWidth * 0.92, height: 14 }}
+          />
         </div>
       </div>
     </div>
