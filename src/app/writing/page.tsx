@@ -1,64 +1,24 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-interface Article {
-  title: string;
-  link: string;
-  pubDate: string;
-  categories: string[];
-}
-
-interface RSSResponse {
-  items: Article[];
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const day = date.getDate();
-  const month = monthNames[date.getMonth()];
-  const year = date.getFullYear();
-
-  const getOrdinal = (day: number): string => {
-    if (day > 3 && day < 21) return "th";
-    switch (day % 10) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
-    }
-  };
-
-  return `${month} ${day}${getOrdinal(day)}, ${year}`;
-}
+import { BROWSERBASE_ARTICLES } from "@/constants/articles";
+import { formatDate, orderArticlesChronologically } from "@/lib/articles";
+import type { RSSResponse } from "@/types/articles";
 
 export default async function MediumArticles() {
-  const res = await fetch(
-    "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@derekmeegan",
-  );
-  const data: RSSResponse = await res.json();
   return (
     <div className="flex flex-col gap-5">
-      {data.items.map((article) => {
+      {(
+        await fetch(
+          "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@derekmeegan",
+        )
+          .then((res) => res.json() as Promise<RSSResponse>)
+          .then((data) =>
+            orderArticlesChronologically([
+              ...data.items,
+              ...BROWSERBASE_ARTICLES,
+            ]),
+          )
+      ).map((article) => {
         return (
           <Card
             className="flex flex-col overflow-hidden border border-muted p-3"

@@ -1,33 +1,55 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { Section } from "@/components/ui/section";
 import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { RESUME_DATA } from "@/data/resume-data";
+import { Library } from "@/components/library";
+import { CONTACT } from "@/constants/contact";
+import { EDUCATION } from "@/constants/education";
+import { PROFILE } from "@/constants/profile";
+import { PROJECTS, PROJECTS_PER_PAGE } from "@/constants/projects";
+import { ROLES } from "@/constants/roles";
+import { formatDateRange, formatPositionDuration } from "@/lib/dates";
 import { ProjectCard } from "@/components/project-card";
 
 export default async function Page() {
+  const projectGroups = Array.from(
+    { length: Math.ceil(PROJECTS.length / PROJECTS_PER_PAGE) },
+    (_, index) =>
+      PROJECTS.slice(
+        index * PROJECTS_PER_PAGE,
+        index * PROJECTS_PER_PAGE + PROJECTS_PER_PAGE,
+      ),
+  );
+
   return (
     <>
-      <div className="flex items-center justify-between">
-        <div className="flex-1 space-y-1.5">
-          <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
+      <div className="flex items-stretch justify-between gap-4">
+        <div className="min-w-0 flex-1 space-y-1.5">
+          <h1 className="text-2xl font-semibold">{PROFILE.name}</h1>
           <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground">
-            {RESUME_DATA.about}
+            {PROFILE.about}
           </p>
           <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
             <a
               className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
-              href={RESUME_DATA.locationLink}
+              href={PROFILE.locationLink}
               target="_blank"
             >
               <GlobeIcon className="size-3" />
-              {RESUME_DATA.location}
+              {PROFILE.location}
             </a>
           </p>
           <div className="flex gap-x-1 pt-1 font-mono text-sm text-muted-foreground print:hidden">
-          {RESUME_DATA.contact.social.map((social) => (
+            {CONTACT.social.map((social) => (
               <Button
                 key={social.name}
                 className="size-8"
@@ -40,54 +62,57 @@ export default async function Page() {
                 </a>
               </Button>
             ))}
-            {RESUME_DATA.contact.email ? (
+            {CONTACT.email ? (
               <Button className="size-8" variant="outline" size="icon" asChild>
-                <a href={`mailto:${RESUME_DATA.contact.email}`} aria-label="Email">
+                <a href={`mailto:${CONTACT.email}`} aria-label="Email">
                   <MailIcon className="size-4" />
                 </a>
               </Button>
             ) : null}
-            {RESUME_DATA.contact.tel ? (
+            {CONTACT.tel ? (
               <Button className="size-8" variant="outline" size="icon" asChild>
-                <a href={`tel:${RESUME_DATA.contact.tel}`} aria-label="Phone">
+                <a href={`tel:${CONTACT.tel}`} aria-label="Phone">
                   <PhoneIcon className="size-4" />
                 </a>
               </Button>
             ) : null}
           </div>
           <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex">
-            {RESUME_DATA.contact.email ? (
-              <a href={`mailto:${RESUME_DATA.contact.email}`}>
-                <span className="underline">{RESUME_DATA.contact.email}</span>
+            {CONTACT.email ? (
+              <a href={`mailto:${CONTACT.email}`}>
+                <span className="underline">{CONTACT.email}</span>
               </a>
             ) : null}
-            {RESUME_DATA.contact.tel ? (
-              <a href={`tel:${RESUME_DATA.contact.tel}`}>
-                <span className="underline">{RESUME_DATA.contact.tel}</span>
+            {CONTACT.tel ? (
+              <a href={`tel:${CONTACT.tel}`}>
+                <span className="underline">{CONTACT.tel}</span>
               </a>
             ) : null}
           </div>
         </div>
 
-        <Avatar className="size-28">
-          <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
-          <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
+        <Avatar className="h-auto min-h-32 w-32 self-stretch">
+          <AvatarImage alt={PROFILE.name} src={PROFILE.avatarUrl} />
+          <AvatarFallback>{PROFILE.initials}</AvatarFallback>
         </Avatar>
       </div>
       <Section>
-        <h2 className="text-xl font-bold">About</h2>
+        <h2 className="text-xl font-semibold">About</h2>
         <p className="text-pretty font-mono text-sm text-muted-foreground">
-          {RESUME_DATA.summary}
+          {PROFILE.summary}
         </p>
       </Section>
       <Section>
-        <h2 className="text-xl font-bold">Experience</h2>
-        {RESUME_DATA.work.map((work) => {
+        <h2 className="text-xl font-semibold">Roles</h2>
+        {ROLES.map((work) => {
+          const currentPosition = work.positions[0];
+          const firstPosition = work.positions[work.positions.length - 1];
+
           return (
             <Card key={work.company}>
               <CardHeader>
                 <div className="flex items-center justify-between gap-x-2 text-base">
-                  <h3 className="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">
+                  <h3 className="inline-flex items-center justify-center gap-x-1 font-medium leading-none">
                     <a className="hover:underline" href={work.link}>
                       {work.company}
                     </a>
@@ -105,86 +130,117 @@ export default async function Page() {
                     </span>
                   </h3>
                   <div className="text-sm tabular-nums text-gray-500">
-                    {work.start} - {work.end ?? "Present"}
+                    {formatDateRange(firstPosition.start, currentPosition.end)}
                   </div>
                 </div>
-
-                <h4 className="font-mono text-sm leading-none">{work.title}</h4>
               </CardHeader>
-              <CardContent className="mt-2 text-xs">
-                {work.description}
+              <CardContent className="mt-3">
+                <ol className="relative ml-1 before:absolute before:left-0 before:top-0 before:h-full before:w-px before:-translate-x-1/2 before:bg-border before:content-['']">
+                  {work.positions.map((position) => (
+                    <li
+                      key={`${work.company}-${position.title}-${position.start}`}
+                      className="relative pb-4 pl-4 last:pb-0"
+                    >
+                      <span className="absolute left-0 top-2.5 z-10 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background ring-1 ring-border" />
+                      <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-1">
+                        <h4 className="font-mono text-sm font-medium text-foreground">
+                          {position.title}
+                        </h4>
+                        <span className="text-xs text-muted-foreground">·</span>
+                        <span className="font-mono text-xs tabular-nums text-gray-500">
+                          {"duration" in position && position.duration
+                            ? position.duration
+                            : formatPositionDuration(
+                                position.start,
+                                position.end,
+                              )}
+                        </span>
+                      </div>
+                      {Array.isArray(position.description) ? (
+                        <ul className="mt-2 list-disc space-y-1 pl-4 text-[13px] leading-relaxed">
+                          {position.description.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : position.description ? (
+                        <p className="mt-2 text-[13px] leading-relaxed">
+                          {position.description}
+                        </p>
+                      ) : null}
+                    </li>
+                  ))}
+                </ol>
               </CardContent>
             </Card>
           );
         })}
       </Section>
       <Section className="print-force-new-page scroll-mb-16">
-        <h2 className="text-xl font-bold">Projects</h2>
-        <div className="-mx-3 grid grid-cols-1 gap-3 print:grid-cols-3 print:gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {RESUME_DATA.projects.map((project) => {
-            return (
-              <ProjectCard
-                key={project.title}
-                title={project.title}
-                description={project.description}
-                tags={project.techStack}
-                link={"link" in project ? project.link.href : undefined}
-              />
-            );
-          })}
+        <h2 className="text-xl font-semibold">Projects</h2>
+        <Carousel opts={{ align: "start" }} className="w-full print:hidden">
+          <CarouselContent>
+            {projectGroups.map((projectGroup, index) => (
+              <CarouselItem key={index}>
+                <div className="grid grid-cols-1 gap-x-3 gap-y-5 sm:grid-cols-2 sm:gap-x-4">
+                  {projectGroup.map((project) => (
+                    <ProjectCard
+                      key={project.title}
+                      title={project.title}
+                      description={project.description}
+                      tags={project.techStack}
+                      link={project.link?.href}
+                    />
+                  ))}
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:inline-flex" />
+          <CarouselNext className="hidden md:inline-flex" />
+        </Carousel>
+        <div className="-mx-3 hidden grid-cols-1 gap-3 print:grid print:grid-cols-3 print:gap-2">
+          {PROJECTS.map((project) => (
+            <ProjectCard
+              key={project.title}
+              title={project.title}
+              description={project.description}
+              tags={project.techStack}
+              link={project.link?.href}
+            />
+          ))}
         </div>
       </Section>
       <Section>
-        <h2 className="text-xl font-bold">Education</h2>
-        {RESUME_DATA.education.map((education) => {
+        <h2 className="text-xl font-semibold">Education</h2>
+        {EDUCATION.map((education) => {
           return (
             <Card key={education.school}>
               <CardHeader>
                 <div className="flex items-center justify-between gap-x-2 text-base">
-                  <h3 className="font-semibold leading-none">
+                  <h3 className="font-medium leading-none">
                     {education.school}
                   </h3>
                   <div className="text-sm tabular-nums text-gray-500">
-                    {education.start} - {education.end}
+                    {formatDateRange(education.start, education.end)}
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="mt-2">{education.degree}</CardContent>
-              <CardContent className="mt-2"><span className="font-semibold">Majors:</span> {education.major} | <span className="font-semibold">Minor:</span> {education.minor}</CardContent>
-              <CardContent className="mt-2"><span className="font-semibold">GPA:</span> {education.gpa} | <span className="font-semibold">Honors:</span> {education.honors}</CardContent>
-            </Card>
-          );
-        })}
-      </Section>
-      <Section>
-        <h2 className="text-xl font-bold">Certifications</h2>
-        {RESUME_DATA.certifications.map((certification) => {
-          return (
-            <Card key={certification.name}>
-              <CardHeader>
-                <div className="flex items-center justify-between gap-x-2 text-base">
-                  <h3 className="font-semibold leading-none">
-                    {certification.name}
-                  </h3>
-                  <div className="text-sm tabular-nums text-gray-500">
-                    {certification.year}
-                  </div>
-                </div>
-              </CardHeader>
               <CardContent className="mt-2">
-                {certification.content}
+                <span className="font-medium">Majors:</span> {education.major} |{" "}
+                <span className="font-medium">Minor:</span> {education.minor}
+              </CardContent>
+              <CardContent className="mt-2">
+                <span className="font-medium">GPA:</span> {education.gpa} |{" "}
+                <span className="font-medium">Honors:</span> {education.honors}
               </CardContent>
             </Card>
           );
         })}
       </Section>
-      <Section>
-        <h2 className="text-xl font-bold">Skills</h2>
-        <div className="flex flex-wrap gap-1">
-          {RESUME_DATA.skills.map((skill) => {
-            return <Badge key={skill}>{skill}</Badge>;
-          })}
-        </div>
+      <Section className="print:hidden">
+        <h2 className="text-xl font-semibold">Library</h2>
+        <Library />
       </Section>
     </>
   );
