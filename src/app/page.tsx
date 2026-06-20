@@ -111,8 +111,9 @@ export default async function Page() {
           </p>
         ))}
         <p className="text-pretty font-mono text-sm text-muted-foreground">
-          {closingAboutParagraph} Among other things,{" "}
-          <TypingDescriptor descriptors={PROFILE.descriptors} />
+          <TypingDescriptor descriptors={PROFILE.descriptors}>
+            {closingAboutParagraph} Among other things,{" "}
+          </TypingDescriptor>
         </p>
       </Section>
       <Section>
