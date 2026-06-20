@@ -136,11 +136,16 @@ function balanceBookStacks(stacks: BookStack[]) {
 
 const BALANCED_BOOK_STACKS = balanceBookStacks(BOOK_STACKS);
 
-const ARROW_TOP = Math.round(
-  Math.max(...BALANCED_BOOK_STACKS.map((stack) => stackHeight(stack.books))) /
-    2 +
-    4,
+const MAX_STACK_HEIGHT = Math.max(
+  ...BALANCED_BOOK_STACKS.map((stack) => stackHeight(stack.books)),
 );
+
+const ARROW_TOP = Math.round(MAX_STACK_HEIGHT / 2 + 4);
+
+// Reserve room for the tallest stack plus its floating shadow so every stack
+// shares one bottom baseline regardless of height.
+const SHADOW_RESERVE = 46;
+const STACK_MIN_HEIGHT = Math.round(MAX_STACK_HEIGHT + SHADOW_RESERVE + 28);
 
 function BookSpine({
   book,
@@ -214,9 +219,15 @@ function LibraryStack({
   );
 
   return (
-    <div className="relative min-h-[18rem] overflow-visible px-1 pb-2 pt-0">
-      <div className="flex min-h-[18rem] items-end justify-center pb-3 pt-2">
-        <div className="relative flex w-full max-w-sm flex-col items-center justify-end">
+    <div
+      className="relative overflow-visible px-1 pb-2 pt-0"
+      style={{ minHeight: STACK_MIN_HEIGHT }}
+    >
+      <div
+        className="flex items-end justify-center pb-3 pt-2"
+        style={{ minHeight: STACK_MIN_HEIGHT }}
+      >
+        <div className="flex w-full max-w-sm flex-col items-center justify-end">
           {stack.books.map((book, index) => {
             const size = spineSize(book);
             const isSelected = selectedBookId === book.id;
@@ -256,9 +267,8 @@ function LibraryStack({
           })}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2"
+            className="mt-1 shrink-0"
             style={{
-              marginTop: 4,
               width: baseWidth * 1.14,
               height: 42,
               background:
