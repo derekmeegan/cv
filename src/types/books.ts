@@ -3,6 +3,7 @@ export interface Book {
   title: string;
   author: string;
   readMoreUrl: string;
+  publishedYear: string;
   wordCount: number;
   offset: number;
   coverGradient: string;

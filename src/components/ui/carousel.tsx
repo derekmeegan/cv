@@ -28,9 +28,26 @@ type CarouselContextProps = {
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  markUserInteracted: () => void;
+  hasUserInteracted: boolean;
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
+
+/* Carousel swipe hint
+ *
+ *    0ms   carousel viewport enters the screen
+ * 3000ms   visible track nudges left to reveal horizontal movement
+ * 3820ms   track returns to its original position
+ * 13000ms  repeat the hint if the carousel remains in view
+ */
+const SWIPE_HINT = {
+  delayMs: 3000,
+  durationMs: 820,
+  repeatDelayMs: 10000,
+  distance: "-0.875rem",
+  intersectionThreshold: 0.55,
+} as const;
 
 function useCarousel() {
   const context = React.useContext(CarouselContext);
@@ -67,6 +84,11 @@ const Carousel = React.forwardRef<
     );
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
+    const [hasUserInteracted, setHasUserInteracted] = React.useState(false);
+
+    const markUserInteracted = React.useCallback(() => {
+      setHasUserInteracted(true);
+    }, []);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
       if (!api) {
@@ -78,12 +100,14 @@ const Carousel = React.forwardRef<
     }, []);
 
     const scrollPrev = React.useCallback(() => {
+      markUserInteracted();
       api?.scrollPrev();
-    }, [api]);
+    }, [api, markUserInteracted]);
 
     const scrollNext = React.useCallback(() => {
+      markUserInteracted();
       api?.scrollNext();
-    }, [api]);
+    }, [api, markUserInteracted]);
 
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -131,6 +155,8 @@ const Carousel = React.forwardRef<
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          markUserInteracted,
+          hasUserInteracted,
         }}
       >
         <div
@@ -152,12 +178,117 @@ Carousel.displayName = "Carousel";
 const CarouselContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const { carouselRef, orientation } = useCarousel();
+>(({ className, style, ...props }, ref) => {
+  const {
+    carouselRef,
+    api,
+    orientation,
+    canScrollNext,
+    markUserInteracted,
+    hasUserInteracted,
+  } = useCarousel();
+  const [viewportElement, setViewportElement] =
+    React.useState<HTMLDivElement | null>(null);
+  const [shouldShowSwipeHint, setShouldShowSwipeHint] = React.useState(false);
+
+  const setViewportRefs = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      carouselRef(node);
+      setViewportElement(node);
+    },
+    [carouselRef],
+  );
+
+  React.useEffect(() => {
+    if (
+      !viewportElement ||
+      !canScrollNext ||
+      hasUserInteracted ||
+      orientation !== "horizontal"
+    ) {
+      setShouldShowSwipeHint(false);
+      return;
+    }
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (motionQuery.matches) {
+      return;
+    }
+
+    let initialTimer: number | undefined;
+    let repeatTimer: number | undefined;
+    let endTimer: number | undefined;
+
+    function clearSwipeHintTimers() {
+      window.clearTimeout(initialTimer);
+      window.clearTimeout(repeatTimer);
+      window.clearTimeout(endTimer);
+    }
+
+    function showSwipeHint() {
+      setShouldShowSwipeHint(false);
+      window.requestAnimationFrame(() => {
+        setShouldShowSwipeHint(true);
+      });
+
+      endTimer = window.setTimeout(() => {
+        setShouldShowSwipeHint(false);
+      }, SWIPE_HINT.durationMs);
+      repeatTimer = window.setTimeout(showSwipeHint, SWIPE_HINT.repeatDelayMs);
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (
+          !entry?.isIntersecting ||
+          entry.intersectionRatio < SWIPE_HINT.intersectionThreshold
+        ) {
+          clearSwipeHintTimers();
+          setShouldShowSwipeHint(false);
+          return;
+        }
+
+        clearSwipeHintTimers();
+        initialTimer = window.setTimeout(() => {
+          showSwipeHint();
+        }, SWIPE_HINT.delayMs);
+      },
+      { threshold: SWIPE_HINT.intersectionThreshold },
+    );
+
+    observer.observe(viewportElement);
+
+    return () => {
+      observer.disconnect();
+      clearSwipeHintTimers();
+    };
+  }, [canScrollNext, hasUserInteracted, orientation, viewportElement]);
+
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api.on("pointerDown", markUserInteracted);
+
+    return () => {
+      api.off("pointerDown", markUserInteracted);
+    };
+  }, [api, markUserInteracted]);
+
+  const swipeHintStyle = {
+    ...style,
+    "--carousel-swipe-hint-distance": SWIPE_HINT.distance,
+    "--carousel-swipe-hint-duration": String(SWIPE_HINT.durationMs) + "ms",
+  } as React.CSSProperties;
 
   return (
     <div
-      ref={carouselRef}
+      ref={setViewportRefs}
+      onPointerDown={markUserInteracted}
+      onKeyDown={markUserInteracted}
+      onWheel={markUserInteracted}
       className={cn(
         "overflow-hidden",
         orientation === "horizontal" ? "touch-pan-y" : "touch-pan-x",
@@ -174,8 +305,10 @@ const CarouselContent = React.forwardRef<
         className={cn(
           "flex select-none",
           orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+          shouldShowSwipeHint && "carousel-swipe-hint",
           className,
         )}
+        style={swipeHintStyle}
         {...props}
       />
     </div>
@@ -211,6 +344,10 @@ const CarouselPrevious = React.forwardRef<
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
+  if (!canScrollPrev) {
+    return null;
+  }
+
   return (
     <Button
       ref={ref}
@@ -223,7 +360,6 @@ const CarouselPrevious = React.forwardRef<
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}
-      disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
@@ -240,6 +376,10 @@ const CarouselNext = React.forwardRef<
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
+  if (!canScrollNext) {
+    return null;
+  }
+
   return (
     <Button
       ref={ref}
@@ -252,7 +392,6 @@ const CarouselNext = React.forwardRef<
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className,
       )}
-      disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >

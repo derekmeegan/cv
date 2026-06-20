@@ -112,6 +112,21 @@
   }
 }
 
+.carousel-swipe-hint {
+  animation: carousel-swipe-hint var(--carousel-swipe-hint-duration)
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes carousel-swipe-hint {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  42% {
+    translate: var(--carousel-swipe-hint-distance) 0;
+  }
+}
+
 ::view-transition-old(.fade-out) {
   animation: var(--duration-exit) ease-in fade reverse;
 }
@@ -224,6 +239,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .carousel-swipe-hint,
   ::view-transition-old(*),
   ::view-transition-new(*),
   ::view-transition-group(*) {

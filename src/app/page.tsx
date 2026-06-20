@@ -12,6 +12,7 @@ import { Section } from "@/components/ui/section";
 import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Library } from "@/components/library";
+import { TypingDescriptor } from "@/components/typing-descriptor";
 import { CONTACT } from "@/constants/contact";
 import { EDUCATION } from "@/constants/education";
 import { PROFILE } from "@/constants/profile";
@@ -29,6 +30,9 @@ export default async function Page() {
         index * PROJECTS_PER_PAGE + PROJECTS_PER_PAGE,
       ),
   );
+  const leadingAboutParagraphs = PROFILE.aboutParagraphs.slice(0, -1);
+  const closingAboutParagraph =
+    PROFILE.aboutParagraphs[PROFILE.aboutParagraphs.length - 1];
 
   return (
     <>
@@ -98,8 +102,17 @@ export default async function Page() {
       </div>
       <Section>
         <h2 className="text-xl font-semibold">About</h2>
+        {leadingAboutParagraphs.map((paragraph) => (
+          <p
+            className="text-pretty font-mono text-sm text-muted-foreground"
+            key={paragraph}
+          >
+            {paragraph}
+          </p>
+        ))}
         <p className="text-pretty font-mono text-sm text-muted-foreground">
-          {PROFILE.summary}
+          {closingAboutParagraph} Among other things,{" "}
+          <TypingDescriptor descriptors={PROFILE.descriptors} />
         </p>
       </Section>
       <Section>
@@ -135,7 +148,7 @@ export default async function Page() {
                 </div>
               </CardHeader>
               <CardContent className="mt-3">
-                <ol className="relative ml-1 before:absolute before:left-0 before:top-0 before:h-full before:w-px before:-translate-x-1/2 before:bg-border before:content-['']">
+                <ol className="relative ml-1 before:absolute before:left-0 before:top-2.5 before:h-[calc(100%-0.625rem)] before:w-px before:-translate-x-1/2 before:bg-border before:content-['']">
                   {work.positions.map((position) => (
                     <li
                       key={`${work.company}-${position.title}-${position.start}`}
@@ -146,7 +159,6 @@ export default async function Page() {
                         <h4 className="font-mono text-sm font-medium text-foreground">
                           {position.title}
                         </h4>
-                        <span className="text-xs text-muted-foreground">·</span>
                         <span className="font-mono text-xs tabular-nums text-gray-500">
                           {"duration" in position && position.duration
                             ? position.duration
@@ -181,7 +193,7 @@ export default async function Page() {
           <CarouselContent>
             {projectGroups.map((projectGroup, index) => (
               <CarouselItem key={index}>
-                <div className="grid grid-cols-1 gap-x-3 gap-y-5 sm:grid-cols-2 sm:gap-x-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {projectGroup.map((project) => (
                     <ProjectCard
                       key={project.title}

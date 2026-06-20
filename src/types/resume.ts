@@ -10,6 +10,8 @@ export interface Profile {
   locationLink: string;
   about: string;
   summary: string;
+  aboutParagraphs: string[];
+  descriptors: string[];
   avatarUrl: string;
   personalWebsiteUrl: string;
 }

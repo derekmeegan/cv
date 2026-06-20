@@ -270,9 +270,9 @@ function LibraryStack({
             className="mt-1 shrink-0"
             style={{
               width: baseWidth * 1.14,
-              height: 42,
+              height: 34,
               background:
-                "radial-gradient(58% 80% at 50% 44%, rgba(2,6,23,0.16) 0%, rgba(2,6,23,0.10) 32%, rgba(2,6,23,0.045) 58%, rgba(2,6,23,0) 84%)",
+                "radial-gradient(62% 54% at 50% 32%, rgba(15,23,42,0.09) 0%, rgba(15,23,42,0.055) 38%, rgba(15,23,42,0.022) 65%, rgba(15,23,42,0) 100%)",
             }}
           />
         </div>
@@ -360,6 +360,9 @@ function SelectedBookCover({
                 </h3>
                 <p className="mt-2 font-mono text-xs text-slate-900/70">
                   {book.author}
+                </p>
+                <p className="mt-1 font-mono text-[11px] text-slate-900/60">
+                  {book.publishedYear}
                 </p>
               </div>
             </div>
