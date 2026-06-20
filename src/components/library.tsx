@@ -258,12 +258,10 @@ function LibraryStack({
             aria-hidden="true"
             className="mt-1 shrink-0"
             style={{
-              width: baseWidth * 1.04,
-              height: 34,
-              background: [
-                "radial-gradient(42% 46% at 50% 42%, rgba(2,6,23,0.34), rgba(2,6,23,0) 72%)",
-                "radial-gradient(72% 92% at 50% 48%, rgba(2,6,23,0.16), rgba(2,6,23,0) 76%)",
-              ].join(", "),
+              width: baseWidth * 1.14,
+              height: 42,
+              background:
+                "radial-gradient(58% 80% at 50% 44%, rgba(2,6,23,0.16) 0%, rgba(2,6,23,0.10) 32%, rgba(2,6,23,0.045) 58%, rgba(2,6,23,0) 84%)",
             }}
           />
         </div>
