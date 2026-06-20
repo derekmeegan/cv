@@ -99,8 +99,8 @@ export function TypingDescriptor({ descriptors }: TypingDescriptorProps) {
 
   return (
     <>
-      <span aria-hidden="true" className="inline-flex items-baseline">
-        <span>{visibleDescriptor}</span>
+      <span aria-hidden="true">
+        {visibleDescriptor}
         <span className="inline-block w-[0.6ch] animate-pulse">|</span>
       </span>
       <span className="sr-only">{descriptors.join(", ")}</span>
