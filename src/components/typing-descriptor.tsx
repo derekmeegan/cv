@@ -16,15 +16,113 @@ const DELETING_DELAY_MS = 28;
 const TYPED_PAUSE_DELAY_MS = 1200;
 const DELETED_PAUSE_DELAY_MS = 450;
 
+interface Segment {
+  length: number;
+  typingDuration: number;
+  deletingDuration: number;
+  total: number;
+}
+
+interface TypingState {
+  descriptorIndex: number;
+  characterCount: number;
+}
+
+// Build a per-descriptor timeline so the animation can be derived purely from
+// the wall clock instead of from React state. This keeps the rotation
+// continuous across page loads — a refresh resumes wherever the global cycle
+// happens to be rather than restarting from the beginning.
+function buildSegments(descriptors: string[]): Segment[] {
+  return descriptors.map((descriptor) => {
+    const length = punctuate(descriptor).length;
+    const typingDuration = length * TYPING_DELAY_MS;
+    const deletingDuration = length * DELETING_DELAY_MS;
+
+    return {
+      length,
+      typingDuration,
+      deletingDuration,
+      total:
+        typingDuration +
+        TYPED_PAUSE_DELAY_MS +
+        deletingDuration +
+        DELETED_PAUSE_DELAY_MS,
+    };
+  });
+}
+
+function computeTypingState(segments: Segment[], elapsed: number): TypingState {
+  const cycleDuration = segments.reduce(
+    (total, segment) => total + segment.total,
+    0,
+  );
+
+  if (cycleDuration === 0) {
+    return { descriptorIndex: 0, characterCount: 0 };
+  }
+
+  let offset = ((elapsed % cycleDuration) + cycleDuration) % cycleDuration;
+
+  for (let index = 0; index < segments.length; index += 1) {
+    const segment = segments[index];
+
+    if (offset >= segment.total) {
+      offset -= segment.total;
+      continue;
+    }
+
+    // Typing in.
+    if (offset < segment.typingDuration) {
+      return {
+        descriptorIndex: index,
+        characterCount: Math.min(
+          segment.length,
+          Math.floor(offset / TYPING_DELAY_MS),
+        ),
+      };
+    }
+    offset -= segment.typingDuration;
+
+    // Pausing on the fully typed descriptor.
+    if (offset < TYPED_PAUSE_DELAY_MS) {
+      return { descriptorIndex: index, characterCount: segment.length };
+    }
+    offset -= TYPED_PAUSE_DELAY_MS;
+
+    // Deleting.
+    if (offset < segment.deletingDuration) {
+      return {
+        descriptorIndex: index,
+        characterCount: Math.max(
+          0,
+          segment.length - Math.floor(offset / DELETING_DELAY_MS),
+        ),
+      };
+    }
+
+    // Pausing on the empty descriptor before moving to the next one.
+    return { descriptorIndex: index, characterCount: 0 };
+  }
+
+  return { descriptorIndex: 0, characterCount: 0 };
+}
+
 export function TypingDescriptor({
   descriptors,
   children,
 }: TypingDescriptorProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
-  const [descriptorIndex, setDescriptorIndex] = React.useState(0);
-  const [characterCount, setCharacterCount] = React.useState(0);
-  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [typingState, setTypingState] = React.useState<TypingState>({
+    descriptorIndex: 0,
+    characterCount: 0,
+  });
 
+  const segments = React.useMemo(
+    () => buildSegments(descriptors),
+    [descriptors],
+  );
+
+  const { descriptorIndex, characterCount } = typingState;
   const descriptor = descriptors[descriptorIndex] ?? "";
   const punctuatedDescriptor = punctuate(descriptor);
   // Reserve space for the longest descriptor so the paragraph never grows when
@@ -56,56 +154,35 @@ export function TypingDescriptor({
   }, []);
 
   React.useEffect(() => {
-    if (!descriptors.length || prefersReducedMotion) {
+    if (!segments.length || prefersReducedMotion) {
       return;
     }
 
-    const delay =
-      !isDeleting && characterCount === punctuatedDescriptor.length
-        ? TYPED_PAUSE_DELAY_MS
-        : isDeleting && characterCount === 0
-          ? DELETED_PAUSE_DELAY_MS
-          : isDeleting
-            ? DELETING_DELAY_MS
-            : TYPING_DELAY_MS;
+    let animationFrameId = 0;
 
-    const timeoutId = window.setTimeout(() => {
-      if (isDeleting) {
-        if (characterCount > 0) {
-          setCharacterCount((currentCharacterCount) =>
-            Math.max(0, currentCharacterCount - 1),
-          );
-          return;
+    function tick() {
+      setTypingState((currentState) => {
+        const nextState = computeTypingState(segments, Date.now());
+
+        if (
+          nextState.descriptorIndex === currentState.descriptorIndex &&
+          nextState.characterCount === currentState.characterCount
+        ) {
+          return currentState;
         }
 
-        setIsDeleting(false);
-        setDescriptorIndex(
-          (currentDescriptorIndex) =>
-            (currentDescriptorIndex + 1) % descriptors.length,
-        );
-        return;
-      }
+        return nextState;
+      });
 
-      if (characterCount < punctuatedDescriptor.length) {
-        setCharacterCount((currentCharacterCount) =>
-          Math.min(punctuatedDescriptor.length, currentCharacterCount + 1),
-        );
-        return;
-      }
+      animationFrameId = window.requestAnimationFrame(tick);
+    }
 
-      setIsDeleting(true);
-    }, delay);
+    animationFrameId = window.requestAnimationFrame(tick);
 
     return () => {
-      window.clearTimeout(timeoutId);
+      window.cancelAnimationFrame(animationFrameId);
     };
-  }, [
-    characterCount,
-    punctuatedDescriptor,
-    descriptors.length,
-    isDeleting,
-    prefersReducedMotion,
-  ]);
+  }, [segments, prefersReducedMotion]);
 
   if (!descriptors.length) {
     return null;
