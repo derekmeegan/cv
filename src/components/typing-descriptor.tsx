@@ -15,6 +15,9 @@ const TYPING_DELAY_MS = 48;
 const DELETING_DELAY_MS = 28;
 const TYPED_PAUSE_DELAY_MS = 1200;
 const DELETED_PAUSE_DELAY_MS = 450;
+// Roughly how long one descriptor stays on screen (type + pause + delete +
+// pause). Used only to pick the starting descriptor from the clock.
+const DESCRIPTOR_DISPLAY_DURATION_MS = 4000;
 
 export function TypingDescriptor({
   descriptors,
@@ -54,6 +57,20 @@ export function TypingDescriptor({
       mediaQuery.removeEventListener("change", handleChange);
     };
   }, []);
+
+  React.useEffect(() => {
+    if (!descriptors.length) {
+      return;
+    }
+
+    // Seed the starting descriptor from the clock so the rotation keeps
+    // advancing over time and doesn't restart from the first item on every
+    // page load. The per-character typing then continues from here as usual.
+    setDescriptorIndex(
+      Math.floor(Date.now() / DESCRIPTOR_DISPLAY_DURATION_MS) %
+        descriptors.length,
+    );
+  }, [descriptors.length]);
 
   React.useEffect(() => {
     if (!descriptors.length || prefersReducedMotion) {
