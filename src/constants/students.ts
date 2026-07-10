@@ -12,7 +12,7 @@ export const STUDENTS: Student[] = [
       "NASKA World Champion",
     ],
     divisions: ["Traditional Weapons", "Traditional Forms", "CMX Weapons"],
-    image: "images/aleegator.png",
+    image: "/images/aleegator.png",
   },
   {
     name: "Matthew Shamet",
@@ -25,7 +25,7 @@ export const STUDENTS: Student[] = [
       "NASKA World Champion",
     ],
     divisions: ["Traditional Weapons", "Traditional Forms"],
-    image: "images/shamet.png",
+    image: "/images/shamet.png",
   },
   {
     name: "John Lorenz",
@@ -39,7 +39,7 @@ export const STUDENTS: Student[] = [
       "NASKA World Champion",
     ],
     divisions: ["CMX Weapons", "CMX Forms"],
-    image: "images/JOHN.png",
+    image: "/images/JOHN.png",
   },
   {
     name: "Samantha Mitling",
@@ -52,7 +52,7 @@ export const STUDENTS: Student[] = [
       "NASKA World Champion",
     ],
     divisions: ["Traditional Weapons", "CMX Weapons"],
-    image: "images/sam.png",
+    image: "/images/sam.png",
   },
   {
     name: "Derrick Barnes",
@@ -65,7 +65,7 @@ export const STUDENTS: Student[] = [
       "NASKA Top 10 Competitor",
     ],
     divisions: ["Traditional Weapons", "CMX Weapons"],
-    image: "images/barnes.png",
+    image: "/images/barnes.png",
   },
   {
     name: "Niko Torofias",
@@ -74,7 +74,7 @@ export const STUDENTS: Student[] = [
     end: "2024-01-01",
     achievements: ["NASKA First Place Winner", "NASKA Top 10 Competitor"],
     divisions: ["Traditional Weapons", "CMX Weapons", "Point Fighting"],
-    image: "images/niko.png",
+    image: "/images/niko.png",
   },
   {
     name: "Cate Esmond",
@@ -87,7 +87,7 @@ export const STUDENTS: Student[] = [
       "NASKA Top 10 Competitor",
     ],
     divisions: ["Traditional Weapons"],
-    image: "images/cate.png",
+    image: "/images/cate.png",
   },
   {
     name: "Harold Lerner",
@@ -100,7 +100,7 @@ export const STUDENTS: Student[] = [
       "NASKA World Champion",
     ],
     divisions: ["Traditional Weapons", "CMX Weapons"],
-    image: "images/h.png",
+    image: "/images/h.png",
   },
   {
     name: "Erica Goldt",
@@ -109,7 +109,7 @@ export const STUDENTS: Student[] = [
     end: "2024-06-01",
     achievements: ["ATA World Champion", "NASKA Top 10 Competitor"],
     divisions: ["Traditional Weapons", "Traditional Forms", "CMX Weapons"],
-    image: "images/erica.png",
+    image: "/images/erica.png",
   },
   {
     name: "Wyatt Mak",
@@ -121,7 +121,7 @@ export const STUDENTS: Student[] = [
       "NASKA Top 10 Competitor",
     ],
     divisions: ["CMX Weapons", "Point Fighting"],
-    image: "images/wyatt.png",
+    image: "/images/wyatt.png",
   },
   {
     name: "Lola Granger",
@@ -133,6 +133,6 @@ export const STUDENTS: Student[] = [
       "NASKA Top 10 Competitor",
     ],
     divisions: ["CMX Weapons"],
-    image: "images/lola.png",
+    image: "/images/lola.png",
   },
 ];
