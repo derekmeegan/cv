@@ -96,7 +96,7 @@ export default async function Page() {
         </div>
 
         <Avatar className="h-auto min-h-32 w-32 self-stretch">
-          <AvatarImage alt={PROFILE.name} src={PROFILE.avatarUrl} />
+          <AvatarImage alt={PROFILE.name} src={PROFILE.avatarUrl} priority />
           <AvatarFallback>{PROFILE.initials}</AvatarFallback>
         </Avatar>
       </div>
