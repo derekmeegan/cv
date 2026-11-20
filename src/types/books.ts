@@ -6,7 +6,7 @@ export interface Book {
   publishedYear: string;
   wordCount: number;
   offset: number;
-  coverGradient: string;
+  coverColor: string;
 }
 
 export interface BookStack {

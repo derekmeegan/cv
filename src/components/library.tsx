@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { startTransition, ViewTransition } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, X } from "lucide-react";
 
 import {
   Carousel,
@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { BOOK_STACKS } from "@/constants/books";
-import { cn } from "@/lib/utils";
+import { BOOK_ARTWORK } from "@/constants/book-artwork";
 import type { Book, BookStack } from "@/types/books";
 
 interface SelectedBook {
@@ -27,27 +27,22 @@ const TIMING = {
 
 const MOTION = {
   easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-  hoverPull: 10,
+  hoverPull: 5,
 } as const;
 
 const COVER = {
-  width: 228,
-  height: 288,
-  depth: 18,
-  radius: 6,
-  tiltX: 3,
-  tiltY: -8,
+  width: 236,
+  height: 320,
 } as const;
-
-const PAGE_EDGE_BACKGROUND =
-  "repeating-linear-gradient(90deg, #fbf7ea 0 3px, #e8deca 3px 4px)";
 
 const SPINE_SIZE = {
-  minLength: 176,
+  minLength: 190,
   maxLength: 282,
   minThickness: 24,
-  maxThickness: 58,
+  maxThickness: 56,
 } as const;
+
+const STACK_GAP = 3;
 
 const BOOKS_PER_STACK = 7;
 const STACK_OFFSETS = [-2, 1, -1, 3, -3, 2, 0] as const;
@@ -66,8 +61,15 @@ function bookTransitionName(book: Book) {
   return `book-${book.id}`;
 }
 
+function hashString(value: string) {
+  return Array.from(value).reduce(
+    (hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0,
+    0,
+  );
+}
+
 function spineTransform(book: Book, isHovered: boolean) {
-  const stackOffset = book.offset * 8;
+  const stackOffset = book.offset * 4;
   const pull = isHovered ? MOTION.hoverPull : 0;
 
   return `translate3d(${stackOffset + pull}px, 0, 0)`;
@@ -85,11 +87,13 @@ function wordCountScale(wordCount: number) {
 
 function spineSize(book: Book) {
   const scale = wordCountScale(book.wordCount);
+  const trimVariance = (hashString(book.id) % 17) - 8;
 
   return {
     width:
       SPINE_SIZE.minLength +
-      (SPINE_SIZE.maxLength - SPINE_SIZE.minLength) * scale,
+      (SPINE_SIZE.maxLength - SPINE_SIZE.minLength) * scale +
+      trimVariance,
     height:
       SPINE_SIZE.minThickness +
       (SPINE_SIZE.maxThickness - SPINE_SIZE.minThickness) * scale,
@@ -102,7 +106,7 @@ function stackHeight(books: Book[]) {
     0,
   );
 
-  return totalBookHeight - (books.length - 1);
+  return totalBookHeight + (books.length - 1) * STACK_GAP;
 }
 
 function balanceBookStacks(stacks: BookStack[]) {
@@ -140,12 +144,28 @@ const MAX_STACK_HEIGHT = Math.max(
   ...BALANCED_BOOK_STACKS.map((stack) => stackHeight(stack.books)),
 );
 
-const ARROW_TOP = Math.round(MAX_STACK_HEIGHT / 2 + 4);
+// Keep every stack on the same baseline with room for the selected cover.
+const STACK_MIN_HEIGHT = Math.max(COVER.height + 24, MAX_STACK_HEIGHT + 64);
+const ARROW_TOP = Math.round(STACK_MIN_HEIGHT - 24 - MAX_STACK_HEIGHT / 2);
 
-// Reserve room for the tallest stack plus its floating shadow so every stack
-// shares one bottom baseline regardless of height.
-const SHADOW_RESERVE = 46;
-const STACK_MIN_HEIGHT = Math.round(MAX_STACK_HEIGHT + SHADOW_RESERVE + 28);
+function BookMark({ book }: { book: Book }) {
+  const artwork = BOOK_ARTWORK[book.id] ?? BOOK_ARTWORK["tao-te-ching"];
+
+  return (
+    <>
+      <path d={artwork.wash} fill="currentColor" opacity="0.1" />
+      <path
+        d={artwork.outline}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.65"
+      />
+    </>
+  );
+}
 
 function BookSpine({
   book,
@@ -159,41 +179,36 @@ function BookSpine({
   onSelectBook: () => void;
 }) {
   const size = spineSize(book);
-  const outerRadius = Math.max(3, Math.min(7, size.height * 0.12));
-  const innerRadius = outerRadius * 0.65;
 
   return (
     <button
       type="button"
       data-book-spine="true"
       aria-label={`${book.title} by ${book.author}`}
-      className={cn(
-        "relative z-0 flex shrink-0 cursor-pointer items-center justify-center overflow-hidden border border-black/15 px-3 py-2 text-left outline-none transition-[background-color,border-color,box-shadow,filter,transform] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "hover:z-20 hover:border-black/25",
-      )}
-      style={{
-        width: size.width,
-        height: size.height,
-        background: book.coverGradient,
-        borderRadius: outerRadius,
-        boxShadow:
-          "inset 0 1px rgba(255,255,255,0.44), inset 0 -1px rgba(0,0,0,0.16), 0 8px 18px rgba(15,23,42,0.08)",
-        filter: isHovered
-          ? "saturate(0.92) contrast(1) brightness(1.01)"
-          : "saturate(0.78) contrast(0.96) brightness(1.04)",
-        transform: spineTransform(book, isHovered),
-        transitionDuration: `${TIMING.spineMs}ms`,
-        transitionTimingFunction: MOTION.easing,
-        willChange: "transform, filter",
-      }}
+      className="book-spine relative flex shrink-0 cursor-pointer items-center gap-2.5 overflow-hidden rounded-[3px] px-3 text-left text-[#474a46] outline-none transition-transform focus-visible:z-20 focus-visible:ring-2 focus-visible:ring-[#7c8977] focus-visible:ring-offset-2"
+      style={
+        {
+          width: size.width,
+          height: size.height,
+          backgroundColor: book.coverColor,
+          transform: spineTransform(book, isHovered),
+          transitionDuration: `${TIMING.spineMs}ms`,
+          transitionTimingFunction: MOTION.easing,
+          "--spine-offset": `${book.offset * 4}px`,
+        } as React.CSSProperties
+      }
       onClick={onSelectBook}
       onMouseEnter={() => onHoverBook(book.id)}
       onMouseLeave={() => onHoverBook(null)}
     >
-      <span
-        className="relative line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-nowrap bg-white/65 px-2 py-1 font-mono text-xs leading-none tracking-normal text-slate-900 shadow-sm ring-1 ring-black/10 backdrop-blur-[1px]"
-        style={{ borderRadius: innerRadius }}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 32 32"
+        className="size-[19px] shrink-0 text-[#687363]"
       >
+        <BookMark book={book} />
+      </svg>
+      <span className="min-w-0 flex-1 truncate font-serif text-[13px] font-normal leading-none">
         {book.title}
       </span>
     </button>
@@ -213,80 +228,86 @@ function LibraryStack({
   onHoverBook: (bookId: string | null) => void;
   onSelectBook: (stack: BookStack, book: Book) => void;
 }) {
-  const baseWidth = stack.books.reduce(
-    (width, book) => Math.max(width, spineSize(book).width),
-    0,
-  );
-
   return (
     <div
-      className="relative overflow-visible px-1 pb-2 pt-0"
+      className="relative flex items-end justify-center px-1 pb-6 pt-8"
       style={{ minHeight: STACK_MIN_HEIGHT }}
     >
-      <div
-        className="flex items-end justify-center pb-3 pt-2"
-        style={{ minHeight: STACK_MIN_HEIGHT }}
-      >
-        <div className="flex w-full max-w-sm flex-col items-center justify-end">
-          {stack.books.map((book, index) => {
-            const size = spineSize(book);
-            const isSelected = selectedBookId === book.id;
+      <div className="flex w-full max-w-sm flex-col items-center justify-end">
+        {stack.books.map((book, index) => {
+          const size = spineSize(book);
+          const isSelected = selectedBookId === book.id;
 
-            if (isSelected) {
-              return (
-                <div
-                  key={book.id}
-                  aria-hidden="true"
-                  className={cn("shrink-0", index > 0 && "-mt-px")}
-                  style={{
-                    width: size.width,
-                    height: size.height,
-                    transform: spineTransform(book, false),
-                  }}
-                />
-              );
-            }
-
+          if (isSelected) {
             return (
-              <ViewTransition
+              <div
                 key={book.id}
-                name={bookTransitionName(book)}
-                share="morph"
-                default="none"
-              >
-                <div className={cn(index > 0 && "-mt-px")}>
-                  <BookSpine
-                    book={book}
-                    isHovered={hoveredBookId === book.id}
-                    onHoverBook={onHoverBook}
-                    onSelectBook={() => onSelectBook(stack, book)}
-                  />
-                </div>
-              </ViewTransition>
+                aria-hidden="true"
+                className="shrink-0"
+                style={{
+                  width: size.width,
+                  height: size.height,
+                  marginTop: index > 0 ? STACK_GAP : 0,
+                  transform: spineTransform(book, false),
+                }}
+              />
             );
-          })}
-          <div
-            aria-hidden="true"
-            className="mt-1 shrink-0"
-            style={{
-              width: baseWidth * 1.14,
-              height: 34,
-              background:
-                "radial-gradient(62% 54% at 50% 32%, rgba(15,23,42,0.09) 0%, rgba(15,23,42,0.055) 38%, rgba(15,23,42,0.022) 65%, rgba(15,23,42,0) 100%)",
-            }}
-          />
-        </div>
+          }
+
+          return (
+            <ViewTransition
+              key={book.id}
+              name={bookTransitionName(book)}
+              share="morph"
+              default="none"
+            >
+              <div style={{ marginTop: index > 0 ? STACK_GAP : 0 }}>
+                <BookSpine
+                  book={book}
+                  isHovered={hoveredBookId === book.id}
+                  onHoverBook={onHoverBook}
+                  onSelectBook={() => onSelectBook(stack, book)}
+                />
+              </div>
+            </ViewTransition>
+          );
+        })}
       </div>
     </div>
+  );
+}
+
+function CoverArtwork({ book }: { book: Book }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 160 96"
+      className="my-4 min-h-12 w-full flex-1 text-[#687363]"
+      fill="none"
+    >
+      {book.id === "tao-te-ching" ? (
+        <>
+          <circle cx="80" cy="43" r="30" fill="currentColor" opacity="0.09" />
+          <circle cx="80" cy="43" r="22" stroke="currentColor" opacity="0.45" />
+          <path d="M28 70h104M40 79h80" stroke="currentColor" opacity="0.35" />
+        </>
+      ) : (
+        <g transform="translate(48 16) scale(2)">
+          <BookMark book={book} />
+        </g>
+      )}
+    </svg>
   );
 }
 
 function SelectedBookCover({
   selected,
   coverRef,
+  onClose,
 }: {
   selected: SelectedBook | null;
   coverRef: React.RefObject<HTMLDivElement | null>;
+  onClose: () => void;
 }) {
   if (!selected) {
     return null;
@@ -295,7 +316,7 @@ function SelectedBookCover({
   const { book } = selected;
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-4 py-10 [perspective:1100px]">
+    <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center px-4">
       <ViewTransition
         name={bookTransitionName(book)}
         share="morph"
@@ -303,80 +324,44 @@ function SelectedBookCover({
       >
         <div
           ref={coverRef}
-          className="pointer-events-auto relative text-slate-950 [filter:drop-shadow(0_22px_30px_rgba(15,23,42,0.22))] [text-shadow:0_1px_1px_rgba(255,255,255,0.45)] [transform-style:preserve-3d]"
+          className="pointer-events-auto relative flex flex-col rounded-[4px] p-6 text-[#474a46] shadow-[0_12px_40px_rgba(48,53,44,0.12)] ring-1 ring-black/5"
           style={{
             width: COVER.width,
-            height: COVER.height,
-            transform: `rotateX(${COVER.tiltX}deg) rotateY(${COVER.tiltY}deg)`,
+            minHeight: COVER.height,
+            backgroundColor: book.coverColor,
           }}
         >
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute right-0 top-2 rounded-r-[4px] border-y border-r border-black/10 shadow-[inset_1px_0_rgba(255,255,255,0.6),inset_-5px_0_rgba(0,0,0,0.08)]"
-            style={{
-              width: COVER.depth,
-              height: COVER.height - 14,
-              background: PAGE_EDGE_BACKGROUND,
-              transform: `translateX(${COVER.depth - 2}px) rotateY(82deg)`,
-              transformOrigin: "left center",
-            }}
-          />
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-0 left-2 rounded-b-[4px] border-x border-b border-black/10 shadow-[inset_0_1px_rgba(255,255,255,0.55),inset_0_-5px_rgba(0,0,0,0.08)]"
-            style={{
-              width: COVER.width - 8,
-              height: COVER.depth,
-              background: PAGE_EDGE_BACKGROUND,
-              transform: `translateY(${COVER.depth - 2}px) rotateX(-82deg)`,
-              transformOrigin: "center top",
-            }}
-          />
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute left-2 top-0 rounded-t-[4px] border-x border-t border-black/10 opacity-70 shadow-[inset_0_-1px_rgba(0,0,0,0.05)]"
-            style={{
-              width: COVER.width - 10,
-              height: Math.round(COVER.depth * 0.72),
-              background: PAGE_EDGE_BACKGROUND,
-              transform: `translateY(-${Math.round(COVER.depth * 0.7)}px) rotateX(82deg)`,
-              transformOrigin: "center bottom",
-            }}
-          />
-
-          <div
-            className="relative flex size-full min-h-0 flex-col justify-between overflow-hidden border border-black/10 p-5 shadow-[inset_0_1px_rgba(255,255,255,0.4),inset_0_-1px_rgba(0,0,0,0.12)]"
-            style={{
-              background: book.coverGradient,
-              borderRadius: COVER.radius,
-              transform: `translateZ(${Math.round(COVER.depth * 0.72)}px)`,
-            }}
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Return book to shelf"
+            className="absolute right-1 top-1 flex size-8 items-center justify-center rounded-full text-[#474a46]/60 transition-colors hover:text-[#474a46] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           >
-            <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.42),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.26),transparent_46%,rgba(0,0,0,0.12)_100%)]" />
-            <div className="relative flex items-start justify-between gap-3">
-              <div className="min-w-0 pr-2">
-                <h3 className="text-pretty text-lg font-medium leading-tight">
-                  {book.title}
-                </h3>
-                <p className="mt-2 font-mono text-xs text-slate-900/70">
-                  {book.author}
-                </p>
-                <p className="mt-1 font-mono text-[11px] text-slate-900/60">
-                  {book.publishedYear}
-                </p>
-              </div>
-            </div>
-
-            <a
-              href={book.readMoreUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="relative mt-auto inline-flex items-center gap-1 self-end font-mono text-xs text-slate-900/75 underline underline-offset-4 hover:text-slate-950"
-            >
-              Read more
-              <ExternalLink className="size-3" aria-hidden="true" />
-            </a>
-          </div>
+            <X className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
+          </button>
+          <h3 className="text-pretty pr-2 font-serif text-2xl font-normal leading-[1.15] tracking-tight">
+            {book.title}
+          </h3>
+          <p className="mt-3 font-mono text-[11px] leading-relaxed">
+            {book.author}
+          </p>
+          <p className="mt-1 font-mono text-[10px] text-[#61665e]">
+            {book.publishedYear}
+          </p>
+          <CoverArtwork book={book} />
+          <a
+            href={book.readMoreUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="decoration-current/30 mt-auto inline-flex items-center gap-1.5 self-start font-mono text-[11px] underline underline-offset-4 transition-colors hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          >
+            Read more
+            <ExternalLink
+              className="size-3"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
+          </a>
         </div>
       </ViewTransition>
     </div>
@@ -524,7 +509,11 @@ export function Library() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <SelectedBookCover selected={selected} coverRef={coverRef} />
+      <SelectedBookCover
+        selected={selected}
+        coverRef={coverRef}
+        onClose={closeBook}
+      />
       <CarouselPrevious
         className="hidden md:inline-flex"
         style={{ top: ARROW_TOP }}

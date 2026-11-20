@@ -239,6 +239,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .book-spine {
+    transform: translate3d(var(--spine-offset), 0, 0) !important;
+    transition: none !important;
+  }
+
   .carousel-swipe-hint,
   ::view-transition-old(*),
   ::view-transition-new(*),

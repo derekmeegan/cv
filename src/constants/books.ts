@@ -13,7 +13,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2020",
         wordCount: 70000,
         offset: -2,
-        coverGradient: "linear-gradient(135deg, #d8eadf 0%, #b7d4df 100%)",
+        coverColor: "#dfe6df",
       },
       {
         id: "dune",
@@ -23,7 +23,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1965",
         wordCount: 161751,
         offset: 1,
-        coverGradient: "linear-gradient(135deg, #ead8bd 0%, #d7b6a5 100%)",
+        coverColor: "#e9dfd1",
       },
       {
         id: "zero-to-one",
@@ -33,7 +33,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2014",
         wordCount: 53000,
         offset: -1,
-        coverGradient: "linear-gradient(135deg, #d8dbe8 0%, #b9c5d8 100%)",
+        coverColor: "#dfe3e9",
       },
       {
         id: "the-prince",
@@ -43,7 +43,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1532",
         wordCount: 42000,
         offset: 3,
-        coverGradient: "linear-gradient(135deg, #e0c8c2 0%, #c8b1bc 100%)",
+        coverColor: "#e9ded8",
       },
       {
         id: "frankenstein",
@@ -53,7 +53,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1818",
         wordCount: 75380,
         offset: -3,
-        coverGradient: "linear-gradient(135deg, #cbdac8 0%, #b2c1b8 100%)",
+        coverColor: "#dce3d8",
       },
       {
         id: "mckinsey-way",
@@ -64,7 +64,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1999",
         wordCount: 54000,
         offset: 2,
-        coverGradient: "linear-gradient(135deg, #d8d2c1 0%, #b7c6d0 100%)",
+        coverColor: "#dfe5e6",
       },
       {
         id: "tao-te-ching",
@@ -74,7 +74,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "c. 4th century BCE",
         wordCount: 17000,
         offset: 0,
-        coverGradient: "linear-gradient(135deg, #cfdfd4 0%, #b7cbd1 100%)",
+        coverColor: "#e2e7de",
       },
       {
         id: "creative-act",
@@ -84,7 +84,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2023",
         wordCount: 60000,
         offset: -1,
-        coverGradient: "linear-gradient(135deg, #e2d8c8 0%, #c7bfdb 100%)",
+        coverColor: "#ebe5db",
       },
     ],
   },
@@ -101,7 +101,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1559",
         wordCount: 46600,
         offset: 2,
-        coverGradient: "linear-gradient(135deg, #e6d7b8 0%, #cebfa7 100%)",
+        coverColor: "#e9e3d5",
       },
       {
         id: "chaos",
@@ -112,7 +112,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1987",
         wordCount: 120000,
         offset: -2,
-        coverGradient: "linear-gradient(135deg, #bed9e4 0%, #b7bdd9 100%)",
+        coverColor: "#dce4e8",
       },
       {
         id: "crime-and-punishment",
@@ -122,7 +122,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1866",
         wordCount: 206544,
         offset: 1,
-        coverGradient: "linear-gradient(135deg, #d7c0c3 0%, #b2bbc7 100%)",
+        coverColor: "#e5dde0",
       },
       {
         id: "philosophy-of-software-design",
@@ -132,7 +132,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2018",
         wordCount: 50000,
         offset: -1,
-        coverGradient: "linear-gradient(135deg, #d9decd 0%, #adc9c1 100%)",
+        coverColor: "#dce5df",
       },
       {
         id: "brave-new-world",
@@ -142,7 +142,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1932",
         wordCount: 63766,
         offset: 3,
-        coverGradient: "linear-gradient(135deg, #d2d7e5 0%, #b8cad2 100%)",
+        coverColor: "#dee4e9",
       },
       {
         id: "german-ideology",
@@ -152,7 +152,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1932",
         wordCount: 120000,
         offset: -3,
-        coverGradient: "linear-gradient(135deg, #e0c5bf 0%, #c8b6aa 100%)",
+        coverColor: "#e9dfd9",
       },
     ],
   },
@@ -168,7 +168,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1864",
         wordCount: 53120,
         offset: -3,
-        coverGradient: "linear-gradient(135deg, #cfc8d8 0%, #c0bfd4 100%)",
+        coverColor: "#e4e0e8",
       },
       {
         id: "poor-charlies-almanack",
@@ -178,7 +178,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2005",
         wordCount: 130000,
         offset: 1,
-        coverGradient: "linear-gradient(135deg, #e3d4b8 0%, #c8c2a8 100%)",
+        coverColor: "#e8e2d5",
       },
       {
         id: "sapiens",
@@ -189,7 +189,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2011",
         wordCount: 156000,
         offset: -1,
-        coverGradient: "linear-gradient(135deg, #c5d8e2 0%, #b5c1d0 100%)",
+        coverColor: "#dce3e8",
       },
       {
         id: "psycho",
@@ -199,7 +199,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1959",
         wordCount: 70000,
         offset: 2,
-        coverGradient: "linear-gradient(135deg, #d9c8d2 0%, #b6b7c7 100%)",
+        coverColor: "#e6dfe3",
       },
       {
         id: "metamorphosis",
@@ -209,7 +209,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1915",
         wordCount: 21180,
         offset: -2,
-        coverGradient: "linear-gradient(135deg, #d8d0c4 0%, #bbb9ad 100%)",
+        coverColor: "#e7e3da",
       },
       {
         id: "bitcoin-whitepaper",
@@ -219,7 +219,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2008",
         wordCount: 3500,
         offset: 3,
-        coverGradient: "linear-gradient(135deg, #ead7b5 0%, #d5bea0 100%)",
+        coverColor: "#ebe3d3",
       },
     ],
   },
@@ -235,7 +235,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2020",
         wordCount: 50000,
         offset: 2,
-        coverGradient: "linear-gradient(135deg, #d7dbbf 0%, #c0c7ad 100%)",
+        coverColor: "#e2e6da",
       },
       {
         id: "designing-data-intensive-applications",
@@ -245,7 +245,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2017",
         wordCount: 170000,
         offset: -2,
-        coverGradient: "linear-gradient(135deg, #bfd8dc 0%, #aebfd2 100%)",
+        coverColor: "#dce4e7",
       },
       {
         id: "myth-of-sisyphus",
@@ -255,7 +255,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1942",
         wordCount: 54000,
         offset: 1,
-        coverGradient: "linear-gradient(135deg, #d5c9dc 0%, #d0c1a8 100%)",
+        coverColor: "#e4e0e6",
       },
       {
         id: "sorcerers-stone",
@@ -266,7 +266,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1998",
         wordCount: 76944,
         offset: -1,
-        coverGradient: "linear-gradient(135deg, #e2c7b7 0%, #c5b9d6 100%)",
+        coverColor: "#e9dfd6",
       },
       {
         id: "divine-comedy",
@@ -276,7 +276,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1472",
         wordCount: 101000,
         offset: 3,
-        coverGradient: "linear-gradient(135deg, #dfc8bd 0%, #c8b5ac 100%)",
+        coverColor: "#e7ded8",
       },
       {
         id: "on-liberty",
@@ -286,7 +286,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1859",
         wordCount: 47740,
         offset: -3,
-        coverGradient: "linear-gradient(135deg, #d5d7c3 0%, #b7c5c8 100%)",
+        coverColor: "#e0e5df",
       },
     ],
   },
@@ -303,7 +303,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2001",
         wordCount: 45000,
         offset: -2,
-        coverGradient: "linear-gradient(135deg, #dfd6bb 0%, #c9c1aa 100%)",
+        coverColor: "#e9e4d8",
       },
       {
         id: "dracula",
@@ -313,7 +313,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1897",
         wordCount: 164351,
         offset: 1,
-        coverGradient: "linear-gradient(135deg, #c6c8d4 0%, #d1aeb4 100%)",
+        coverColor: "#e3dfe4",
       },
       {
         id: "gay-science",
@@ -323,7 +323,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "1882",
         wordCount: 93000,
         offset: -1,
-        coverGradient: "linear-gradient(135deg, #d7c4dd 0%, #b9c5d8 100%)",
+        coverColor: "#e5e0e9",
       },
       {
         id: "the-lightning-thief",
@@ -333,7 +333,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2005",
         wordCount: 87223,
         offset: 3,
-        coverGradient: "linear-gradient(135deg, #c4d9e6 0%, #b9c4d9 100%)",
+        coverColor: "#dfe5e9",
       },
       {
         id: "inner-excellence",
@@ -343,7 +343,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2009",
         wordCount: 75000,
         offset: -3,
-        coverGradient: "linear-gradient(135deg, #d6dec6 0%, #b7cbbd 100%)",
+        coverColor: "#dde5d9",
       },
       {
         id: "engines-that-move-markets",
@@ -354,7 +354,7 @@ export const BOOK_STACKS: BookStack[] = [
         publishedYear: "2001",
         wordCount: 105000,
         offset: 2,
-        coverGradient: "linear-gradient(135deg, #d6d2c0 0%, #b8c9d4 100%)",
+        coverColor: "#e3e3db",
       },
     ],
   },
