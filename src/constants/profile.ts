@@ -7,7 +7,7 @@ const martialArtsYears = new Date().getFullYear() - MARTIAL_ARTS_START_YEAR;
 const aboutParagraphs = [
   "I like to build systems, solve interesting problems, and spend a lot of time thinking about how technology changes the way people work.",
   "I grew up in California, studied information systems and economics at Temple University, and began my career as a technology consultant at Grant Thornton.",
-  "Currently, I am a software engineer at Browserbase and living in San Francisco.",
+  "Most recently, I was a software engineer at Browserbase. I live in San Francisco.",
 ];
 
 const descriptors = [

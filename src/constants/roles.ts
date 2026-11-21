@@ -9,9 +9,10 @@ export const ROLES: WorkExperience[] = [
       {
         title: "Software Engineer",
         start: "2026-05-01",
-        end: null,
+        end: "2026-11-01",
+        duration: "7 mos",
         description:
-          "I maintain and expand Browserbase's internal agent platform and cloud development environment, building tooling that helps the engineering and GTM teams ship and serve our customers faster.",
+          "I maintained and expanded Browserbase's internal agent platform and cloud development environment, building tooling that helped the engineering and GTM teams ship and serve customers faster.",
       },
       {
         title: "Customer Engineer",
