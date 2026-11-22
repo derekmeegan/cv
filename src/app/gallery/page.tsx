@@ -12,7 +12,7 @@ import "./gallery.css";
 export const metadata: Metadata = {
   title: `Gallery | ${PROFILE.name}`,
   description:
-    "Pictures I keep going back to, hung salon-style after the wall ensembles of the Barnes Foundation.",
+    "Pictures I keep going back to, hung frame to frame the way the Paris Salon covered its walls.",
 };
 
 // The museum's own text is only shown for pieces without a note of mine, so
@@ -22,9 +22,9 @@ const pieces = (data as unknown as Piece[]).map((piece) => ({
   description: piece.about ? null : piece.description,
 }));
 
-// Two hanging plans: a broad wall for wide screens, a narrower one for
-// phones. CSS shows whichever fits.
-const plans = { wide: hang(pieces, 2), narrow: hang(pieces, 1) };
+// Two hanging plans: a broad wall for wide screens, a tall one for phones.
+// CSS shows whichever fits.
+const plans = { wide: hang(pieces, "wide"), narrow: hang(pieces, "narrow") };
 
 export default function GalleryPage() {
   return (
@@ -35,8 +35,8 @@ export default function GalleryPage() {
         <p>
           Pictures I keep going back to, from the Barnes, the Philadelphia
           Museum of Art, the Met, the Getty, the de Young and the Legion of
-          Honor — hung the way Dr. Barnes hung his: by eye, in mirrored
-          ensembles, ironwork and all. Pick one to look closer.
+          Honor — hung frame to frame, floor to ceiling, the way the Paris Salon
+          covered its walls. Pick one to look closer.
         </p>
       </header>
 

@@ -97,9 +97,10 @@ html.gal-locked {
 
 /* the burlap */
 .gal-burlap {
+  --wall-pad: clamp(12px, 2.4cqw, 40px);
   display: flex;
   justify-content: center;
-  padding: clamp(26px, 4.4cqw, 62px) 20px clamp(34px, 5.6cqw, 78px);
+  padding: clamp(14px, 2.2cqw, 34px) var(--wall-pad) clamp(18px, 3cqw, 46px);
   background-color: var(--wall);
   background-image:
     radial-gradient(
@@ -142,29 +143,20 @@ html.gal-locked {
 
 /* --- hanging ------------------------------------------------------------- */
 
-.gal-ensemble {
+.gal-hang {
   position: relative;
   flex: none;
-  --u: min(1.2px, calc((100cqw - 40px) / var(--wall-w)));
+  --u: min(1.25px, calc((100cqw - 2 * var(--wall-pad)) / var(--wall-w)));
   width: calc(var(--wall-w) * var(--u));
   height: calc(var(--wall-h) * var(--u));
 }
 
-.gal-iron,
 .gal-piece {
   position: absolute;
   left: calc(var(--x) * var(--u));
   top: calc(var(--y) * var(--u));
   width: calc(var(--w) * var(--u));
   height: calc(var(--h) * var(--u));
-}
-
-.gal-iron {
-  overflow: visible;
-  color: #4a4640;
-  filter: drop-shadow(
-    0 calc(1.8 * var(--u)) calc(1.4 * var(--u)) rgba(62, 36, 10, 0.5)
-  );
 }
 
 .gal-piece {
@@ -444,6 +436,21 @@ html.gal-locked {
 
 .gal-about p + p {
   margin-top: 0.8em;
+}
+
+.gal-more {
+  display: block;
+  margin: 0.5em 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #0066cc;
+  cursor: pointer;
+}
+
+.gal-more:hover {
+  text-decoration: underline;
 }
 
 .gal-about .gal-attribution {

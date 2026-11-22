@@ -2,8 +2,9 @@ My virtual resume and personal website :)
 
 ## Gallery
 
-`/gallery` hangs pieces I like on a wall, arranged after the ensembles at the
-Barnes Foundation. Click a piece to look closer and read about it.
+`/gallery` hangs pieces I like Salon-style: frame to frame, covering the
+wall, each picture keeping its own proportions. Click a piece to look closer
+and read about it.
 
 ### Adding a piece
 
@@ -14,12 +15,15 @@ Barnes Foundation. Click a piece to look closer and read about it.
    `public/images/gallery/pieces/`.
 
 A bare URL is enough for the Met, the Barnes, the Philadelphia Museum of Art
-and the Getty. To say more, use an object:
+and the Getty: the script reads the image, the facts and (where the museum
+publishes one) the description from the page. The Barnes, the Getty and most
+PMA pages carry a description; the Met's data does not, so those need a note
+of your own. To say more, use an object:
 
 ```json
 {
   "url": "https://www.getty.edu/art/collection/object/103JNH",
-  "about": "Why I like it. Shown in the close-up instead of the museum's text.",
+  "about": "Why I like it. Shown in the close-up instead of the museum's description.",
   "frame": "louis"
 }
 ```
@@ -37,7 +41,9 @@ in a `piece` object with an `imageUrl` — the existing San Francisco entries in
 `links.json` show the shape.
 
 To remove a piece, delete its entry and run the sync again. The wall re-hangs
-itself around whatever is in the list.
+itself around whatever is in the list (`src/lib/gallery-layout.ts` packs it;
+the wall's shape, the gap between frames and how strongly real size shows are
+the numbers at the top of that file).
 
 Downloaded originals are cached in `.cache/gallery/` (git-ignored). Museum
 image hosts rate-limit; if one answers with a "try again later" page the

@@ -2,26 +2,23 @@ import frames from "@/data/gallery/frames.json";
 import type { FrameSpec, FrameStyle, Piece } from "@/types/gallery";
 
 /**
- * Hanging plan for the gallery, in the manner of the Barnes Foundation's
- * "ensembles": every wall is built around one large picture, with the rest
- * arranged in mirrored columns either side of it — smaller pictures stacked
- * above larger ones, ironwork above those.
+ * Hanging plan for the gallery: a Salon hang. Every picture keeps its own
+ * proportions, frames sit a hand's width apart, and together they cover the
+ * wall edge to edge.
  *
- * Everything here is in abstract wall units; the CSS scales a wall to fit
- * its container, so the same plan works at any width.
+ * The wall is a "slicing" layout: a binary tree whose leaves are pictures and
+ * whose branches put two groups either side by side (equal heights) or one
+ * above the other (equal widths). For any such tree there is exactly one set
+ * of sizes that fills a wall of a given width with a fixed gap, so the work
+ * is choosing the tree. That is done by simulated annealing over the tree's
+ * postfix form — the classic floorplanning method — scoring how closely each
+ * picture's share of the wall matches the share its real size deserves.
+ *
+ * Everything is in abstract wall units; CSS scales the wall to its container.
+ * The plan is computed once, on the server.
  */
 
 export const FRAMES = frames as Record<FrameStyle, FrameSpec>;
-
-export type IronKind =
-  | "scroll"
-  | "strap"
-  | "key"
-  | "fleur"
-  | "ring"
-  | "cock"
-  | "latch"
-  | "tongs";
 
 export interface Hung {
   /** The piece's id. */
@@ -37,57 +34,100 @@ export interface Hung {
   bw: number;
 }
 
-export interface Iron {
-  kind: IronKind;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  flip: boolean;
-}
-
 export interface Wall {
   id: string;
   width: number;
   height: number;
   pieces: Hung[];
-  ironwork: Iron[];
 }
 
-type Sized = Omit<Hung, "x" | "y">;
+export type Plan = "wide" | "narrow";
 
-/** Plans are computed once on the server; two decimals is plenty. */
-const round = (v: number) => Math.round(v * 100) / 100;
+interface PlanSpec {
+  width: number;
+  /** Intended wall shape, width ÷ height. */
+  aspect: number;
+  gap: number;
+  /**
+   * How strongly real size shows: the exponent on a work's side length, and
+   * the smallest and largest it may count as (1 = an 80 cm picture).
+   */
+  contrast: number;
+  smallest: number;
+  largest: number;
+}
+
+const PLANS: Record<Plan, PlanSpec> = {
+  // a broad wall, a little taller than a laptop screen
+  wide: {
+    width: 1500,
+    aspect: 1.34,
+    gap: 12,
+    contrast: 0.62,
+    smallest: 0.58,
+    largest: 2.7,
+  },
+  // a tall strip for phones, where nothing can afford to get tiny
+  narrow: {
+    width: 620,
+    aspect: 0.37,
+    gap: 8,
+    contrast: 0.4,
+    smallest: 0.74,
+    largest: 1.9,
+  },
+};
 
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
 
-/**
- * Size on the wall. Real dimensions drive it, but compressed: a four-metre
- * history painting should dominate a Vermeer, not erase it.
- */
-export function sizeOf(piece: Piece): Sized {
-  const aspect = piece.image.width / piece.image.height;
+const round = (v: number) => Math.round(v * 100) / 100;
+
+/** What the packer needs to know about one framed picture. */
+interface Shape {
+  id: string;
+  /** Outer box, width ÷ height. Fixed: a frame scales with its picture. */
+  aspect: number;
+  /** How much wall it should get, relative to the others. */
+  weight: number;
+  /** Picture size and frame width for a given outer width. */
+  inside(w: number): { pw: number; ph: number; bw: number };
+}
+
+function shapeOf(piece: Piece, spec: PlanSpec): Shape {
+  const ratio = piece.image.width / piece.image.height;
   const area =
     piece.heightCm && piece.widthCm ? piece.heightCm * piece.widthCm : 80 * 80;
   const side = Math.sqrt(area);
-  const mean = clamp(150 * Math.pow(side / 80, 0.6), 96, 300);
-  const pw = mean * Math.sqrt(aspect);
-  const ph = mean / Math.sqrt(aspect);
+  // Real size drives the share of wall, but compressed: a four-metre history
+  // painting should dominate a Vermeer, not erase it.
+  const mean = clamp(
+    Math.pow(side / 80, spec.contrast),
+    spec.smallest,
+    spec.largest,
+  );
 
   // A museum photograph of the real frame: the box is simply that photo.
   if (piece.framed) {
+    const outer = piece.framed.width / piece.framed.height;
     const grow =
       piece.framedWidthCm && piece.widthCm
         ? clamp(piece.framedWidthCm / piece.widthCm, 1.05, 1.9)
         : 1.3;
-    const w = pw * grow;
-    const h = (w * piece.framed.height) / piece.framed.width;
-    return { id: piece.id, w, h, pw, ph, bw: (w - pw) / 2 };
+    const width = mean * Math.sqrt(ratio) * grow;
+    return {
+      id: piece.id,
+      aspect: outer,
+      weight: (width * width) / outer,
+      inside(w) {
+        const pw = w / grow;
+        return { pw, ph: pw / ratio, bw: (w - pw) / 2 };
+      },
+    };
   }
 
-  const spec = FRAMES[piece.frame];
-  let ratio = spec.width;
+  const moulding = FRAMES[piece.frame];
+  let frame = moulding.width;
   if (
     piece.framedWidthCm &&
     piece.framedHeightCm &&
@@ -102,166 +142,292 @@ export function sizeOf(piece: Piece): Sized {
         (piece.framedHeightCm - piece.heightCm)) /
       4 /
       side;
-    const visible = 1 - spec.margin / spec.slice;
-    ratio = clamp(real / visible, spec.width * 0.7, spec.width * 1.35);
+    const visible = 1 - moulding.margin / moulding.slice;
+    frame = clamp(real / visible, moulding.width * 0.7, moulding.width * 1.35);
   }
-  const bw = Math.max(ratio * mean, 11);
-  return { id: piece.id, pw, ph, bw, w: pw + 2 * bw, h: ph + 2 * bw };
+  // In units of the picture's mean side: the picture is √ratio by 1/√ratio.
+  const across = Math.sqrt(ratio) + 2 * frame;
+  const down = 1 / Math.sqrt(ratio) + 2 * frame;
+  return {
+    id: piece.id,
+    aspect: across / down,
+    weight: mean * across * (mean * down),
+    inside(w) {
+      const unit = w / across;
+      return {
+        pw: unit * Math.sqrt(ratio),
+        ph: unit / Math.sqrt(ratio),
+        bw: unit * frame,
+      };
+    },
+  };
 }
 
-const IRON_SHAPES: Record<IronKind, { w: number; h: number }> = {
-  scroll: { w: 110, h: 60 },
-  strap: { w: 36, h: 110 },
-  key: { w: 34, h: 92 },
-  fleur: { w: 52, h: 100 },
-  ring: { w: 68, h: 78 },
-  cock: { w: 88, h: 106 },
-  latch: { w: 84, h: 48 },
-  tongs: { w: 42, h: 112 },
-};
+// --- slicing tree -----------------------------------------------------------
 
-const CENTRE_IRON: IronKind[] = ["cock", "ring", "fleur", "tongs"];
-const FLANK_IRON: IronKind[] = ["scroll", "strap", "latch", "key", "fleur"];
+/** Postfix tokens: a picture's index, or one of these two operators. */
+const BESIDE = -1;
+const ABOVE = -2;
 
-interface Column {
-  /** Bottom-up: the main picture first, anything stacked above it after. */
-  left: Sized[];
-  right: Sized[];
+/**
+ * A subtree's width is always `p × height + q` — pictures contribute their
+ * proportions to p, gaps accumulate in q.
+ */
+interface Node {
+  p: number;
+  q: number;
+  leaf: number;
+  op: number;
+  a: Node | null;
+  b: Node | null;
 }
 
-function pairUp(rest: Sized[]) {
-  const pool = [...rest];
-  const pairs: [Sized, Sized][] = [];
-  while (pool.length > 1) {
-    const a = pool.shift()!;
-    let best = 0;
-    let bestCost = Infinity;
-    pool.forEach((b, i) => {
-      const cost =
-        Math.abs(a.h - b.h) / Math.max(a.h, b.h) +
-        Math.abs(a.w - b.w) / Math.max(a.w, b.w);
-      if (cost < bestCost) {
-        bestCost = cost;
-        best = i;
-      }
-    });
-    pairs.push([a, pool.splice(best, 1)[0]]);
+function parse(expr: number[], aspects: number[], gap: number): Node {
+  const stack: Node[] = [];
+  for (const token of expr) {
+    if (token >= 0) {
+      stack.push({
+        p: aspects[token],
+        q: 0,
+        leaf: token,
+        op: 0,
+        a: null,
+        b: null,
+      });
+      continue;
+    }
+    const b = stack.pop()!;
+    const a = stack.pop()!;
+    if (token === BESIDE) {
+      stack.push({
+        p: a.p + b.p,
+        q: a.q + b.q + gap,
+        leaf: -1,
+        op: BESIDE,
+        a,
+        b,
+      });
+    } else {
+      const p = 1 / (1 / a.p + 1 / b.p);
+      const q = p * (a.q / a.p + b.q / b.p - gap);
+      stack.push({ p, q, leaf: -1, op: ABOVE, a, b });
+    }
   }
-  return { pairs, single: pool[0] as Sized | undefined };
+  return stack[0];
+}
+
+/** Writes each leaf's x, y, w, h into `boxes` (4 numbers per picture). */
+function place(
+  node: Node,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  gap: number,
+  boxes: Float64Array,
+) {
+  if (node.leaf >= 0) {
+    boxes.set([x, y, w, h], node.leaf * 4);
+    return;
+  }
+  const a = node.a!;
+  const b = node.b!;
+  if (node.op === BESIDE) {
+    const wa = a.p * h + a.q;
+    place(a, x, y, wa, h, gap, boxes);
+    place(b, x + wa + gap, y, w - wa - gap, h, gap, boxes);
+  } else {
+    const ha = (w - a.q) / a.p;
+    place(a, x, y, w, ha, gap, boxes);
+    place(b, x, y + ha + gap, w, h - ha - gap, gap, boxes);
+  }
+}
+
+/** A balanced first guess: halve the pictures by weight, again and again. */
+function seedExpr(
+  items: number[],
+  weights: number[],
+  aspect: number,
+): number[] {
+  if (items.length === 1) return items;
+  const left: number[] = [];
+  const right: number[] = [];
+  let lw = 0;
+  let rw = 0;
+  for (const item of [...items].sort((i, j) => weights[j] - weights[i])) {
+    if (lw <= rw) {
+      left.push(item);
+      lw += weights[item];
+    } else {
+      right.push(item);
+      rw += weights[item];
+    }
+  }
+  const share = lw / (lw + rw);
+  const beside = aspect > 1;
+  return [
+    ...seedExpr(left, weights, beside ? aspect * share : aspect / share),
+    ...seedExpr(
+      right,
+      weights,
+      beside ? aspect * (1 - share) : aspect / (1 - share),
+    ),
+    beside ? BESIDE : ABOVE,
+  ];
+}
+
+/** Small seeded generator, so the same list always hangs the same way. */
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function hash(text: string) {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) {
+    h = Math.imul(h ^ text.charCodeAt(i), 16777619);
+  }
+  return h >>> 0;
+}
+
+/** A valid postfix expression has more operands than operators in every prefix. */
+function wellFormed(expr: number[]) {
+  let depth = 0;
+  for (const token of expr) {
+    depth += token >= 0 ? 1 : -1;
+    if (depth < 1) return false;
+  }
+  return depth === 1;
 }
 
 /**
- * Arrange the pieces into walls. `perSide` is how many columns flank the
- * centre picture: 2 for a wide wall, 1 for a narrow (phone) wall.
+ * Hang the pieces on one wall. `plan` picks the wall's shape: "wide" for
+ * laptops and up, "narrow" for phones.
  */
-export function hang(all: Piece[], perSide: 1 | 2): Wall[] {
-  if (all.length === 0) return [];
-  const gap = perSide === 2 ? 40 : 30;
-  const stackGap = perSide === 2 ? 26 : 22;
-  const ironGap = 20;
+export function hang(all: Piece[], plan: Plan): Wall {
+  const spec = PLANS[plan];
+  const { width, aspect, gap } = spec;
+  const shapes = all.map((piece) => shapeOf(piece, spec));
+  const n = shapes.length;
+  if (n === 0) return { id: plan, width, height: 0, pieces: [] };
 
-  const sized = all.map(sizeOf);
-  const perWall = perSide === 2 ? 7 : 4.4;
-  const wallCount = Math.max(1, Math.round(sized.length / perWall));
+  const aspects = shapes.map((s) => s.aspect);
+  const total = shapes.reduce((sum, s) => sum + s.weight, 0);
+  const targets = shapes.map((s) => s.weight / total);
+  const largest = targets.indexOf(Math.max(...targets));
+  const targetHeight = width / aspect;
+  const boxes = new Float64Array(n * 4);
 
-  const byArea = [...sized].sort((a, b) => b.w * b.h - a.w * a.h);
-  const centres = byArea.slice(0, wallCount);
-  const { pairs, single } = pairUp(byArea.slice(wallCount));
+  const score = (expr: number[]) => {
+    const root = parse(expr, aspects, gap);
+    const height = (width - root.q) / root.p;
+    if (!(height > 0)) return Infinity;
+    place(root, 0, 0, width, height, gap, boxes);
 
-  // Deal the pairs round the walls, largest first, so every wall gets its
-  // main flanking pair before any wall gets a second.
-  const dealt: [Sized, Sized][][] = centres.map(() => []);
-  pairs.forEach((pair, i) => dealt[i % wallCount].push(pair));
-
-  return centres.map((centre, index) => {
-    const columns: Column[] = [];
-    dealt[index].forEach((pair, i) => {
-      // Alternate which side gets the slightly larger of the two.
-      const [l, r] = (i + index) % 2 === 0 ? pair : [pair[1], pair[0]];
-      if (i < perSide) {
-        columns.push({ left: [l], right: [r] });
-      } else {
-        const target = columns[(i - perSide) % columns.length];
-        target.left.push(l);
-        target.right.push(r);
-      }
-    });
-
-    const pieces: Hung[] = [];
-    const ironwork: Iron[] = [];
-    const place = (s: Sized, cx: number, cy: number) =>
-      pieces.push({ ...s, x: cx - s.w / 2, y: cy - s.h / 2 });
-    const iron = (kind: IronKind, cx: number, bottom: number, flip = false) => {
-      const shape = IRON_SHAPES[kind];
-      ironwork.push({
-        kind,
-        x: cx - shape.w / 2,
-        y: bottom - shape.h,
-        w: shape.w,
-        h: shape.h,
-        flip,
-      });
-    };
-
-    // Centre picture on the wall's midline, with the odd piece out (if any)
-    // above the last wall's centre.
-    place(centre, 0, 0);
-    let centreTop = -centre.h / 2;
-    if (single && index === wallCount - 1) {
-      place(single, 0, centreTop - stackGap - single.h / 2);
-      centreTop -= stackGap + single.h;
+    let covered = 0;
+    for (let i = 0; i < n; i++) {
+      const w = boxes[i * 4 + 2];
+      const h = boxes[i * 4 + 3];
+      if (!(w > 6 && h > 6)) return Infinity;
+      covered += w * h;
     }
-    iron(CENTRE_IRON[index % CENTRE_IRON.length], 0, centreTop - ironGap);
+    // each picture's share of the wall against the share it deserves
+    let fit = 0;
+    for (let i = 0; i < n; i++) {
+      const share = (boxes[i * 4 + 2] * boxes[i * 4 + 3]) / covered;
+      const off = Math.log(share / targets[i]);
+      fit += off * off;
+    }
+    // the wall should come out roughly the intended shape...
+    const shape = Math.log(height / targetHeight) ** 2;
+    // ...with the grandest picture near the middle of it.
+    const cx = (boxes[largest * 4] + boxes[largest * 4 + 2] / 2) / width - 0.5;
+    const cy =
+      (boxes[largest * 4 + 1] + boxes[largest * 4 + 3] / 2) / height - 0.5;
+    return fit / n + 5 * shape + 0.5 * (cx * cx + cy * cy);
+  };
 
-    let edge = centre.w / 2;
-    columns.forEach((column, c) => {
-      const width = Math.max(
-        ...column.left.map((s) => s.w),
-        ...column.right.map((s) => s.w),
-      );
-      const cx = edge + gap + width / 2;
-      edge += gap + width;
+  const random = mulberry32(hash(`${plan}:${shapes.map((s) => s.id).join()}`));
+  const pick = (count: number) => Math.floor(random() * count);
 
-      // Both sides share each row's height so the wall stays symmetrical.
-      let top = 0;
-      column.left.forEach((l, row) => {
-        const r = column.right[row];
-        const rowH = Math.max(l.h, r.h);
-        const cy = row === 0 ? 0 : top - stackGap - rowH / 2;
-        place(l, -cx, cy);
-        place(r, cx, cy);
-        top = cy - rowH / 2;
-      });
+  let best = seedExpr(
+    shapes.map((_, i) => i),
+    targets,
+    aspect,
+  );
+  let bestScore = score(best);
 
-      const kind = FLANK_IRON[(index * 2 + c) % FLANK_IRON.length];
-      iron(kind, -cx, top - ironGap, false);
-      iron(kind, cx, top - ironGap, true);
-    });
+  if (n > 1) {
+    for (let run = 0; run < 3; run++) {
+      let current = [...best];
+      let currentScore = bestScore;
+      const steps = 14000;
+      for (let step = 0; step < steps; step++) {
+        const heat = 0.25 * Math.pow(0.004, step / steps);
+        const next = [...current];
+        const move = random();
+        if (move < 0.5) {
+          // swap two pictures
+          let i = pick(next.length);
+          while (next[i] < 0) i = pick(next.length);
+          let j = pick(next.length);
+          while (next[j] < 0 || j === i) j = pick(next.length);
+          [next[i], next[j]] = [next[j], next[i]];
+        } else if (move < 0.8) {
+          // turn a side-by-side pair into a stacked one, or back
+          let i = pick(next.length);
+          while (next[i] >= 0) i = pick(next.length);
+          next[i] = next[i] === BESIDE ? ABOVE : BESIDE;
+        } else {
+          // regroup: slide an operator past a neighbouring picture
+          const i = pick(next.length - 1);
+          if (next[i] >= 0 === next[i + 1] >= 0) continue;
+          [next[i], next[i + 1]] = [next[i + 1], next[i]];
+          if (!wellFormed(next)) continue;
+        }
+        const nextScore = score(next);
+        if (
+          nextScore < currentScore ||
+          random() < Math.exp((currentScore - nextScore) / heat)
+        ) {
+          current = next;
+          currentScore = nextScore;
+          if (currentScore < bestScore) {
+            best = [...current];
+            bestScore = currentScore;
+          }
+        }
+      }
+    }
+  }
 
-    const boxes = [...pieces, ...ironwork];
-    const minX = Math.min(...boxes.map((b) => b.x));
-    const minY = Math.min(...boxes.map((b) => b.y));
-    const maxX = Math.max(...boxes.map((b) => b.x + b.w));
-    const maxY = Math.max(...boxes.map((b) => b.y + b.h));
-    boxes.forEach((b) => {
-      b.x = round(b.x - minX);
-      b.y = round(b.y - minY);
-      b.w = round(b.w);
-      b.h = round(b.h);
-    });
-    pieces.forEach((hung) => {
-      hung.pw = round(hung.pw);
-      hung.ph = round(hung.ph);
-      hung.bw = round(hung.bw);
-    });
+  const root = parse(best, aspects, gap);
+  const height = (width - root.q) / root.p;
+  place(root, 0, 0, width, height, gap, boxes);
 
+  const pieces = shapes.map((shape, i): Hung => {
+    const w = boxes[i * 4 + 2];
+    const inside = shape.inside(w);
     return {
-      id: `wall-${perSide}-${index + 1}`,
-      width: round(maxX - minX),
-      height: round(maxY - minY),
-      // reading order: left to right, top to bottom
-      pieces: pieces.sort((a, b) => a.x - b.x || a.y - b.y),
-      ironwork,
+      id: shape.id,
+      x: round(boxes[i * 4]),
+      y: round(boxes[i * 4 + 1]),
+      w: round(w),
+      h: round(boxes[i * 4 + 3]),
+      pw: round(inside.pw),
+      ph: round(inside.ph),
+      bw: round(inside.bw),
     };
   });
+
+  // Reading order for stepping through: in columns, left to right.
+  pieces.sort((a, b) => a.x + a.w / 2 - (b.x + b.w / 2) || a.y - b.y);
+
+  return { id: plan, width, height: round(height), pieces };
 }

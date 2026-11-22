@@ -5,7 +5,6 @@ import { startTransition, ViewTransition } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { Framed } from "@/components/gallery/framed";
-import { Ironwork } from "@/components/gallery/ironwork";
 import type { Hung, Wall } from "@/lib/gallery-layout";
 import { cn } from "@/lib/utils";
 import type { Piece } from "@/types/gallery";
@@ -33,10 +32,11 @@ function transitionName(variant: Variant, id: string) {
   return `gal-${variant}-${id}`;
 }
 
+/** `sizes` for a picture `width` wall units wide (see --u in gallery.css). */
 function wallSizes(variant: Variant, width: number) {
   return variant === "wide"
-    ? `(max-width: 1200px) ${Math.ceil(width * 0.72)}px, ${Math.ceil(width * 1.2)}px`
-    : `(max-width: 480px) ${Math.ceil(width * 0.45)}px, ${Math.ceil(width * 0.9)}px`;
+    ? `(max-width: 1200px) ${Math.ceil(width * 0.78)}px, ${Math.ceil(width * 1.25)}px`
+    : `(max-width: 480px) ${Math.ceil(width * 0.62)}px, ${Math.ceil(width * 1.25)}px`;
 }
 
 const DETAIL_SIZES = "(max-width: 900px) 92vw, 62vw";
@@ -66,40 +66,25 @@ function sizeText(piece: Piece) {
 function WallView({
   wall,
   variant,
-  number,
   pieces,
   selection,
   onOpen,
 }: {
   wall: Wall;
   variant: Variant;
-  number: number;
   pieces: Map<string, Piece>;
   selection: Selection | null;
   onOpen: (hung: Hung, variant: Variant) => void;
 }) {
   return (
-    <section className="gal-wall" aria-label={`Wall ${number}`}>
+    <section className="gal-wall" aria-label="The wall">
       <div className="gal-cove" aria-hidden="true" />
       <div className="gal-rail" aria-hidden="true" />
       <div className="gal-burlap">
         <div
-          className="gal-ensemble"
+          className="gal-hang"
           style={vars({ "--wall-w": wall.width, "--wall-h": wall.height })}
         >
-          {wall.ironwork.map((iron, i) => (
-            <Ironwork
-              key={`${iron.kind}-${i}`}
-              kind={iron.kind}
-              flip={iron.flip}
-              style={vars({
-                "--x": iron.x,
-                "--y": iron.y,
-                "--w": iron.w,
-                "--h": iron.h,
-              })}
-            />
-          ))}
           {wall.pieces.map((hung) => {
             const piece = pieces.get(hung.id);
             if (!piece) return null;
@@ -157,6 +142,36 @@ function WallView({
       <div className="gal-base" aria-hidden="true" />
       <div className="gal-floor" aria-hidden="true" />
     </section>
+  );
+}
+
+/**
+ * The text about a piece: my own note, or the museum's description with its
+ * name under it. Long descriptions open on their first paragraph.
+ */
+function About({ text, from }: { text: string; from: string | null }) {
+  const paragraphs = text.split(/\n{2,}/);
+  const [open, setOpen] = React.useState(false);
+  const long = paragraphs.length > 1 && text.length > 700;
+  const shown = long && !open ? paragraphs.slice(0, 1) : paragraphs;
+
+  return (
+    <div className="gal-about">
+      {shown.map((paragraph) => (
+        <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+      ))}
+      {long ? (
+        <button
+          type="button"
+          className="gal-more"
+          aria-expanded={open}
+          onClick={() => setOpen(!open)}
+        >
+          {open ? "Show less" : "Read more"}
+        </button>
+      ) : null}
+      {from ? <p className="gal-attribution">— {from}</p> : null}
+    </div>
   );
 }
 
@@ -263,14 +278,11 @@ function Focus({
             </p>
 
             {text ? (
-              <div className="gal-about">
-                {text.split(/\n{2,}/).map((paragraph) => (
-                  <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-                ))}
-                {!piece.about ? (
-                  <p className="gal-attribution">— {piece.museum}</p>
-                ) : null}
-              </div>
+              <About
+                key={piece.id}
+                text={text}
+                from={piece.about ? null : piece.museum}
+              />
             ) : null}
 
             <dl className="gal-facts">
@@ -279,6 +291,7 @@ function Focus({
               <Fact label="Size">{sizeText(piece)}</Fact>
               <Fact label="On view">{piece.location}</Fact>
               <Fact label="Credit">{piece.creditLine}</Fact>
+              <Fact label="Object no.">{piece.accession}</Fact>
               <Fact label="Frame">
                 {piece.framed
                   ? "The museum’s own frame, from its photograph"
@@ -337,8 +350,8 @@ function Focus({
 }
 
 export interface GalleryPlans {
-  wide: Wall[];
-  narrow: Wall[];
+  wide: Wall;
+  narrow: Wall;
 }
 
 export function Gallery({
@@ -353,12 +366,9 @@ export function Gallery({
     () => new Map(pieces.map((piece) => [piece.id, piece])),
     [pieces],
   );
-  // Reading order for stepping through: wall by wall, left to right.
+  // Reading order for stepping through, as the hanging plan lists them.
   const order = React.useMemo(
-    () => ({
-      wide: plans.wide.flatMap((wall) => wall.pieces),
-      narrow: plans.narrow.flatMap((wall) => wall.pieces),
-    }),
+    () => ({ wide: plans.wide.pieces, narrow: plans.narrow.pieces }),
     [plans],
   );
 
@@ -455,17 +465,13 @@ export function Gallery({
       <div className="gal-room" inert={selection ? true : undefined}>
         {(["wide", "narrow"] as const).map((variant) => (
           <div key={variant} className={cn("gal-plan", `gal-plan--${variant}`)}>
-            {plans[variant].map((wall, i) => (
-              <WallView
-                key={wall.id}
-                wall={wall}
-                variant={variant}
-                number={i + 1}
-                pieces={byId}
-                selection={selection}
-                onOpen={open}
-              />
-            ))}
+            <WallView
+              wall={plans[variant]}
+              variant={variant}
+              pieces={byId}
+              selection={selection}
+              onOpen={open}
+            />
           </div>
         ))}
       </div>

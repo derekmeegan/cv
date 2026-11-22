@@ -219,7 +219,16 @@ export async function resolve(url) {
     Number.parseInt(String(record.ensembleIndex ?? "").split(",")[0], 10) ||
     null;
   const ensemble = ensembleFor(ensembleIndex);
-  const shortDescription = htmlToText(record.shortDescription);
+  // Labels sometimes open with a dated notice about a current exhibition or
+  // loan; that is news, not a description of the picture.
+  const withoutNotice = (text) =>
+    text
+      ?.replace(
+        /^This work is (?:currently )?on (?:display|view|loan)\b.*?\.\s{2,}/s,
+        "",
+      )
+      .trim() || null;
+  const shortDescription = withoutNotice(htmlToText(record.shortDescription));
   const longDescription = htmlToText(record.longDescription);
   const dimensions = clean(record.dimensions);
   const previewImageUrl = `${IMAGES}/${objectId}_${record.imageSecret}_b.jpg`;

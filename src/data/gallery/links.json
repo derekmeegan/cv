@@ -49,43 +49,35 @@
   },
   {
     "url": "https://collection.barnesfoundation.org/objects/6994/Models-(Poseuses)/",
-    "frame": "louis",
-    "about": "Three models in Seurat’s studio, with A Sunday on La Grande Jatte leaning against the wall behind them. It was his answer to critics who said that painting in dots could never handle the nude.\n\nAt the Barnes it hangs in the Main Room directly above Cézanne’s Card Players, one of the great stacked pairs anywhere."
+    "frame": "louis"
   },
   {
     "url": "https://collection.barnesfoundation.org/objects/6992/The-Card-Players-(Les-Joueurs-de-cartes)/",
-    "frame": "rocaille",
-    "about": "The largest of Cézanne’s five Card Players, and the most crowded. The models were farmhands from his family’s estate outside Aix. Nobody is winning or losing; the game is just a reason for five people to sit still while he works out how they fit together."
+    "frame": "rocaille"
   },
   {
     "url": "https://collection.barnesfoundation.org/objects/4720/The-Postman-(Joseph-Etienne-Roulin)/",
-    "frame": "louis",
-    "about": "Joseph Roulin sorted mail at the railway station in Arles and became the closest friend Van Gogh had there. He painted Roulin six times, and here sets the blue uniform and the forked beard against a wallpaper of flowers."
+    "frame": "louis"
   },
   {
     "url": "https://collection.barnesfoundation.org/objects/5453/Leaving-the-Conservatory-(La-Sortie-du-conservatoire)/",
-    "frame": "rocaille",
-    "about": "Students leaving the Paris music conservatory stop on the pavement to talk. It is a large, early Renoir from the years of the first Impressionist exhibitions, when he was painting modern Parisians at life size.\n\nBarnes went on to buy 181 Renoirs, more than anyone else has ever owned."
+    "frame": "rocaille"
   },
   {
     "url": "https://collection.barnesfoundation.org/objects/5434/Unpleasant-Surprise-(Mauvaise-surprise)/",
-    "frame": "salon",
-    "about": "A bather is surprised by a bear; a hunter fires from the rocks. Rousseau was a retired Paris toll collector who taught himself to paint, and every leaf here gets the same patient attention as the drama in the middle."
+    "frame": "salon"
   },
   {
     "url": "https://collection.barnesfoundation.org/objects/5108/Redheaded-Girl-in-Evening-Dress-(Jeune-fille-rousse-en-robe-de-soir)/",
-    "frame": "reeded",
-    "about": "Painted two years before Modigliani died at thirty-five. The long neck, the tilted head and the almond eyes are all his signature. Barnes bought his work early, when few American collectors would."
+    "frame": "reeded"
   },
   {
     "url": "https://collection.barnesfoundation.org/objects/4672/Mont-Sainte-Victoire-(La-Montagne-Sainte-Victoire)/",
-    "frame": "rocaille",
-    "about": "The mountain east of Aix-en-Provence that Cézanne painted dozens of times over twenty years. Here it is seen across the valley, put together from small patches of blue, green and ochre that read as distance without any drawn outline."
+    "frame": "rocaille"
   },
   {
     "url": "https://www.philamuseum.org/objects/59202",
     "frame": "salon",
-    "about": "In August 1888 Van Gogh painted sunflowers to decorate the room where Gauguin would stay in Arles. That winter he made repetitions of the best ones, and this is one of them, painted in January 1889: twelve flowers at every stage from bud to seed head, on a turquoise ground.",
     "artist": "Vincent van Gogh"
   },
   {
@@ -96,18 +88,15 @@
   {
     "url": "https://www.philamuseum.org/objects/103831",
     "frame": "louis",
-    "about": "On the night of October 16, 1834, the Houses of Parliament burned down, and Turner was in the crowd on the south bank of the Thames, sketching. He exhibited this a few months later. The fire fills half the canvas and its reflection most of the rest.",
     "artist": "J. M. W. Turner"
   },
   {
     "url": "https://www.philamuseum.org/objects/104384",
-    "frame": "salon",
-    "about": "Tanner painted this after travelling in Egypt and Palestine. Mary is a girl in a plain room with rumpled bedclothes, and Gabriel is a column of light.\n\nThe museum bought it in 1899, the first of Tanner’s works to enter an American museum."
+    "frame": "salon"
   },
   {
     "url": "https://www.philamuseum.org/objects/59593",
     "frame": "reeded",
-    "about": "Among the first pictures Rousseau ever exhibited, at the Salon des Indépendants in 1886. Two figures in carnival costume stand at the edge of a bare winter wood under a full moon, lit from nowhere in particular.",
     "artist": "Henri Rousseau"
   },
   {
@@ -117,44 +106,34 @@
   },
   {
     "url": "https://www.philamuseum.org/objects/102076",
-    "frame": "cassetta",
-    "about": "About five inches by six, and painted on parchment. Inside that are two friars, a rocky wilderness, a walled city and a river with boats on it, all sharp enough to read under a magnifying glass."
+    "frame": "cassetta"
   },
-  {
-    "url": "https://www.getty.edu/art/collection/object/103JNH",
-    "about": "Painted in the garden of the asylum at Saint-Rémy in May 1889, in Van Gogh’s first weeks there. Every flower is drawn individually, and one of them is white. His brother Theo sent it to the Salon des Indépendants that September.\n\nThe frame is the one it hangs in at the Getty."
-  },
+  "https://www.getty.edu/art/collection/object/103JNH",
   {
     "url": "https://www.getty.edu/art/collection/object/103RK8",
-    "about": "One of some twenty-five canvases Monet made of the grain stacks in the field beside his house through the autumn and winter of 1890–91, changing canvases as the light changed. Fifteen were shown together in May 1891 and sold within days.",
     "title": "Wheatstacks, Snow Effect, Morning"
   },
   {
     "url": "https://www.getty.edu/art/collection/object/103QTP",
     "realFrame": "mask",
-    "about": "Turner’s last painting of Rome, made ten years after his final visit: the Forum dissolving into evening light as the moon comes up. It has changed hands only a few times and is unusually well preserved.",
     "artist": "J. M. W. Turner",
     "title": "Modern Rome – Campo Vaccino"
   },
   {
     "url": "https://www.getty.edu/art/collection/object/103QTM",
-    "about": "A small self-portrait on copper, painted when Rembrandt was about twenty-two, dressed as a soldier and laughing. It was catalogued as the work of a follower until it surfaced at a country auction in England in 2007.",
     "artist": "Rembrandt van Rijn"
   },
   {
     "url": "https://www.getty.edu/art/collection/object/103QSE",
-    "about": "A young man in a red cap stands guard before a bastion, probably during the siege of Florence in 1529–30. Who he is has been argued over for a century. When the Getty bought it in 1989 it was the most expensive Old Master painting ever sold.",
     "artist": "Pontormo"
   },
   {
     "url": "https://www.getty.edu/art/collection/object/103QTZ",
-    "frame": "rocaille",
-    "about": "The actress Jeanne Demarsy as Spring, shown at the Salon of 1882 beside A Bar at the Folies-Bergère. Manet planned four seasons played by fashionable Parisian women and lived to finish two."
+    "frame": "rocaille"
   },
   {
     "url": "https://www.getty.edu/art/collection/object/103RJJ",
-    "frame": "salon",
-    "about": "A young man leads a woman in white up a wooded path. Renoir was twenty-nine and working alongside Monet, and you can watch the brushwork start to come apart, four years before the first Impressionist exhibition."
+    "frame": "salon"
   },
   {
     "url": "https://www.famsf.org/artworks/california-spring",
