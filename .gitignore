@@ -37,3 +37,6 @@ next-env.d.ts
 
 # ide
 .idea
+
+# originals downloaded by scripts/gallery/sync.mjs
+/.cache

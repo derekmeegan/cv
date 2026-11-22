@@ -1,0 +1,58 @@
+{
+  "louis": {
+    "slice": 256,
+    "size": 768,
+    "margin": 30,
+    "width": 0.185,
+    "centres": true,
+    "centreLength": 2.0
+  },
+  "rocaille": {
+    "slice": 256,
+    "size": 768,
+    "margin": 40,
+    "width": 0.2,
+    "centres": true,
+    "centreLength": 2.0
+  },
+  "salon": {
+    "slice": 256,
+    "size": 768,
+    "margin": 6,
+    "width": 0.155,
+    "centres": false,
+    "centreLength": 0
+  },
+  "dutch": {
+    "slice": 256,
+    "size": 768,
+    "margin": 4,
+    "width": 0.15,
+    "centres": false,
+    "centreLength": 0
+  },
+  "cassetta": {
+    "slice": 256,
+    "size": 768,
+    "margin": 4,
+    "width": 0.14,
+    "centres": false,
+    "centreLength": 0
+  },
+  "reeded": {
+    "slice": 256,
+    "size": 768,
+    "margin": 3,
+    "width": 0.1,
+    "centres": false,
+    "centreLength": 0
+  },
+  "plain": {
+    "slice": 128,
+    "size": 384,
+    "margin": 3,
+    "width": 0.07,
+    "centres": false,
+    "centreLength": 0
+  }
+}
