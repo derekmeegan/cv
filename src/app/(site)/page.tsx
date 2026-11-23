@@ -39,10 +39,10 @@ export default async function Page() {
       <div className="flex items-stretch justify-between gap-4">
         <div className="min-w-0 flex-1 space-y-1.5">
           <h1 className="text-2xl font-semibold">{PROFILE.name}</h1>
-          <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground">
+          <p className="max-w-md text-pretty font-sans text-sm text-muted-foreground">
             {PROFILE.about}
           </p>
-          <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
+          <p className="max-w-md items-center text-pretty font-sans text-xs text-muted-foreground">
             <a
               className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
               href={PROFILE.locationLink}
@@ -52,7 +52,7 @@ export default async function Page() {
               {PROFILE.location}
             </a>
           </p>
-          <div className="flex gap-x-1 pt-1 font-mono text-sm text-muted-foreground print:hidden">
+          <div className="flex gap-x-1 pt-1 font-sans text-sm text-muted-foreground print:hidden">
             {CONTACT.social.map((social) => (
               <Button
                 key={social.name}
@@ -81,7 +81,7 @@ export default async function Page() {
               </Button>
             ) : null}
           </div>
-          <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex">
+          <div className="hidden flex-col gap-x-1 font-sans text-sm text-muted-foreground print:flex">
             {CONTACT.email ? (
               <a href={`mailto:${CONTACT.email}`}>
                 <span className="underline">{CONTACT.email}</span>
@@ -104,13 +104,13 @@ export default async function Page() {
         <h2 className="text-xl font-semibold">About</h2>
         {leadingAboutParagraphs.map((paragraph) => (
           <p
-            className="text-pretty font-mono text-sm text-muted-foreground"
+            className="text-pretty font-sans text-sm text-muted-foreground"
             key={paragraph}
           >
             {paragraph}
           </p>
         ))}
-        <p className="text-pretty font-mono text-sm text-muted-foreground">
+        <p className="text-pretty font-sans text-sm text-muted-foreground">
           <TypingDescriptor descriptors={PROFILE.descriptors}>
             {closingAboutParagraph} Among other things,{" "}
           </TypingDescriptor>
@@ -157,10 +157,10 @@ export default async function Page() {
                     >
                       <span className="absolute left-0 top-2.5 z-10 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background ring-1 ring-border" />
                       <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-1">
-                        <h4 className="font-mono text-sm font-medium text-foreground">
+                        <h4 className="font-sans text-sm font-medium text-foreground">
                           {position.title}
                         </h4>
-                        <span className="font-mono text-xs tabular-nums text-gray-500">
+                        <span className="font-sans text-xs tabular-nums text-gray-500">
                           {"duration" in position && position.duration
                             ? position.duration
                             : formatPositionDuration(

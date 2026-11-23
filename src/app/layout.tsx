@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Geist_Mono } from "next/font/google";
+import { Geist_Mono, Libre_Franklin } from "next/font/google";
 import { PROFILE } from "@/constants/profile";
 
 import "./globals.css";
@@ -63,9 +63,18 @@ export const metadata: Metadata = {
     images: [previewImage],
   },
 };
+// The site's typeface.
+const libreFranklin = Libre_Franklin({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-libre-franklin",
+});
+// Only for code in articles, so it is not preloaded on every page.
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
+  preload: false,
   variable: "--font-geist-mono",
 });
 
@@ -75,8 +84,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={geistMono.variable}>
-      <body className="font-mono font-light" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${libreFranklin.variable} ${geistMono.variable}`}
+    >
+      <body className="font-sans" suppressHydrationWarning>
         {children}
         <Analytics />
         <SpeedInsights />

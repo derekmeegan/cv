@@ -30,14 +30,6 @@ export function TypingDescriptor({
 
   const descriptor = descriptors[descriptorIndex] ?? "";
   const punctuatedDescriptor = punctuate(descriptor);
-  // Reserve space for the longest descriptor so the paragraph never grows when
-  // a longer descriptor wraps to a new line. The text is monospace, so the
-  // longest by character count is also the widest (and therefore the tallest).
-  const longestDescriptor = descriptors.reduce(
-    (longest, current) => (current.length > longest.length ? current : longest),
-    "",
-  );
-  const punctuatedLongestDescriptor = punctuate(longestDescriptor);
   const visibleDescriptor = prefersReducedMotion
     ? punctuatedDescriptor
     : punctuatedDescriptor.slice(0, characterCount);
@@ -138,10 +130,21 @@ export function TypingDescriptor({
         </span>
         <span className="sr-only">{descriptors.join(", ")}</span>
       </span>
-      <span aria-hidden="true" className="invisible [grid-area:1/1]">
-        {children}
-        {punctuatedLongestDescriptor}
-      </span>
+      {/* Reserve room for every descriptor so the paragraph never grows when
+          one wraps to a new line. They are all stacked in the same grid cell,
+          invisible; the letters are not fixed-width, so the longest by
+          character count is not necessarily the widest. */}
+      {descriptors.map((reserved) => (
+        <span
+          key={reserved}
+          aria-hidden="true"
+          className="invisible [grid-area:1/1]"
+        >
+          {children}
+          {punctuate(reserved)}
+          <span className="inline-block w-[0.6ch]">|</span>
+        </span>
+      ))}
     </span>
   );
 }

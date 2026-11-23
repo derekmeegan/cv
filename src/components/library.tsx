@@ -191,7 +191,7 @@ function BookSpine({
       onMouseLeave={() => onHoverBook(null)}
     >
       <span
-        className="relative line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-nowrap bg-white/65 px-2 py-1 font-mono text-xs leading-none tracking-normal text-slate-900 shadow-sm ring-1 ring-black/10 backdrop-blur-[1px]"
+        className="relative line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-nowrap bg-white/65 px-2 py-1 font-sans text-xs leading-none tracking-normal text-slate-900 shadow-sm ring-1 ring-black/10 backdrop-blur-[1px]"
         style={{ borderRadius: innerRadius }}
       >
         {book.title}
@@ -358,10 +358,10 @@ function SelectedBookCover({
                 <h3 className="text-pretty text-lg font-medium leading-tight">
                   {book.title}
                 </h3>
-                <p className="mt-2 font-mono text-xs text-slate-900/70">
+                <p className="mt-2 font-sans text-xs text-slate-900/70">
                   {book.author}
                 </p>
-                <p className="mt-1 font-mono text-[11px] text-slate-900/60">
+                <p className="mt-1 font-sans text-[11px] text-slate-900/60">
                   {book.publishedYear}
                 </p>
               </div>
@@ -371,7 +371,7 @@ function SelectedBookCover({
               href={book.readMoreUrl}
               target="_blank"
               rel="noreferrer"
-              className="relative mt-auto inline-flex items-center gap-1 self-end font-mono text-xs text-slate-900/75 underline underline-offset-4 hover:text-slate-950"
+              className="relative mt-auto inline-flex items-center gap-1 self-end font-sans text-xs text-slate-900/75 underline underline-offset-4 hover:text-slate-950"
             >
               Read more
               <ExternalLink className="size-3" aria-hidden="true" />

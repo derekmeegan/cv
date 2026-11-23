@@ -82,7 +82,7 @@ export default async function ArticlePage({ params }: Props) {
           {article.title}
         </h1>
 
-        <p className="font-mono text-sm text-muted-foreground">
+        <p className="font-sans text-sm text-muted-foreground">
           <time dateTime={new Date(article.pubDate).toISOString()}>
             {formatDate(article.pubDate)}
           </time>
@@ -101,7 +101,7 @@ export default async function ArticlePage({ params }: Props) {
         <ArticleBody blocks={article.blocks} />
       </div>
 
-      <footer className="mt-14 space-y-8 border-t pt-6 font-mono text-sm text-muted-foreground">
+      <footer className="mt-14 space-y-8 border-t pt-6 font-sans text-sm text-muted-foreground">
         <p>
           Originally published on{" "}
           <a

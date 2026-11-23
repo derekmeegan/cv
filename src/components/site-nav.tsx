@@ -15,7 +15,7 @@ export function SiteNav({ className }: { className?: string }) {
   return (
     <nav
       className={cn(
-        "flex flex-row flex-wrap gap-x-10 gap-y-2 font-mono text-sm text-muted-foreground",
+        "flex flex-row flex-wrap gap-x-10 gap-y-2 font-sans text-sm text-muted-foreground",
         className,
       )}
     >

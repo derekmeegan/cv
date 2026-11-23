@@ -7,7 +7,7 @@ import { formatDateRange } from "@/lib/dates";
 export default function Students() {
   return (
     <div className="flex flex-col gap-5">
-      <div className="text-md flex flex-col justify-between font-mono text-muted-foreground md:flex-row">
+      <div className="text-md flex flex-col justify-between font-sans text-muted-foreground md:flex-row">
         <p>Total Students: {STUDENTS.length}</p>
         <p>
           World Champions:{" "}

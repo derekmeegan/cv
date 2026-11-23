@@ -20,7 +20,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-geist-mono)", ...defaultTheme.fontFamily.mono],
+        sans: ["var(--font-libre-franklin)", ...defaultTheme.fontFamily.sans],
         mono: ["var(--font-geist-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
