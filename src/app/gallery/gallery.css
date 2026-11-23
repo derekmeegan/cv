@@ -146,6 +146,30 @@ html.gal-dragging .gal-hang {
   );
 }
 
+/* A piece is out of sight until its picture and its frame have arrived
+   (data-hung, set in framed.tsx), and then fades up: nobody watches an
+   empty frame fill in. */
+.gal-piece {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.gal-piece[data-hung] {
+  opacity: 1;
+}
+
+/* The ironwork has nothing to wait for, but comes up the same way rather
+   than standing alone on a bare wall. */
+.gal-iron {
+  animation: gal-arrive 0.7s ease 0.2s both;
+}
+
+@keyframes gal-arrive {
+  from {
+    opacity: 0;
+  }
+}
+
 .gal-piece {
   display: block;
   padding: 0;
@@ -809,7 +833,13 @@ html.gal-dragging .gal-hang {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .gal-iron {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
+
   .gal-hang,
+  .gal-piece,
   .gal-shade,
   .gal-scrim,
   .gal-label,
