@@ -127,10 +127,8 @@ function WallView({
   const active = selection?.variant === variant ? selection.id : null;
 
   return (
-    <section className="gal-wall" aria-label="The wall">
-      <div className="gal-cove" aria-hidden="true" />
-      <div className="gal-rail" aria-hidden="true" />
-      <div className="gal-burlap">
+    <section className="gal-wall" aria-label="Gallery">
+      <div className="gal-space">
         <div
           ref={hangRef}
           className="gal-hang"
@@ -188,8 +186,6 @@ function WallView({
           })}
         </div>
       </div>
-      <div className="gal-base" aria-hidden="true" />
-      <div className="gal-floor" aria-hidden="true" />
     </section>
   );
 }

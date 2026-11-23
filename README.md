@@ -2,10 +2,10 @@ My virtual resume and personal website :)
 
 ## Gallery
 
-`/gallery` is one wall covered in pieces I like: frame against frame, fitted
-together like a collage, each picture keeping its own proportions, with a
-little ironwork in among them. Click a piece and the wall comes toward you,
-with the piece on one side and its label on the other.
+`/gallery` is pieces I like, floating on the page: frame against frame,
+fitted together like a collage, each picture keeping its own proportions,
+with a little ironwork in among them. Click a piece and the whole hang comes
+toward you, with the piece on one side and its label on the other.
 
 ### Adding a piece
 

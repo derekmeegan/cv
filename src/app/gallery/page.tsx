@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Gallery } from "@/components/gallery/gallery";
+import { SiteNav } from "@/components/site-nav";
 import { PROFILE } from "@/constants/profile";
 import data from "@/data/gallery/pieces.json";
 import { hang } from "@/lib/gallery-layout";
@@ -28,6 +29,12 @@ const plans = { wide: hang(pieces, "wide"), narrow: hang(pieces, "narrow") };
 export default function GalleryPage() {
   return (
     <main className="gal-page">
+      {/* Same box as the other pages' layout, so the nav does not move. */}
+      <div className="gal-nav container mx-auto flex-none p-4 pb-0 md:p-16 md:pb-0">
+        <div className="mx-auto w-full max-w-2xl">
+          <SiteNav />
+        </div>
+      </div>
       <h1 className="gal-sr-only">Gallery</h1>
       <Gallery pieces={pieces} plans={plans} />
     </main>
