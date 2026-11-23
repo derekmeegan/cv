@@ -540,12 +540,15 @@ html.gal-locked .gal-nav {
   border: 0;
   background: none;
   font: inherit;
-  color: #0066cc;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.3);
+  text-underline-offset: 3px;
   cursor: pointer;
 }
 
 .gal-more:hover {
-  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 .gal-about .gal-attribution {
@@ -585,8 +588,9 @@ html.gal-locked .gal-nav {
   height: 44px;
   padding: 0 22px;
   border-radius: 980px;
-  background: #0071e3;
-  color: #fff;
+  /* the same quiet grey as the arrows: one family of controls, no accent */
+  background: rgba(118, 118, 128, 0.14);
+  color: var(--ink);
   font-size: 17px;
   letter-spacing: -0.022em;
   text-decoration: none;
@@ -594,7 +598,7 @@ html.gal-locked .gal-nav {
 }
 
 .gal-link:hover {
-  background: #0077ed;
+  background: rgba(118, 118, 128, 0.26);
 }
 
 .gal-link svg {
@@ -644,7 +648,7 @@ html.gal-locked .gal-nav {
 }
 
 .gal-label :is(a, button):focus-visible {
-  outline: 3px solid rgba(0, 113, 227, 0.55);
+  outline: 2px solid rgba(29, 29, 31, 0.6);
   outline-offset: 2px;
 }
 
