@@ -225,15 +225,47 @@ html.gal-dragging .gal-hang {
   --glow: drop-shadow(0 0 0 rgba(222, 176, 92, 0));
 }
 
-.gal-hang[data-near] .gal-piece[data-chosen] .gal-framed {
-  --lift: drop-shadow(
-      calc(1.5 * var(--u)) calc(5 * var(--u)) calc(9 * var(--u))
-        rgba(24, 16, 6, 0.26)
-    )
-    drop-shadow(
-      calc(0.3 * var(--u)) calc(0.8 * var(--u)) calc(1 * var(--u))
-        rgba(24, 16, 6, 0.3)
-    );
+/* Walking up to a piece brings the wall to several times its size, and at
+   that size the drop-shadows above are slow enough to redraw that the walk
+   stutters. So from the moment a piece is chosen until the wall is still
+   again (data-shadows, set in gallery.tsx), a plain box-shadow stands in
+   for each: the same offsets and softness, cast by the frame's rectangle
+   rather than its outline. Everything but the chosen piece is under the
+   white veil for the whole of that time. */
+.gal-hang[data-shadows="flat"] .gal-framed,
+.gal-hang[data-shadows="flat"] .gal-iron {
+  filter: none;
+}
+
+/* no fade when they change places: that is for the glow of a hover */
+.gal-hang[data-shadows] .gal-framed {
+  transition: none;
+}
+
+.gal-hang[data-shadows="flat"] .gal-framed::before {
+  content: "";
+  position: absolute;
+  /* in from the box as far as the moulding's own edge is */
+  inset: calc(var(--bw, 0px) * var(--rim, 0.02));
+  box-shadow:
+    calc(1.6 * var(--u)) calc(4.5 * var(--u)) calc(6 * var(--u))
+      rgba(24, 16, 6, 0.3),
+    calc(0.4 * var(--u)) calc(1 * var(--u)) calc(1 * var(--u))
+      rgba(24, 16, 6, 0.34);
+  pointer-events: none;
+}
+
+/* a photograph of a real frame has no moulding to measure by */
+.gal-hang[data-shadows="flat"] .gal-framed--real::before {
+  inset: 1.5%;
+}
+
+.gal-hang[data-near] .gal-piece[data-chosen] .gal-framed::before {
+  box-shadow:
+    calc(1.5 * var(--u)) calc(5 * var(--u)) calc(9 * var(--u))
+      rgba(24, 16, 6, 0.26),
+    calc(0.3 * var(--u)) calc(0.8 * var(--u)) calc(1 * var(--u))
+      rgba(24, 16, 6, 0.3);
 }
 
 .gal-picture {
@@ -339,6 +371,7 @@ html.gal-dragging .gal-hang {
 
 .gal-frame--louis {
   --frame-src: url("/images/gallery/frames/louis.webp");
+  --rim: 0.031;
   --c-top: url("/images/gallery/frames/louis-top.webp");
   --c-bottom: url("/images/gallery/frames/louis-bottom.webp");
   --c-left: url("/images/gallery/frames/louis-left.webp");
@@ -346,6 +379,7 @@ html.gal-dragging .gal-hang {
 }
 .gal-frame--rocaille {
   --frame-src: url("/images/gallery/frames/rocaille.webp");
+  --rim: 0.078;
   --c-top: url("/images/gallery/frames/rocaille-top.webp");
   --c-bottom: url("/images/gallery/frames/rocaille-bottom.webp");
   --c-left: url("/images/gallery/frames/rocaille-left.webp");
@@ -353,19 +387,24 @@ html.gal-dragging .gal-hang {
 }
 .gal-frame--salon {
   --frame-src: url("/images/gallery/frames/salon.webp");
+  --rim: 0.027;
 }
 .gal-frame--dutch {
   --frame-src: url("/images/gallery/frames/dutch.webp");
+  --rim: 0.02;
 }
 .gal-frame--cassetta {
   --frame-src: url("/images/gallery/frames/cassetta.webp");
+  --rim: 0.02;
 }
 .gal-frame--reeded {
   --frame-src: url("/images/gallery/frames/reeded.webp");
+  --rim: 0.016;
 }
 .gal-frame--plain {
   --frame-src: url("/images/gallery/frames/plain.webp");
   --frame-slice: 128;
+  --rim: 0.031;
 }
 
 /* --- standing in front of a piece ---------------------------------------- */

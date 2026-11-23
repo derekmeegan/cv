@@ -20,6 +20,20 @@ interface Selection {
 
 const WIDE_QUERY = "(min-width: 900px)";
 
+/**
+ * How the frames' shadows are drawn. At rest they are true drop-shadows,
+ * which follow each frame's outline but are slow to redraw at the size the
+ * wall is brought to when you walk up to a piece. So from the moment a piece
+ * is chosen until the wall has settled again, plain box-shadows stand in
+ * for them ("flat"; see gallery.css) — they are under the white veil for
+ * all of that time. "landing" is the instant the true ones are put back,
+ * without the fade a hover would give them.
+ */
+type Shadows = "true" | "flat" | "landing";
+
+/** The walk back, and a moment more (see .gal-hang's transition). */
+const SETTLE_MS = 900;
+
 /** A finger dragging the piece, between touching down and letting go. */
 interface Swipe {
   pointer: number;
@@ -28,15 +42,6 @@ interface Swipe {
   distance: number;
   dragging: boolean;
 }
-
-const MUSEUM_SHORT: Record<string, string> = {
-  "The Metropolitan Museum of Art": "The Met",
-  "Barnes Foundation": "the Barnes",
-  "Philadelphia Museum of Art": "the PMA",
-  "J. Paul Getty Museum": "the Getty",
-  "de Young": "the de Young",
-  "Legion of Honor": "the Legion of Honor",
-};
 
 /** `sizes` for a picture `width` wall units wide (see --u in gallery.css). */
 function wallSizes(variant: Variant, width: number) {
@@ -120,6 +125,7 @@ function WallView({
   pieces,
   selection,
   camera,
+  shadows,
   seen,
   hangRef,
   onOpen,
@@ -130,6 +136,7 @@ function WallView({
   pieces: Map<string, Piece>;
   selection: Selection | null;
   camera: string | null;
+  shadows: Shadows;
   /** Pieces that have been looked at or lingered on: these get sharp images. */
   seen: Set<string>;
   hangRef: React.RefObject<HTMLDivElement | null>;
@@ -145,6 +152,7 @@ function WallView({
           ref={hangRef}
           className="gal-hang"
           data-near={active ? "" : undefined}
+          data-shadows={shadows === "true" ? undefined : shadows}
           style={{
             ...vars({ "--wall-w": wall.width, "--wall-h": wall.height }),
             transform: active && camera ? camera : undefined,
@@ -270,7 +278,6 @@ function Label({
 }) {
   const text = piece.about ?? piece.description;
   const title = splitTitle(piece.title);
-  const where = MUSEUM_SHORT[piece.museum] ?? piece.museum;
 
   return (
     <>
@@ -294,13 +301,16 @@ function Label({
             <ChevronRight aria-hidden="true" />
           </button>
         </div>
+        {/* One short word, so the bar never wraps on a phone; the museum is
+            named in full just below, and here for screen readers. */}
         <a
           className="gal-link"
           href={piece.url}
           target="_blank"
           rel="noreferrer"
+          aria-label={`View at ${piece.museum}`}
         >
-          View at {where}
+          View
           <ArrowUpRight aria-hidden="true" />
         </a>
       </div>
@@ -374,6 +384,10 @@ export function Gallery({
   // The label keeps showing the last piece while it fades away.
   const [labelled, setLabelled] = React.useState<Selection | null>(null);
   const [seen, setSeen] = React.useState<Set<string>>(() => new Set());
+  // "flat" for as long as a piece is chosen needs no state: see `shadows`.
+  const [settling, setSettling] = React.useState<"flat" | "landing" | null>(
+    null,
+  );
 
   const wideRef = React.useRef<HTMLDivElement>(null);
   const narrowRef = React.useRef<HTMLDivElement>(null);
@@ -391,11 +405,19 @@ export function Gallery({
 
   const open = React.useCallback(
     (id: string, variant: Variant) => {
+      // The pieces either side are fetched sharp as well, so that stepping
+      // on to one of them does not start with a soft picture.
+      const list = plans[variant].pieces;
+      const at = list.findIndex((hung) => hung.id === id);
       markSeen(id);
+      if (at >= 0) {
+        markSeen(list[(at + 1) % list.length].id);
+        markSeen(list[(at - 1 + list.length) % list.length].id);
+      }
       setSelection({ id, variant });
       setLabelled({ id, variant });
     },
-    [markSeen],
+    [markSeen, plans],
   );
 
   const close = React.useCallback(() => setSelection(null), []);
@@ -483,6 +505,20 @@ export function Gallery({
     [],
   );
 
+  // Stepping back, the stand-in shadows stay until the wall is still, and
+  // then the true ones are put back in one go.
+  React.useEffect(() => {
+    if (selection) {
+      setSettling("flat");
+      return;
+    }
+    let timer = window.setTimeout(() => {
+      setSettling((current) => (current ? "landing" : current));
+      timer = window.setTimeout(() => setSettling(null), 120);
+    }, SETTLE_MS);
+    return () => window.clearTimeout(timer);
+  }, [selection]);
+
   React.useEffect(() => {
     if (!selection) return;
     const onKey = (event: KeyboardEvent) => {
@@ -547,6 +583,7 @@ export function Gallery({
   };
 
   const near = Boolean(selection);
+  const shadows: Shadows = near ? "flat" : (settling ?? "true");
   const piece = labelled ? byId.get(labelled.id) : undefined;
   const list = labelled ? plans[labelled.variant].pieces : [];
   const position = labelled
@@ -564,6 +601,7 @@ export function Gallery({
               pieces={byId}
               selection={selection}
               camera={camera}
+              shadows={shadows}
               seen={seen}
               hangRef={variant === "wide" ? wideRef : narrowRef}
               onOpen={open}
