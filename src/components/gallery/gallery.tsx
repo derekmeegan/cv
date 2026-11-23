@@ -89,14 +89,14 @@ function cameraFor(hang: HTMLElement, wall: Wall, hung: Hung) {
         padX: vw * 0.045,
         padY: vh * 0.07,
       }
-    : { w: vw, h: vh * 0.5, padX: 20, padY: 22 };
+    : { w: vw, h: vh * 0.5, padX: 20, padY: 24 };
 
   const scale = Math.min(
     (stage.w - 2 * stage.padX) / w,
     (stage.h - 2 * stage.padY) / h,
   );
   const left = (stage.w - w * scale) / 2;
-  const top = (stage.h - h * scale) / 2 + (wide ? 0 : 14);
+  const top = (stage.h - h * scale) / 2 + (wide ? 0 : 6);
   const dx = left - ox - hung.x * u * scale;
   const dy = top - oy - hung.y * u * scale;
   return `translate(${dx.toFixed(2)}px, ${dy.toFixed(2)}px) scale(${scale.toFixed(4)})`;
@@ -236,7 +236,15 @@ function Fact({
   );
 }
 
-/** The wall label: what you read standing next to the piece. */
+/**
+ * The label: what you read standing next to the piece.
+ *
+ * The controls never move — stepping from one piece to the next must not
+ * make them jump about with the length of the text — so they sit outside
+ * the part that scrolls: on a desktop the pager at the top of the label and
+ * the museum link at its foot, on a phone both in a bar directly under the
+ * piece (the CSS places them; see .gal-label__bar).
+ */
 function Label({
   piece,
   position,
@@ -253,51 +261,8 @@ function Label({
   const where = MUSEUM_SHORT[piece.museum] ?? piece.museum;
 
   return (
-    <div className="gal-label__text">
-      <p className="gal-eyebrow">
-        {piece.museum}
-        <span aria-hidden="true"> · </span>
-        {piece.city}
-      </p>
-      <h2 id="gal-label-title" className="gal-title">
-        {title.main}
-      </h2>
-      {title.also ? <p className="gal-also">{title.also}</p> : null}
-      <p className="gal-artist">
-        {piece.artist}
-        {piece.date ? <span className="gal-date">{piece.date}</span> : null}
-      </p>
-
-      {text ? (
-        <About
-          key={piece.id}
-          text={text}
-          from={piece.about ? null : piece.museum}
-        />
-      ) : null}
-
-      <dl className="gal-facts">
-        <Fact label="Artist">{piece.artistBio}</Fact>
-        <Fact label="Medium">{piece.medium}</Fact>
-        <Fact label="Size">{sizeText(piece)}</Fact>
-        <Fact label="On view">{piece.location}</Fact>
-        <Fact label="Credit">{piece.creditLine}</Fact>
-        <Fact label="Object no.">{piece.accession}</Fact>
-        <Fact label="Frame">
-          {piece.framed ? "The museum’s own frame, from its photograph" : null}
-        </Fact>
-      </dl>
-
-      <div className="gal-actions">
-        <a
-          className="gal-link"
-          href={piece.url}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View at {where}
-          <ArrowUpRight aria-hidden="true" />
-        </a>
+    <>
+      <div className="gal-label__bar">
         <div className="gal-pager">
           <button
             type="button"
@@ -317,11 +282,60 @@ function Label({
             <ChevronRight aria-hidden="true" />
           </button>
         </div>
+        <a
+          className="gal-link"
+          href={piece.url}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View at {where}
+          <ArrowUpRight aria-hidden="true" />
+        </a>
       </div>
-      {piece.imageCredit ? (
-        <p className="gal-credit">Image: {piece.imageCredit}</p>
-      ) : null}
-    </div>
+
+      {/* keyed, so each piece starts scrolled to the top */}
+      <div key={piece.id} className="gal-label__scroll">
+        <header className="gal-label__head">
+          <p className="gal-eyebrow">
+            {piece.museum}
+            <span aria-hidden="true"> · </span>
+            {piece.city}
+          </p>
+          <h2 id="gal-label-title" className="gal-title">
+            {title.main}
+          </h2>
+          {title.also ? <p className="gal-also">{title.also}</p> : null}
+          <p className="gal-artist">
+            {piece.artist}
+            {piece.date ? <span className="gal-date">{piece.date}</span> : null}
+          </p>
+        </header>
+
+        <div className="gal-label__body">
+          {text ? (
+            <About text={text} from={piece.about ? null : piece.museum} />
+          ) : null}
+
+          <dl className="gal-facts">
+            <Fact label="Artist">{piece.artistBio}</Fact>
+            <Fact label="Medium">{piece.medium}</Fact>
+            <Fact label="Size">{sizeText(piece)}</Fact>
+            <Fact label="On view">{piece.location}</Fact>
+            <Fact label="Credit">{piece.creditLine}</Fact>
+            <Fact label="Object no.">{piece.accession}</Fact>
+            <Fact label="Frame">
+              {piece.framed
+                ? "The museum’s own frame, from its photograph"
+                : null}
+            </Fact>
+          </dl>
+
+          {piece.imageCredit ? (
+            <p className="gal-credit">Image: {piece.imageCredit}</p>
+          ) : null}
+        </div>
+      </div>
+    </>
   );
 }
 

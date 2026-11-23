@@ -390,11 +390,11 @@ html.gal-locked .gal-nav {
   bottom: 0;
   z-index: 61;
   width: clamp(360px, 36vw, 540px);
+  /* a column: pager, then the text (the part that scrolls), then the link */
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 72px clamp(28px, 3.4vw, 56px) 48px 8px;
+  overflow: hidden;
+  padding: 0 clamp(28px, 3.4vw, 56px) 0 8px;
   font-family:
     -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
     "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -419,9 +419,62 @@ html.gal-locked .gal-nav {
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
 }
 
-/* centred when there is room, scrolling from the top when there is not */
-.gal-label__text {
-  margin: auto 0;
+/* The controls stay put whatever piece is showing. On a desktop the bar
+   itself dissolves, so the pager can sit at the top of the label and the
+   museum link at its foot with the scrolling text between them. */
+.gal-label__bar {
+  display: contents;
+}
+
+.gal-label .gal-pager {
+  order: 0;
+  flex: none;
+  align-self: flex-start;
+  /* level with the close button */
+  height: 72px;
+}
+
+.gal-label .gal-link {
+  order: 2;
+  flex: none;
+  align-self: flex-start;
+  margin: 14px 0 34px;
+}
+
+.gal-label__scroll {
+  order: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.gal-label__head {
+  flex: none;
+  padding-top: clamp(2px, 2.6vh, 30px);
+}
+
+/* the description and the facts scroll if there is more than fits */
+.gal-label__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 4px 30px 0;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0,
+    #000 18px,
+    #000 calc(100% - 30px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0,
+    #000 18px,
+    #000 calc(100% - 30px),
+    transparent 100%
+  );
 }
 
 .gal-eyebrow {
@@ -525,15 +578,6 @@ html.gal-locked .gal-nav {
   margin: 0;
 }
 
-.gal-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 26px;
-}
-
 .gal-link {
   display: inline-flex;
   align-items: center;
@@ -565,6 +609,12 @@ html.gal-locked .gal-nav {
   font-size: 14px;
   font-variant-numeric: tabular-nums;
   color: var(--soft);
+}
+
+/* fixed width, so "9 of 33" and "10 of 33" leave the arrows where they are */
+.gal-pager span {
+  min-width: 4.6em;
+  text-align: center;
 }
 
 .gal-pager button,
@@ -617,8 +667,8 @@ html.gal-locked .gal-nav {
     background: linear-gradient(
       180deg,
       rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0) 38%,
-      rgba(255, 255, 255, 0.95) 52%,
+      rgba(255, 255, 255, 0) 47.5%,
+      rgba(255, 255, 255, 0.96) 51%,
       rgba(255, 255, 255, 0.98) 100%
     );
   }
@@ -627,12 +677,50 @@ html.gal-locked .gal-nav {
     top: 50dvh;
     left: 0;
     width: auto;
-    padding: 6px 24px 44px;
+    padding: 0 20px;
     transform: translateY(22px);
   }
 
-  .gal-label__text {
+  /* the controls in one bar, straight under the piece */
+  .gal-label__bar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 2px 0 12px;
+  }
+
+  .gal-label .gal-pager {
+    height: auto;
+  }
+
+  .gal-label .gal-link {
+    order: 0;
+    align-self: auto;
+    height: 38px;
     margin: 0;
+    padding: 0 16px;
+    font-size: 15px;
+  }
+
+  /* everything else scrolls as one */
+  .gal-label__scroll {
+    display: block;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: 44px;
+  }
+
+  .gal-label__head {
+    padding-top: 4px;
+  }
+
+  .gal-label__body {
+    overflow: visible;
+    padding: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .gal-close {
