@@ -46,16 +46,16 @@ export default async function Writing() {
   const articles = await getArticles();
 
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-10 pb-10 sm:gap-9">
       {articles.map((article, index) => (
         <li key={article.slug}>
           <Link
             href={`/writing/${article.slug}`}
-            className="group flex flex-col gap-4 rounded-xl border border-muted p-3 transition-colors hover:border-foreground/15 hover:bg-secondary/40 sm:flex-row sm:gap-5"
+            className="group flex flex-col gap-4 sm:flex-row sm:gap-6"
           >
             <Cover article={article} eager={index < 3} />
 
-            <div className="flex min-w-0 flex-1 flex-col px-1 pb-1 sm:px-0 sm:py-1">
+            <div className="flex min-w-0 flex-1 flex-col sm:py-0.5">
               <h2 className="text-pretty text-base font-medium leading-snug text-card-foreground decoration-foreground/30 underline-offset-4 group-hover:underline">
                 {article.title}
               </h2>
