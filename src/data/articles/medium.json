@@ -1,0 +1,3316 @@
+[
+  {
+    "slug": "the-machines-started-participating",
+    "title": "The Machines Started Participating",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/the-machines-started-participating-792384262f55",
+    "pubDate": "2026-08-05T17:42:53Z",
+    "categories": [
+      "coding",
+      "ai",
+      "ai-agent"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/900/0*WKlIEsltbRPfhpig.jpg",
+        "alt": "",
+        "width": 900,
+        "height": 556,
+        "caption": [
+          {
+            "type": "em",
+            "children": [
+              "Adolph Menzel, "
+            ]
+          },
+          "The Iron Rolling Mill",
+          {
+            "type": "em",
+            "children": [
+              ", 1875"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Something strange is happening. Hand an agent to an individual, and they will return with sensational claims of its performance, ranging from automating their taxes to disproving ",
+          {
+            "type": "link",
+            "href": "https://x.com/__alpoge__/status/2079028340955197566",
+            "children": [
+              "mathematical conjectures"
+            ]
+          },
+          ". Hand agents to an organization, and the seemingly opposite occurs: ballooning costs, only a marginal increase in overall productivity, and a mounting fear that every employee with access is a security incident waiting to happen. The same tool, but wildly different results."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Why?"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "The Magic of Agents"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The advantages of agents are threefold. First is the natural language interface. Agents allow users to express what they are thinking, questioning, or trying to achieve without translating those intentions into a rigid interface or workflow. They can also ingest unstructured text and files containing much of the context surrounding a task. This makes agents remarkably easy to instruct and applicable to a broad range of knowledge work with little upfront configuration. Second is the capability of frontier models. Today, models demonstrate PhD-level intelligence, work over the course of days, and use computers to a greater degree than the vast majority of humans. Advancements in their capabilities make them increasingly effective at producing white-collar work product, performing research, and executing complex, multi-step processes with limited intervention. Lastly, agents are scalable. It is relatively inexpensive to spin up a new agent to complete a task while you focus elsewhere, or spin up a swarm of agents to take on a difficult endeavor. As a result, agents are a novel technology that is easy to use, highly capable, and can scale to almost any challenge you put in front of it. Yet, it’s these very same qualities that create a significantly different outcome at the organizational level."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "The Organizational Reality"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The natural language interface of agents obscures our mental model of what they actually are and how they operate. For simple or well-defined tasks, delegating to an agent can feel like (or even superior to) delegating to a highly capable human. But the common form factor of language creates a pitfall: we anthropomorphize AI. The sheer capability of frontier agents further reinforces this illusion. Ultimately, this leads people to misunderstand what agents can reliably do and overlook the fundamentally different mechanisms that produce their “intelligence”. In some cases, this illusion can cause psychological damage, inspiring a type of psychosis among some heavy users. In a group, this effect compounds. As a result, AI is misapplied at an increasingly large scale, costing money, wasting time, and degrading trust."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Model capability also creates a second detriment to organizations: it is directly tied to non-determinism. The same probabilistic process that allows models to reason about ambiguity, adapt to novel situations, and produce intelligent work also prevents us from knowing exactly how they will behave in a given environment. At best, this lack of predictability constrains organizational adoption. At worst, it creates organizational catastrophes. A well-equipped agent can perform irreversible, destructive actions or inadvertently leak non-public information. Organizations are often so hungry to capitalize on the potential benefits of AI that they ignore these fundamental risks, ultimately to their dismay when those risks inevitably materialize."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "To make matters worse, the pitfalls above are further amplified by the scalability of agents, which often results in overproduction of work product, saturation of employee cognitive capacity, and an ever-ballooning expense line that is quickly going parabolic. Look no further than the code review process to witness a tangible example of this effect. One engineer uses AI to generate an exorbitantly large pull request and asks another engineer for a review. The other engineer uses AI to review that pull request, requiring hours to understand the desired change, just to kick it back to the author because the code is likely unfit to merge. Let this cycle repeat and tally the cost, time, and mental energy expended, and you may begin to question if AI was an accelerant or hindrance in this scenario. Then multiply this effect across organizational units, and it doesn’t tell the prettiest story."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "The Coordination Problem"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "But none of this kills the magic for the individual. When you use an agent yourself, you hold the full context of the task in your head, witness every output, and bear the consequences of your own mistakes. You build trust in the agent through your proximity to its outputs. Organizations, however, do not share this same luxury; they create through the coordination of many people, so every agent added increases the complexity of that coordination."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And therein lies the answer to our why."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Historically, the walls of an organization established a basis of trust among its members, which was further extended by establishing organizational reputation and implementing verification systems. Creating trust permits delegation, which is necessary for an organization to scale. Yet today, agents are earning little trust in organizational settings. Because of this, we must go to great lengths to constrain an agent’s action space and verify its work product. And because agents are becoming so numerous, this burden is quickly growing. As a result, agents are disrupting the fundamental activity of an organization: cooperation. You can think of a company as a structure that helps a group of people self-organize and interface together to create a single operating entity. At the risk of sounding cliché, this structure allows the whole to become greater than the sum of its parts. For centuries, companies have helped people coordinate their efforts and achieve far more together than they could have alone or apart."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Then, the machines started participating."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And while this does not spell the death of the corporate structure, it forces us to rethink how we should self-organize in the presence of this novel and highly powerful technology. It is clear that, for many tasks within an organization, agents are well-adept to complete them given the necessary context. As organizations adopt agents more, activities that externalize knowledge, such as writing documentation, expressing preferences, and codifying constraints, are more important than ever before. It is also evident that our ability to constrain agents is weak. The most popular paradigm for influencing agent behavior, skills, is suggestive at best. Even deterministic permission systems lack the dynamism and granularity to constrain agents to the extent necessary to build broad organizational trust. Our inability to adequately externalize knowledge and constrain agents is preventing us from trusting them at the scale necessary to substantiate the investment and effort we have and will continue to put into them. However, if we do address these hurdles, I believe the outcomes would be astronomical. We could achieve a world where agents faithfully automate many organizational activities, work in swarms over long horizons on new features or products, and generally accelerate productivity across industries. And while we may never be able to build trust in the underlying models, I do believe we can build trust in the systems that house them."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "11-reflections-from-1-year-in-sf",
+    "title": "11 Reflections from 1 Year in SF",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/11-reflections-from-1-year-in-sf-eb1c480a2356",
+    "pubDate": "2026-06-25T23:13:12Z",
+    "categories": [
+      "startup",
+      "ai",
+      "san-francisco"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/0*kVhlNpGfIT1hRVOx",
+        "alt": "",
+        "width": 1200,
+        "height": 630
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "One year ago, I packed up my things and got onto a one-way flight to California. What followed was a hell of a wild ride, and a year that introduced more change and growth than ever before. Anniversaries create a natural point of reflection. So here are a few of mine."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Seek what you need from yourself"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "I was driving down a dirt highway on a hot day in Costa Rica in April of 2024. My girlfriend was in the passenger seat, gazing out the window without a care in the world (as it should be). And while I also admired the scenery, I struggled to be fully present. The previous day, I was rejected from graduate school (in retrospect, thank god). Like an idiot, I only applied to the University of Pennsylvania. Before applying, I genuinely felt that my chances of admission were high. The program was specifically designed for people with a similar professional and academic experience, and I spent significant time on the written portions of my application. I even met a “career professional” through my alma mater who told me I have a “strong chance of admission”."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Yet, I was not admitted. Failure can be a powerful delivery mechanism for information. Your emotions may suggest that forces beyond your control are the problem. But that is the exact mental heuristic that nullifies the power of the fundamental human experience of failure. Moreover, by perceiving negative events in your life as the result of things that you ",
+          {
+            "type": "em",
+            "children": [
+              "can"
+            ]
+          },
+          " control, you naturally infer that you can influence those factors to create the outcomes you desire."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "My underlying “why” for applying to graduate school was two-fold. I wanted to build:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          [
+            "Skills and credibility through education"
+          ],
+          [
+            "Relationships and reputation through community"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "I perceived attending a prestigious university as a vehicle for achieving these objectives, and perhaps that was easily understood from my application. What I failed to communicate, however, is why I was ",
+          {
+            "type": "em",
+            "children": [
+              "worthy"
+            ]
+          },
+          " of leveraging the institution of the University of Pennsylvania to acquire skills, credibility, relationships, and reputation. While I had a genuine desire to learn, to meet new people, to put in the work, I had little tangible evidence to ",
+          {
+            "type": "em",
+            "children": [
+              "prove"
+            ]
+          },
+          " that I took any more action than just saying I wanted to do those things. In reality, the story I told in my admissions essay was closer to an elaborate daydream than an authentic account of how I was moving towards my purported goals."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Driving on that bumpy road in Costa Rica, I realized that I still needed the things I sought to gain from attending graduate school, ",
+          {
+            "type": "em",
+            "children": [
+              "just that I would have to get them on my own"
+            ]
+          },
+          ". And upon that realization, I gained comfort, and my mind eased. I knew when I returned home that I was ready to take action, not necessarily knowing how, but just that I was going to, and so I joined my girlfriend in her frivolous mood."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Go outside"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The reality is that building skills and a network is a rather simple endeavour in concept. Both come down to the same thing: interfacing with the world. For skills, there is no magic bullet; it’s simply the result of continuous work, struggle, and completing that work and overcoming that struggle. For example, a very simple thing I did to improve my skills was just to work more. I had a full-time job in consulting, but when I would finish my consulting work, I would start coding. On the weekends, I would also code. I was basically working 60–80 hours a week. This is not sustainable forever, and quite frankly, not the most enjoyable (just ask my girlfriend), but goddam does it do the trick."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "But working more is only half of it. The other half, and the part I underrated for most of my life, is that you don’t grow in a vacuum. The fastest I ever improved was when I was working with other people and interfacing with their problems. Which brings me to building your network, where there actually is a bit of a silver bullet:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Go outside, like out of your house."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "You’re not going to meet anyone in your kitchen. Everybody you do not know is outside. So… get out there! The very first time I looked for a tech meetup, I stumbled upon an event by Code and Coffee Philadelphia. I joined their Discord and showed up at the Capitol One Cafe in Center City. There were about fifteen people; it was a rather small meetup, but attending was a key inflection point in my professional journey."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "At the very first meetup, I met someone who is now a close friend and mentor of mine. And after attending repeatedly, I met so many friends and future collaborators. It was not long before I myself became a co-organizer of the meetup and helped the group scale, secure corporate partnerships, and throw larger and larger events."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Going outside led to so many unique experiences, new relationships, and opportunities to solve novel problems. Simply deciding to attend one event created a ripple effect that eventually led me to where I am today. And it’s interesting to think how none of that would’ve happened if I had just stayed in my kitchen!"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Change is good"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While I was working on expanding my network, my professional life remained the same. I stayed on the same project for almost two years at my job. It was a sexy client with a rather large scope for the project. We were automating the financial reporting for merchants and drivers of a major rideshare platform. I was leading the initiative, and it was both high visibility and responsibility, particularly for that stage of my career. I felt accomplished working in that role, and that I had grown throughout it, but that growth was stagnating. There is a natural ceiling to any endeavour, and I was rapidly approaching it within this project. My leadership wanted me to transition to different client work, and enough structure had been built to permit my exit from the project. Being freed from the routine and thinking patterns that I employed while in that project opened up time and mental space for me to create elsewhere."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "During this time, I built several side projects. All went nowhere. Some were cool, most were not, but each was a building block in figuring out how to make something from nothing. In early 2025, one of my close friends from Code and Coffee approached me to work on a project with him. This project involved deploying web automations. Like any great project, it was just beyond my skill range, and I quickly ran into the complexity of deploying, managing, and operating a fleet of browsers in AWS. At a certain point, I was spending more time maintaining our browsers than actually building out the application layer. Then I came across a post on Twitter about a new browser agent called ",
+          {
+            "type": "link",
+            "href": "https://github.com/browserbase/stagehand",
+            "children": [
+              "Stagehand"
+            ]
+          },
+          ". To be honest, I could not have cared less about the agent itself. I needed to know what ",
+          {
+            "type": "em",
+            "children": [
+              "browser"
+            ]
+          },
+          " this agent used, because what I was using was completely unreliable."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And that’s how I stumbled upon a little startup called Browserbase."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Do things that may seem pointless"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In my consulting days, there was a leader at my firm who often espoused the value of “chasing butterflies”. To him, this meant allowing yourself to explore a problem space or project that existed outside a core workstream. By removing the weight of chasing ideas with ambiguous payoffs, he helped open the door to more divergent thinking, unique problem solving, and professional enrichment. The value of novel experiences is broadly and intuitively understood, but I’d like to introduce a similar argument in favor of the mundane and even (seemingly) pointless experiences."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "After finding Browserbase, I began rearchitecting my project to use it. It was very helpful, and I was able to simplify what I had built a lot. I wanted to share the serverless browser automation pattern with others, but the project I was working on was in a private repository. So I decided to create a template repository demonstrating how to deploy serverless web automations with Browserbase and AWS. I had little expectations for this project, but I felt that it was genuinely helpful. I posted about it on Twitter, and I even sent it to Browserbase support when I reached out over a billing issue. Neither of these two things got me really any attention, and I chalked up my effort to purely the merit of engaging in chasing butterflies."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Yet several weeks later, while I was back at home in California, I received a message on LinkedIn late at night. It was from no other than Paul Klein IV himself! He had found my template on GitHub and candidly asked if I had ever “considered working at Browserbase.” Um… duh! I responded, and shortly we had an introductory conversation scheduled."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This experience cemented two-fold. First, the success of the project I was working on was very uncertain, and it certainly wasn’t paying any bills. It was difficult, but I kept working through the problem. And while at the time, it felt like it was going nowhere, it led me down a path to discovering Browserbase. Second, it solidified my faith in the merit of “chasing butterflies”. If I had simply stopped at discovering Browserbase and never gone through the effort of trying to share what I had learned, it never would’ve landed in Paul’s hands. And even despite my failed attempts to gain the attention of ",
+          {
+            "type": "em",
+            "children": [
+              "someone"
+            ]
+          },
+          " at Browserbase by posting it on Twitter or sending it to their support email, my efforts were not in vain."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The key is to ignore the natural inclination that what you do may be a waste of time. It’s vital to accept that whatever activities you are engaging in ",
+          {
+            "type": "em",
+            "children": [
+              "may"
+            ]
+          },
+          " yield an unforeseen positive outcome, not that an unforeseen positive outcome is ",
+          {
+            "type": "em",
+            "children": [
+              "guaranteed"
+            ]
+          },
+          ". Of course, there is a natural limit to how long you should engage in a seemingly useless activity before moving on to something else. But I have witnessed this effect manifest productively in many different instances."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In Steve Jobs’s 2005 Stanford commencement address, he tells a story about “connecting the dots” in his life. He talked about how, when he dropped out of Reed College, he stuck around and audited different classes that interested him. One of those classes was calligraphy. And while that seemed completely useless at the time, it laid the foundation for his understanding of typography and proportionally spaced fonts, which he used over a decade later in the first Macintosh."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Clearly, benefiting from doing seemingly pointless or frivolous activities is a shared experience. The unfortunate part is that this experience only makes sense in hindsight."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Take advantage of opportunities"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Sharing this small template opened the door to the hiring process at Browserbase. And I would have been damned if I let it go to waste. Shortly after my conversation with Paul, I received a booking link to schedule a technical interview. I scheduled it for the next day. On which I woke up early to prepare. I, in no exaggeration, went through every single example and page in the docs. I even found several errors in them, which I reported in the interview. Later that evening, they sent me an invite to schedule an on-site. I booked it for the following week."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "As the days approached, I began crafting a plot to ensure that I would secure the job. I was also excited to fly across the country for an interview, which admittedly was a first for me. I realized I had never tried Browserbase’s Stagehand framework before, and that I could potentially impress by building and showcasing a Stagehand project at the on-site. I started building the day before I left for San Francisco, spending the entire flight hacking away. By the morning of the on-site, I completed the first end-to-end demo."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "I arrived at the Browserbase office on a cool Friday morning in June. It was the Geary office, and it was apparent that headcount was quickly outgrowing the space. I remember being struck by how everyone was so nice and approachable. I had lunch, and soon it was time for the interview with Paul. It is pretty friggin’ obvious that the most important interview at a startup is with the CEO. Their call on you can literally make or break your hiring decision. And so naturally, I was nervous; we walked first through the project he found me through, and following that, he asked:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "“Are you ready to do some live coding?”"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "“Yes!” I said, lying in response."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "“Great, have you used Stagehand before?”"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "“Actually, I have, want to check it out?”"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And thus I traded the live coding portion of the interview for an impromptu live demo. Looking back, I wonder if I actually made the harder choice. The project I built was an agent that analyzed your Uber Eats order history. However, I had only completed the full flow once earlier that morning, and I had to solve several CAPTCHAs manually during the demo (by design, btw!). Yet… it worked! By the grace of whoever you deem divine, the damn thing worked. And probably to this day, I have not been as relieved by a successful demo. For the rest of the interview, I took Paul through how I built the project. He was pumped, and the rest of the on-site went swimmingly."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "When you’re working hard, it can feel like, despite all your efforts, things are still the same. And it can be the same for a long time, yet inevitably, an opportunity will emerge. And when it does, understand that the window is fleeting, and you ",
+          {
+            "type": "em",
+            "children": [
+              "gotta strike while the iron is hot"
+            ]
+          },
+          ", for opportunities are the gate to stepwise changes that make hindsight look like a perfect plan."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Change is inevitable"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If you were able to go back in time to the morning before Paul’s message and ask me how close I felt to realizing my goal of moving to San Francisco and joining a startup, I probably would not have guessed how close I actually was. And I certainly would not have guessed that I was only about a month away from that reality. I truly believe that, as humans, we are generally inept at understanding the totality of factors that contribute to the realization of any given outcome."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We like to imagine our lives as a clean chain of cause and effect. It feels nice to think that if you work hard, you are rewarded, or that if someone does wrong, they are punished. But empirically, we know this isn’t true. It’s like the old saying, “life just ain’t fair”. In reality, the full range of effects of your actions is more or less completely unknown in the moment. It’s only possible to assess their effectiveness in hindsight. So when you consider your strategy for eliciting success, the mental model should look more like maximizing shots on goal than crafting the perfect path."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And while this may imply a shift in your mental model and therefore your actions, it also means that given enough effort, something ",
+          {
+            "type": "em",
+            "children": [
+              "will "
+            ]
+          },
+          "happen. And maybe I just spent so much time being frustrated by ",
+          {
+            "type": "em",
+            "children": [
+              "nothing"
+            ]
+          },
+          " happening, but I was underprepared for the sheer volume of change that awaited me. It felt stereotypical how so much change came thundering into my life seemingly overnight. New job, new apartment, new location, new people, new routine, all within the span of a few weeks."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Yet we know from hindsight that all that change became possible through the culmination of many attempts to create an opportunity, both wasteful and fruitful. So while it’s only possible in hindsight to correlate your actions to real outcomes, it's still important to recognize that change is inevitable. Being relentless in your efforts to chase butterflies, do the mundane, and continuously take shots on goal can help guarantee that the change coming for you is the change that you are seeking."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Individuals transcend roles"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "When I arrived in San Francisco, I quickly discovered that consultants are not necessarily held with the highest regard. For one, I learned how long-shot of a hire I actually was. Coming into Browserbase as a Customer Engineer, I felt almost overqualified given my field experience in consulting and management. Yet upon arrival, I understood just how different not only the role was, but the environment I was operating within. A startup environment is fundamentally different than a mature business, and that sounds obvious, but the properties that are different are not. So while it was perhaps easy for me to understand how to be a strong customer engineer, the concept of how we operated as a company at such an early stage was not. The startup environment is a completely different ball game, and that is a ball game I’m still working on fully understanding."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "However, you as an individual are not your role. Both in the context of roles you have assumed before and roles you are in now. Roles are a tool for cooperation; it is a way to easily categorize the responsibilities and activities of an individual within an organization. Yet roles are merely cosmetic, not necessarily fully consumptive of one’s potential influence or capabilities. What’s special about the environment of a small company is the malleability of roles. In reality, the construction of a business is simply a result of its own attempt to self-organize in the most optimal way to serve a market. Yet if the market beneath a company is evolving, or the company itself is expanding to serve new markets, then naturally the company should recalibrate to serve it optimally. Related to this, early companies will hire individuals that they believe will be able to cross between roles, since they understand that the roles themselves may change. I believe I fell into this category, and I am grateful that Paul and the team at Browserbase took a bet that I could not only fulfill the role of a Customer Engineer, but that I could also grow and expand with the company to fill other roles, such as Software Engineer, which is my current role."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "The social environment of business"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Given the privilege to break out of the role that once relegated me to consulting, it took some time for me to observe and attempt to understand the business environment of startups. This is an area, as mentioned before, where I am still gathering information and attempting to intuitively understand. One thing I have observed, however, is that the business environment in San Francisco is very social."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "From the outside looking in, this feels more like gatekeeping than it does real business. And I think that is easy to say from the outside looking in. From the inside, however, the story is significantly more complicated, and I believe a few forces are at play."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Let’s get this one out of the way. There is no navigating around the fact that any social club enforces certain self-serving outcomes. And that these self-serving outcomes can create real distortions in the distribution of opportunities. For example, it's no secret that at many institutions and companies in San Francisco, academic prestige is a strong factor in someone’s success. Or that nepotism may serve the same effect. Yet chalking the industry up into one big, elitist sludgefest is incredibly myopic. If this were so, then you wouldn’t be hearing from me. So clearly, there are ways to break in beyond attending Stanford."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "My theory is that business in San Francisco, and more specifically startups, is so social because of the concentration of people and industry in a single geographic place. Launching any one company is an enormously risky bet, and the odds of any individual venture surviving on its own are low. But because there is such a large concentration of businesses in a similar location, and their services and products are highly synergistic with each other, it’s natural for a web of social relationships to form. And from this, you get a more durable set of industry players. Those two forces together, the inherent risk of going it alone and the sheer geographic density of everyone else taking the same risk, are exactly what incentivize social relationships in business, since they better assure the overall success of the group. I believe this is also what Y Combinator is attempting to curate with their community of companies. Perhaps on their own, without any intrinsic tie to other businesses, there would be a lower individual survival rate. But, by cohabitating industriously with each other, selling to each other, and going to market with each other, there is a higher overall survival rate for the group participants. And while you’ll always have the grifters who are just revenue swapping with each other or perhaps partaking in outright fraud, overall, to me, this creates an interesting socio-economic phenomenon that catalyzes the growth of the industry and the creation of innovative technology as a whole."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Interfacing with others"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This is likely also true in larger organizations, but it is especially true in a startup:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Your ability to achieve is derived from your ability to interface with others."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In a startup environment, you’re essentially building something monumental from nothing. You’re creating systems, products, or administering services whose scope expands magnitudes beyond the capability of a single individual. It is vital not to be so vain as to believe you can take on the world’s most pressing problems alone."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "When I reflect on what I’ve accomplished over the last year, I cannot help but recognize the contributions of others. Take, for example, the creation of our internal agent at Browserbase, ",
+          {
+            "type": "em",
+            "children": [
+              "bb"
+            ]
+          },
+          ". Building it",
+          {
+            "type": "em",
+            "children": [
+              " "
+            ]
+          },
+          "is likely my crowning achievement to date at Browserbase. Yet, it all started with a mandate from Paul to support our customers more quickly and effectively. It expanded on prior art from one of our sales engineers, Shubhankar, who built the first internal agent prototype at Browserbase. And building ",
+          {
+            "type": "em",
+            "children": [
+              "bb"
+            ]
+          },
+          " required significant collaboration and conversations with many other members of our engineering team to ensure we were designing a harness that was secure, capable, and well-interfaced with our employees. I could even again lend credit to Paul for bringing me in as a Customer Engineer, which naturally gave me a wide social sphere within the company and therefore helped me build a foundational understanding of the various activities across the organization."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Part of the allure of Browserbase, and working in the tech epicenter of San Francisco generally, is the opportunity to sit next to someone greater than yourself. Startup environments attract a certain type of person. People who are obsessive and highly skilled in their craft. It is important to recognize that this notion should not only be observed, but also exploited. Nothing truly great is built alone. If you can bring a unique ability and productively combine it with the abilities of others, you create the requisite conditions for crafting what feels like magic. The degree to which humans can work together is our key differentiator from other species. It’s the superpower that has allowed us to construct complex societies across the globe, leave the atmosphere to explore space, and create intelligence from sand."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Use it."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Failing"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Even the brightest collections of individuals can be bound for failure. People make mistakes, and we should all be in a continuous state of learning. And when you’re growing while also taking on some of the hardest problems in society today, you are bound to make a misstep one way or another. Recognize that, upon joining a startup, you are not embarking on a path of surety, but rather a path defined by pure ambiguity. The demand for what you are creating, the market forces underneath you, the roadmap of your competitors, the geopolitical landscape; all and more are external forces of ambiguity that you cannot plan for. Yet, this need not mean you are stepping into a field of landmines that, upon detonation, end the game. Rather, it is quite the opposite:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Failure is a transient state."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If I told you your utmost aspirations of success were simply ten failed attempts away, how fast would you leap towards failure? One of the best aspects of the game of life is that it is a ",
+          {
+            "type": "em",
+            "children": [
+              "repeated game"
+            ]
+          },
+          ". The end of one turn takes you to the beginning of another, except you are not the same player. You are greater; you have more ",
+          {
+            "type": "em",
+            "children": [
+              "information"
+            ]
+          },
+          ". Failure, as we explored, is a rather powerful form of information. And while it certainly isn’t pleasant, it’s a damn good method of learning. I’ve failed more times than I can remember, and for many of those times I was sure of success. This need not mean I am a fool (for I am probably one for other reasons), but rather I am persistent, I am learning, and I (at least try to) remain humble before the challenge of life and choose to progress forward towards self-actualization despite the hurdles that lie in front of me."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Consume failure and move forward. Not despite it, but because of it."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Change is perpetual"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We have talked about how change is good and inevitable. And while I have spoken much of change already, I will speak of it again. Since it has an additional property not yet mentioned: perpetuity."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "You can think of a startup like a developing organism. And while there is controversy around the legal concept of corporate citizenship, there is little doubt in my mind that an organization exists as a sort of collective consciousness of the people and creations that comprise it. And if you consider that the purpose of a startup is to scale, to identify “product market fit”, then it is logical to say that the current state of any startup is not scaled and not properly fit to its market. That is to say:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "The real mandate of a startup is to change."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "By innovating for a market and scaling your efforts to serve it, you are not simply creating change within that market, but also within the organization you are using to serve it. Over the past year, I have seen a lot change at Browserbase as the company scales. More people have entered the collective, and therefore, the operations, rhythm, and general vibe have changed over time. On one hand, this may make you feel nostalgic about what “things were like before”. Yet to believe that how things “were” could somehow be affixed is naive."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If things change and if new people enter the organization, then it means we are doing our job correctly! It means we are achieving what we set out to do. This should not invalidate what nostalgic feelings you may have of the “good ole days,” but rather emphasize the appreciation you should have for them. For all great things in life are fleeting, and they are especially fleeting when you are moving fast, working hard, and competing against other extremely talented groups of individuals to impact the world."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "One Year In"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "I’ve written and refined these reflections over the past few weeks. Each time I come back and reread them, I find myself applying them to what’s happening in my life now. It’s funny; sometimes it feels like writing can be an exercise in reminding myself of knowledge and experiences I’ve gathered over time, but maybe haven’t fully internalized."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Much has happened, but hopefully even more is to come. If there is anything I’ve taken from the past year, it’s a growing excitement for the future. New challenges, new experiences, new people, and participating in an industry that’s attempting to usher in a new era of human creation. It won’t be easy, it won’t be simple, and it certainly won’t be smooth, but it’ll be something."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "what-if-fully-autonomous-is-the-wrong-goal",
+    "title": "What if “fully autonomous” is the wrong goal?",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/what-if-fully-autonomous-is-the-wrong-goal-0613c42c1879",
+    "pubDate": "2026-05-20T20:22:27Z",
+    "categories": [
+      "llm",
+      "ai",
+      "agents",
+      "business"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/960/1*f3Uf0RlRFfvQ7I0AJjprQQ.png",
+        "alt": "",
+        "width": 960,
+        "height": 540
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Everywhere in AI, we see software and product teams all marching towards the same goal: fully autonomous work completion via AI agents. You see AI coworkers, AI software engineers, AI product marketers, etc."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "I would like to question the notion that “fully autonomous” is always the ideal solution. Framing the deployment of fully autonomous AI agents as a ",
+          {
+            "type": "em",
+            "children": [
+              "solution"
+            ]
+          },
+          " suggests the existence of underlying ",
+          {
+            "type": "em",
+            "children": [
+              "problems "
+            ]
+          },
+          "that these agents will solve. This is a very simple but fundamental framing that I think basically 95% of agent products and teams are missing."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "A fully autonomous agent is just ",
+          {
+            "type": "strong",
+            "children": [
+              "one solution."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Consider the differences between an LLM and a human. LLMs are always on, never get tired, and don’t require healthcare. Humans can properly remember (well, kind of), take accountability, and have a physical presence in the world (do not discount this differentiator!). In the context of task completion, there are ways LLMs are advantageous, and there are also many ways humans are advantageous."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "But this is all to say that humans and LLMs ",
+          {
+            "type": "strong",
+            "children": [
+              "are just plain different."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Perhaps the biggest differentiator is the inability to hold an LLM accountable, and this should give us some clue as to how they ",
+          {
+            "type": "em",
+            "children": [
+              "ought"
+            ]
+          },
+          " to be used. The real goal of implementing AI is not purely to reach a state of complete agentic autonomy. ",
+          {
+            "type": "strong",
+            "children": [
+              "The purpose of implementing AI is to drive business goals."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Before embarking on a project that involves implementing AI, first ask yourself, what are the key business outcomes that I want to achieve in this project? Are you attempting to drive pipeline through scaling GTM outbound? Are you trying to increase the development velocity of an engineering team? Are you simply looking to reduce the turnaround time to generate bespoke data reports for management? These types of grounding business questions need to be asked before throwing a model in a while loop at it."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Only once you place yourself in this solution-agnostic framing, may you be able to seek a truly impactful solution. And this solution may or may not be a fully autonomous agent. Instead, your solution may be a combination of AI-assisted and fully agentic tasks. Or you may find that you never needed an agent in the first place! It’s important to ground yourself in the desired business outcomes of a project and, in doing so, reclassify AI as the tool that it really is (albeit an extremely powerful one)."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Today, I see many getting lost in the agent sauce. ",
+          {
+            "type": "strong",
+            "children": [
+              "Developing software, including agents, is a business activity"
+            ]
+          },
+          ". And business activities, at least good ones, should be designed to drive tangible outcomes that impact customers, organizational productivity, or costs."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "I believe the industry is still broadly in a deep exploration phase. It’s fascinating to watch the state-of-the-art still evolve years after the initial release of ChatGPT. I believe this is why there is still a rather resilient tolerance for ballooning AI token spend."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "However, the party can’t last forever, and we may only be 3–6 months away from CFOs and operators starting to question what is being delivered by this exponentially growing line item on their financial statements."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "not-capitalism-not-communism-but-a-secret-third-thing",
+    "title": "Not Capitalism, Not Communism, but a Secret Third Thing",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/not-capitalism-not-communism-but-a-secret-third-thing-c9a99f7e1bbb",
+    "pubDate": "2025-11-07T18:47:20Z",
+    "categories": [
+      "ai",
+      "artificial-intelligence",
+      "economics",
+      "technology",
+      "politics"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/0*d7yXGq9idU_jnFCP",
+        "alt": "",
+        "width": 1600,
+        "height": 1067
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "A spectre is haunting America, a spectre of something peculiar."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "OpenAI CFO, Sarah Friar, recently came under fire for suggesting a “federal backstop” on the company’s 8-year, $1.4 trillion investment commitment. The same day, Jensen Huang, CEO of NVIDIA, reiterated his support for US involvement in the domestic technology sector in the international arena."
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "As I have long said, China is nanoseconds behind America in AI. It’s vital America wins by racing ahead and winning developers worldwide."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Some critics of these comments point to an impending AI bubble and echoes of the 2008 Financial Crisis. Other critics suggest we are dwelling too far into state-controlled industries and perhaps borrowing too much from China’s playbook. While both arguments are contextually relevant, there is something rather unique unfolding."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The traditional binary of capitalism and communism is often presented as a free market economy and protection of private property on one side and state-owned industries and wealth redistribution on the other. In the former, capital is well freed from state rule (within limits), and in the latter, private capital is abolished, usurped by the state, and redistributed equally amongst the nation."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "It is becoming increasingly difficult to categorize the modern relationship between capital and the state within these two binaries. The US government interferes considerably in the economy, such as its recent acquisition of a ",
+          {
+            "type": "link",
+            "href": "https://www.intc.com/news-events/press-releases/detail/1748/intel-and-trump-administration-reach-historic-agreement-to",
+            "children": [
+              "10% passive stake in Intel"
+            ]
+          },
+          ". It is also inaccurate to assert that the state fully controls industries. Corporate entities often advance their own interests ",
+          {
+            "type": "em",
+            "children": [
+              "through"
+            ]
+          },
+          " the state, shaping policy and influence in tandem. Elon Musk’s brief role at the Department of Government Efficiency, followed by federal contracts awarded to Starlink and even a Tesla display on the White House lawn, reflects this dynamic perfectly."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/320/0*_wwAmVmP8v0NugM8.gif",
+        "alt": "",
+        "width": 320,
+        "height": 178
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "What is clear is that capital is running relatively “free” insofar as it’s primarily controlled by private corporations while also enjoying massive government subsidies and regulatory cooperation. This “third thing” is governance itself being usurped by capital. But why, how, and what forces are eliciting this new economic order?"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "The Consolidation of Federal Power"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "There is a whole other essay to be written on the consolidation of federal power throughout the course of American history. The United States’ foundation of Federalism was meant to create a weak but effective federal base in which states could build on their own laws to determine their own, distinct ways of life. As James Madison put it:"
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "The powers delegated by the proposed Constitution to the federal government are few and defined. Those which are to remain in the State governments are numerous and indefinite."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This quote today is ironic, because at some point these powers were clearly swapped by the federal and state governments. There is a long list of factors that contributed to this phenomenon, but I will enumerate three I find particularly important:"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "The Establishment of the Federal Reserve (1913 and 1971)"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/0*kPArG3pO5XZiZhUG",
+        "alt": "",
+        "width": 1300,
+        "height": 975
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The Federal Reserve marked the formal unification of American monetary power. A once fragmented system of regional banks and private capital flows became centralized under a single, federally controlled institution. By setting interest rates, dictating credit conditions, and serving as the lender of last resort, the Federal Reserve made the US government the de facto guarantor of American capital. While providing considerable stability and quelling the sinusoidal nature of the domestic economy, the Fed created a permanent dependency between the private financial system and federal liquidity. A relationship where, in modern times, “too big to fail” has exited the realm of theoretical and entered the canon of established domestic policy."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Further augmenting state authority over capital was the 1971 decision to divorce the US monetary supply from the gold standard. Money no longer represented a claim to tangible assets, but rather was fully backed and valued by the creditworthiness and authority of the state. From that moment forward, US money simply operated as an abstraction. An abstraction representing state dependency, and with full authority to levy the supply and manipulate credit conditions, the state became a vital instrument of private sector prosperity. Capital became no longer at odds with the state, but an extension of it."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "The USA PATRIOT Act (2001)"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/0*WpV3FzyGkSUzre8C.jpg",
+        "alt": "",
+        "width": 1500,
+        "height": 750
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While the Federal Reserve centralized the control of capital, the USA PATRIOT Act centralized the access to information. Passed during the malaise following the September 11, 2001 attacks on the World Trade Centers, the federal government was granted what amounted to unprecedented domestic surveillance authority. In particular, Section 215 granted the federal government the right to compel private companies to share user data with federal agencies. This enabled the government to not only regulate but also deputize private enterprises for its own interests, strengthening the working relationship between intelligence agencies and private companies."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The extent of authority the Federal Government gained is likely still not fully understood by the broader electorate, but was, to some degree, brought to popular attention in 2013 by Edward Snowden. In a whistleblower report, he revealed that the NSA was working directly with major technology companies to provide the federal government with real-time access to user data under secret court orders. This revealed the depth of partnerships being formed between the US government and the largest players in its technology sector."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The result was the ability of the state to augment capabilities without visibly extending its own bureaucracy. Consequently, the US government formed stronger working relationships with major technology companies, further blurring the lines between state and private operating models."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Trump v. United States (2024)"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/0*7CJCE9lakeLDyPcK",
+        "alt": "",
+        "width": 1600,
+        "height": 1200
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The Federal Reserve consolidated capital authority, the USA PATRIOT Act consolidated information access, and Trump v. United States consolidated full federal authority into the Presidential Office. The Supreme Court’s ruling that a sitting or former president enjoys broad protection from prosecution for “official acts” effectively placed the office of the presidency above the law. The attempt at caveating this immunity by “distinguishing” between official and unofficial acts is, at best, laughable and, at worst, a crude attempt to shroud the true nature of the ruling by the highest court in the United States."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In my opinion, the ambiguous nature of the ruling is a feature, not a bug. What counts as “official” is now open to interpretation by the very office it shields. A president who invokes state authority to justify action can now operate with legal immunity so long as those acts are framed as within constitutional duty. The ruling codifies what had already become true in function: federal power now operates as a vertically integrated structure, with the presidency at its apex and corporate influence distributed throughout its branches."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The executive is no longer merely part of the system; it is the system. The president is the state, and within the office now lies essentially absolute rule."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Detachment of Value Exchange from the State"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/818/1*LnF52qnhBdS_REw8UVcK_A.png",
+        "alt": "",
+        "width": 818,
+        "height": 616
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While the Federal Government has slowly accumulated absolute power over the last century, a new economic phenomenon has unfolded over the last decade. The invention and proliferation of monetary systems divorced from the state, otherwise known as cryptocurrency. Bitcoin’s promise was not efficiency but sovereignty: a trustless ledger replacing government fiat with cryptographic consensus."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Separating capital exchange from the state is seemingly at odds with its absolute rule. Yet, in practice, these systems have become extensions of the same global order they were meant to escape. What began as a rebellion against monetary authority evolved into a parallel financial architecture, an anarchical substrate for capital flows that would otherwise be constrained by state scrutiny. This architecture becomes more relevant when understanding the modern role of the public sector as an instrument for advancing private capital interests. Blockchain is simply another avenue to negotiate, operate, and exchange value between parties where traditional monetary rails would either be too costly, too sensitive, or outright impossible."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "A striking illustration occurred quite recently, when World Liberty Financial, a Trump family-founded crypto venture, launched its own stablecoin, USD1. Later, an Abu Dhabi backed firm used USD1 to facilitate a ",
+          {
+            "type": "link",
+            "href": "https://www.reuters.com/world/middle-east/wlfs-zach-witkoff-usd1-selected-official-stablecoin-mgx-investment-binance-2025-05-01/",
+            "children": [
+              "$2 billion investment into Binance"
+            ]
+          },
+          ", the worlds largest crypto exchange. Shortly afterwards, Binance’s founder, Changpeng “CZ” Zhao, who had pleaded guilty to anti-money-laundering violations and served four months in U.S. prison, was ",
+          {
+            "type": "link",
+            "href": "https://www.bbc.com/news/articles/cn7ek63e5xyo",
+            "children": [
+              "granted a presidential pardon"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Irrespective of the chain of events and appearance of pay-to-play it may indicate, World Liberty Financial has denied any association of the transaction with the President’s pardon. However, whether or not the deal and pardon are formally connected, this reveals a new dynamic. Value can now move globally, privately, and without even basic regulatory scrutiny. In addition, this value can still intersect with state actors and authority at the highest level. I would go so far as to argue that this value exchange, in of itself, naturally seeks a higher plane of authority given the volume and velocity at which value can be transmitted."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "As a result, the state does not lose control; rather, it migrates control to these new private rails by aligning with the corporations and political networks that operate them. Therefore, detaching value exchange from the state creates leverage for it to form selective partnerships that can exist outside regulatory scrutiny. Layer on top the general obscurity of these transactions from the broader public and the consolidation of power in the executive, and you receive a network of sophisticated back channels by which the state can facilitate unregulated, selective partnerships to advance the private interests it is intertwined with."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "AI Necesitating Deep Liqudity"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/0*gu_iuhKXcw7CtZvx.jpg",
+        "alt": "",
+        "width": 1200,
+        "height": 800
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The final force that is bringing unprecedented velocity to the redefinition of the private and public sector relationship is the capital intensiveness of artificial intelligence."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "AI requires deep liquidity not only because of its computational cost but also because of the strategic power it confers. The infrastructure necessary to train and deploy frontier models demands investments on the scale of national defense projects, if not exceeding. A single training run for a cutting-edge model can consume tens of millions of dollars in hardware and energy. This turns every AI company of consequence into a geopolitical actor, and every government of consequence into an investor."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "But AI’s expense is not a pure liability; it is its leverage. The state must involve itself because the technology is too strategically vital to be left to private competition. AI is not merely a commercial frontier; it is a national asset, one that will determine global leadership in defense, intelligence, and industry. The participation by the federal government is not interference; it’s a strategic play to preserve its dominance."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Critics often call this an “AI bubble,” pointing to exuberant valuations, overbuilt infrastructure, and echoes of the 2008 Financial Crisis. But this is not a bubble, because we will never let it pop. The capital pouring into AI is not pure speculation; it is also sovereign. The state cannot afford for AI to collapse any more than it can afford for its military to. The entire sector has become too essential to the projection of national power to be permitted the possibility of loss. The market may appear volatile, valuations may look overexcited, but AI operates under an implicit guarantee: the state will always provide the floor."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This creates a dual dependency. AI firms require deep pools of capital and stable policy environments to finance long-term model development. The state, in turn, requires AI’s capabilities to maintain its domestic stability and international dominance. The line between private utility and public authority dissolves."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The OpenAI proposal for a “federal backstop” on its $1.4 trillion infrastructure commitment illustrates this perfectly. The state now underwrites private capital to guarantee that its benefits remain under American control. The federal government no longer acts as a regulatory market to preserve competition, but rather as a basis to support private entities in creating international monopolies."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In this arrangement, liquidity becomes policy. The federal government’s role shifts from overseer to guarantor; its power is expressed not through command, but through capitalization. The AI sector is the newest theater of international economic realism. Technological dominance is now synonymous with national glory."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Artificial intelligence thus completes the circle. Capital and state are no longer distinguishable forces. The economy is the instrument of governance, and governance is the infrastructure of the economy."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Conclusion"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This is not capitalism. It is not communism. It is some secret third thing. It is the culmination of capital forces and human ingenuity spanning centuries, colliding into one governing logic."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Capital has become the state. Even today, a businessman occupies the executive office, commanding an apparatus that has spent a century consolidating control: first over money, then over information, and now over law itself. The federal government, once designed to restrain power, has learned to absorb it. It has centralized domestic finance through the Federal Reserve, enlisted private industry through the PATRIOT Act, and shielded its own authority through judicial decree."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "New channels of value exchange now operate alongside these structures, not as rebellion but as reinforcement. Cryptocurrencies, stablecoins, and private digital ledgers allow wealth to move beyond borders and law, yet these same instruments are being absorbed into the machinery of the state. Each new medium of exchange becomes another vector for collaboration between public authority and private capital and another way for the executive to extend its reach without oversight."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Artificial intelligence adds unprecedented velocity to this order. It is both capital-intensive and strategically indispensable. Its development has presented unprecedented capital demands, and its potential output poses unprecedented abundance and international dominance. Critics call it a bubble. It is not. It cannot be. The state will never allow it to fail, because AI has evolved beyond a market product into a geopolitical necessity."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We are entering an economy where failure is not permitted, where the distinction between private ambition and public mission no longer exists. This is not ideology; it is pragmatism. A pragmatic convergence of economic and political survival. The politically left and right are equally disoriented because there is no doctrine left to oppose; there is only the logic of preservation, of capital continuity, and of crafting certain international dominance."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Between the consolidation of federal power, the broadening of value channels, and the capital intensiveness of AI, the United States has created a self-reinforcing system of abundance and control. This is not a bubble. This is a new economy, and the only direction is forward."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "how-to-explain-bitcoin-to-your-family-this-thanksgiving-again",
+    "title": "How to Explain Bitcoin to Your Family This Thanksgiving (Again)",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/how-to-explain-bitcoin-to-your-family-this-thanksgiving-again-da8223c7c1b4",
+    "pubDate": "2024-11-27T18:05:20Z",
+    "categories": [
+      "crytpocurrencies",
+      "blockchain",
+      "bitcoin",
+      "ethereum",
+      "thanksgiving"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/640/1*vy2cc9wgffSB1gNCUMzw6Q.jpeg",
+        "alt": "",
+        "width": 640,
+        "height": 561
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The turkey is freshly sliced from the oven, the dining room table is bursting at the seams with platters of buttery mashed potatoes, rich gravy, gooey mac and cheese, and roasted vegetables, all surrounded by the hum of lively conversation. The air is rich with the scent of pumpkin and roasted apples, a fragrant promise of the desserts to follow. You pick up your fork, ready to savor your first perfect bite, when Aunt Linda, from across the table, cuts through the chatter and blurts out the B-word… “Bitcoin."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "“Hey [insert your name], you must be so excited with all this Bitcoin stuff happening! Isn’t it at, like, [insert the wrong price] right now?”"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Before responding, you take a moment to silently kick yourself, regretting not “aping” (an industry term for throwing every dollar you could muster) into Bitcoin during the last crash. By the time you complete this brief episode another family member jumps in. “Oh yeah, I bought some Ethereum a few years back,” they say proudly, only to follow it up with, “but it dropped $100, so I sold it immediately!”"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "It was 2017. Then 2021. Then 2023. Each bull market, like clockwork."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And you, the family’s self-proclaimed crypto enthusiast, have once again been dubbed the go-to authority on all things Bitcoin, Ethereum, blockchain, cryptography, and every obscure mathematical riddle and economic paradox that comes with it. Subsequently, all functional questions seeking to justify Bitcoin’s price and its utility to society now fall squarely on your shoulders. It’s Thanksgiving. You’re hungry, off work, perhaps even ",
+          {
+            "type": "em",
+            "children": [
+              "slightly inebriated"
+            ]
+          },
+          ", and entirely caught off guard. To save you, I’ve created a lifeline — a curated cheat sheet of top Bitcoin-boomer questions and their answers, ready to help you navigate your family’s periodic, holiday-induced curiosity about cryptocurrency."
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Question"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ":"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "“Well, I just don’t even know what it is!”"
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Answer:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "It’s digital money — a way to transfer value directly from one person to another without needing a centralized middleman. Think of it like PayPal, but with a key difference. When you send money through PayPal, you’re not sending it directly to the recipient. Instead, PayPal acts as the intermediary, taking your money, verifying your identity, ensuring the transaction is valid, and then passing it along to the recipient. They also check that the total payments sent match the total payments received. Bitcoin does all of this without the need for a company like PayPal in the middle."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Optional Technical Answer:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Bitcoin achieves this through decentralization and a technology called blockchain. Transactions are recorded on a public ledger distributed across the globe. Thousands of computers (called nodes) work simultaneously to verify that transactions are legitimate and bundle them into chunks called blocks."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "When a block is verified correctly, and the rest of the network agrees, it’s added to the chain of previous blocks — hence the name “blockchain.” As a reward for their work, the computer that successfully proves the block earns newly created Bitcoin. This process is also how new Bitcoin is introduced into circulation."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "At the time of writing, there are approximately 19.9 million Bitcoins in circulation, with a fixed total supply of 21 million. The network ensures this cap is never exceeded by reducing the block reward over time. Every four years, the reward is cut in half in an event known as “halving,” causing the creation of new Bitcoin to slow exponentially."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Double Question:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "Where does the money go? Is it untraceable?"
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Answer:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Ironically, most Bitcoin purchases are made through centralized exchanges (CEXs). By now, your family has probably heard of Coinbase, but these days, you can also buy crypto through apps like PayPal, Cash App, Venmo, or even Robinhood. The irony? You’re using a centralized mechanism to exchange Bitcoin, the supposed beacon of decentralization, for U.S. dollars. However, CEXs, particularly in the U.S., come with certain advantages that make them the easiest on-ramp for new users. They comply with customer identity laws (like "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/Know_your_customer",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "KYC"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ", or “Know Your Customer” regulations), which are designed to prevent fraud and other illicit activities. These platforms also offer purchase protections and user-friendly interfaces, making it safer and simpler for the average person to buy their first cryptocurrency. While this might feel at odds with Bitcoin’s ethos, it’s often the most accessible starting point for mainstream adoption."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "There’s also a technology called decentralized exchanges (DEXs), which allow you to swap cryptocurrencies directly without intermediaries. The price of a cryptocurrency, whether through centralized or decentralized platforms, is determined by how much of another currency people are willing to trade for one unit of it. Cryptocurrencies can also be valued against each other — like the ETH-to-Bitcoin price ratio. These ratios can reveal market sentiment and the relative perceived value of assets at any given time."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "As for the claim that Bitcoin is “untraceable”? It’s actually the opposite, at least when it comes to Bitcoin and most blockchain protocols. Every transaction is recorded on a globally distributed ledger that anyone can access. To receive Bitcoin, you need to share your wallet address. Once someone has it, they can analyze the blockchain and see all transactions associated with that address. However, Bitcoin wallets are lightweight and easy to create, so you can obfuscate your activity by using multiple wallets — unless you’re connected to a centralized exchange that requires identity verification. Some blockchain technologies have been developed to address this traceability. For example, "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/Tornado_Cash",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Tornado Cash"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ", built on the Ethereum network, acts as a “tumbler,” mixing transactions to completely separate the source of funds from their recipient. Tornado Cash was banned in the U.S. in 2022."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Question:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "Why do people care about it so much?"
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Answer:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "This one’s tough because there are as many answers as there are people into cryptocurrency. But at their core, all reasons stem from one fundamental idea: "
+            ]
+          },
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "freedom"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ". Cryptocurrencies are unique in how they achieve freedom — through trustless cooperation and perfect information."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Bitcoin’s design, known as "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/Proof_of_work",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "proof of work"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ", is a prime example. It requires immense resource expenditure to verify transactions but very little effort to verify someone else’s proof. When you successfully verify a block, you broadcast the proof to the network, where it’s checked by every other node. For a block to be added to the blockchain, over 50% of the network’s validators must reach consensus. This means an attacker would need to outpace and double the computing power of the entire Bitcoin network — while also keeping up with its growth — just to maliciously approve fake transactions."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "The result? It’s incredibly hard to approve a block and virtually impossible to approve a fake one. Meanwhile, disproving a fake block is easy because the network relies on provable information that’s instantly shared. This system makes Bitcoin decentralized and trustless. Two nodes can cooperate seamlessly without ever knowing or trusting each other, relying solely on the mechanisms of the network. Together, they’re part of a harmonious system that collectively converges on truth."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "While this might sound abstract, it’s incredibly powerful. It’s not just about transferring money; it’s a foundational technology. The principles behind Bitcoin have been extrapolated for applications far beyond currency, the most popular being "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/Smart_contract",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "smart contracts"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ". These use blockchain as an execution layer for code, enabling decentralized apps to run on networks like Ethereum."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Ethereum and other successors to Bitcoin — known as "
+            ]
+          },
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "altcoins"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              " — build on this technology, adding features like smart contracts that Bitcoin doesn’t natively support. But at its heart, the promise of cryptocurrency remains the same: a system designed to empower individuals with freedom, trustless collaboration, and a collective pursuit of truth."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Question:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "Who made it?"
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Answer:"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              {
+                "type": "break"
+              },
+              "The true identity of Bitcoin’s creator remains a mystery, but they went by the pseudonym "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/Satoshi_Nakamoto",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Satoshi Nakamoto"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ". Satoshi was part of a broader movement known as the "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/Cypherpunk",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "cypherpunks"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              " — a group of cryptography enthusiasts, technologists, and hackers dedicated to using technology to protect individual privacy and freedom in the digital age. The cypherpunk ethos heavily influenced Bitcoin’s design, as they believed cryptography could help build trustless systems resistant to surveillance and control."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Bitcoin wasn’t created in a vacuum. Several earlier projects attempted to build digital money, including "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/DigiCash",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "DigiCash"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ", "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.bitcoin.it/wiki/B-money",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "b-money"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ", and "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://en.bitcoin.it/wiki/B-money",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Bit Gold"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ". These projects laid the groundwork for Bitcoin by exploring concepts like cryptographic security, decentralized ledgers, and peer-to-peer networks. However, they either failed to gain traction, were shut down, or were abandoned."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Satoshi Nakamoto released the "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://bitcoin.org/bitcoin.pdf",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Bitcoin whitepaper"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              " in 2008, titled Bitcoin: A Peer-to-Peer Electronic Cash System, and launched the network in 2009. Despite their monumental contribution, Satoshi disappeared from the public eye in 2010, leaving control of Bitcoin’s development to the community."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Over the years, several individuals have claimed to be Satoshi, but none have provided verifiable evidence. Famously, "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://www.reuters.com/technology/self-proclaimed-bitcoin-inventor-faces-contempt-court-case-over-12-bln-uk-2024-11-01/",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Craig Wright"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              ", an Australian computer scientist, has repeatedly asserted that he is Satoshi. His claims have been widely discredited, and he even lost a significant court case where he failed to substantiate his identity as Bitcoin’s creator."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "To this day, Satoshi Nakamoto’s identity remains one of the greatest mysteries in technology, adding to the mythology surrounding Bitcoin."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Double Question:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "Why is it so volatile? Should I buy it? (not financial advice)"
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "Answer:"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "In markets, volatility usually signals uncertainty, and Bitcoin is no exception. The stratification of perspectives on cryptocurrency is fascinating — there aren’t many “mehs.” Instead, the landscape is dominated by strongly opinionated groups: the “orange-pilled” Bitcoin maximalists, or “"
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://www.investopedia.com/terms/h/hodl.asp",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "HODLers"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              "” (a now-iconic misspelling of “hold” that became a rallying cry), and, on the other side, the skeptical “trad-fi” "
+            ]
+          },
+          {
+            "type": "link",
+            "href": "https://www.amazon.com/Intelligent-Investor-Definitive-Investing-Essentials/dp/0060555661",
+            "children": [
+              {
+                "type": "em",
+                "children": [
+                  "intelligent investors"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "em",
+            "children": [
+              " value more traditional financial valuation models and tangible assets. Most people who fall somewhere in the middle? They’re probably just not paying attention."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "One of the reasons cryptocurrency prices are so volatile is their lack of tangibility. If you buy shares in, say, a paint store, some of its value is rooted in physical assets — its land, property, equipment, and inventory (the paint!). Even if the business collapses or the building catches fire, you can recover some value through those assets. This creates a natural floor for the company’s valuation."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Cryptocurrency, on the other hand, doesn’t have that safety net. If a cryptocurrency fails, the value doesn’t just drop — it disappears entirely. You’re not entitled to the servers, GPUs, or even the electricity used to validate the network. It’s truly digital, which means the risk of losing everything is higher."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "The final — and perhaps most intriguing — factor behind Bitcoin’s volatility is its lack of a central figurehead. There’s no CEO of Bitcoin you can call up to file a complaint, no corporate office to refund your investment, and certainly no one to get your nephew an internship. Bitcoin is decentralized by design. Its development is open source, its network validators are distributed globally, and consensus is achieved through collective agreement — not corporate decree."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "This makes Bitcoin a kind of uncontrollable enigma — a self-propelling, deeply harmonious network that thrives on collective human activity. In a way, investing in Bitcoin means pledging your money to something that cannot be controlled. It’s not just a financial decision — it is philosophical. The network decides for itself. It represents collective freedom: you are free to join, and you are free to leave."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          {
+            "type": "em",
+            "children": [
+              "Should you invest? I don’t know — should you?"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "So, this Thanksgiving, when the Bitcoin questions inevitably roll in, you’ll be ready to educate, entertain, or just deflect with style."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If you want to check out more of my work, visit my ",
+          {
+            "type": "link",
+            "href": "http://derekmeegan.com/",
+            "children": [
+              "website"
+            ]
+          },
+          "."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "mini-article-streamlit-or-dash-why-not-both",
+    "title": "Mini Article: Streamlit or Dash? Why not Both?",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/mini-article-streamlit-or-dash-why-not-both-f58c2f144860",
+    "pubDate": "2024-08-02T19:11:30Z",
+    "categories": [
+      "plotly",
+      "dashboard",
+      "python",
+      "dash",
+      "streamlit"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/924/1*wq5bu2GO_A6ZBE18ih0_1w.png",
+        "alt": "",
+        "width": 924,
+        "height": 538
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "link",
+            "href": "https://streamlit.io/",
+            "children": [
+              "Streamlit"
+            ]
+          },
+          " and ",
+          {
+            "type": "link",
+            "href": "https://dash.plotly.com/",
+            "children": [
+              "Dash"
+            ]
+          },
+          " are two of the most popular dashboarding libraries in Python. Both are touted for their ease of use, high interactability, and widespread community adoption. My personal experience is mostly in Dash, but recently I have been using Streamlit for its simple and customizable ",
+          {
+            "type": "link",
+            "href": "https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps",
+            "children": [
+              "chat interface"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Building with Streamlit but primarily being a Dash user made me think: what if we could harness the power of both libraries at the ",
+          {
+            "type": "strong",
+            "children": [
+              "same"
+            ]
+          },
+          " ",
+          {
+            "type": "strong",
+            "children": [
+              "time? "
+            ]
+          },
+          "Luckily, we can and it’s very simple."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Set Up"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "First, you will want to install the necessary packages:"
+        ]
+      },
+      {
+        "type": "code",
+        "code": "pip install streamlit dash"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Then, create a file for your Streamlit app, I cleverly named mine streamlit_app.py."
+        ]
+      },
+      {
+        "type": "code",
+        "code": "import streamlit as st\n\nst.title('Streamlit App')\nst.write('This is a streamlit app inside a dash app!')"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Next, you will create a Dash app. This is where the magic happens. Within this file, you will launch your Streamlit app on a specific port and embed the application into Dash using an iframe. An iframe (short for inline frame) is an HTML component that can reference and render other HTML pages. My (also cleverly named) dash_app.py looks like this:"
+        ]
+      },
+      {
+        "type": "code",
+        "code": "import streamlit as st\nimport threading\nimport subprocess\nfrom dash import Dash, html\n\ndef run_streamlit_app(file_name):\n    subprocess.run(['streamlit', 'run', file_name, '--server.port=8501'])\n\napp = Dash()\n\napp.layout = [\n    html.Div('This is the dash app.'),\n    html.Iframe(\n        src = 'http://localhost:8501',\n        style = {\n            'width': '100%',\n            'height': '400px',\n            'border': 'none'\n        }\n    )\n]\n\nif __name__ == '__main__':\n\n    threading.Thread(target = run_streamlit_app, daemon=True, kwargs = dict(file_name = 'streamlit_app.py')).start()\n    app.run(debug = True)"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The threading module allows us to run the Streamlit and Dash apps concurrently, while the iframe creates a window from the Dash app into the Streamlit app."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "The Final Product"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "You can launch the application by running:"
+        ]
+      },
+      {
+        "type": "code",
+        "code": "python3 dash_app.py"
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*tduGKwR9HLLTe6Q1MYYTxA.png",
+        "alt": "",
+        "width": 1600,
+        "height": 903,
+        "caption": [
+          "Streamlit app displayed in a Dash app using an iframe"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And voila! You have created an application that combines both Dash and Streamlit. Future work on this project could involve creating an application that allows a user to interact with the same dataset using both applications. This may involve a separate backend server where each app would instantiate its own connection. By using this design pattern, you can combine the best of two of the top dashboarding libraries in the Python ecosystem. To explore this project further, play around with the code, or contribute, visit the GitHub repository set up for this project: ",
+          {
+            "type": "link",
+            "href": "https://github.com/derekmeegan/streamlit_in_dash/tree/main",
+            "children": [
+              "streamlit_in_dash"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "For more projects and updates, check out my website: ",
+          {
+            "type": "link",
+            "href": "http://derekmeegan.com/",
+            "children": [
+              "derekmeegan.com"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "a-business-lesson-from-chess-that-is-actually-not-cliche",
+    "title": "A Business Lesson from Chess That is Actually Not Cliché",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/a-business-lesson-from-chess-that-is-actually-not-clich%C3%A9-5ef7ca417dce",
+    "pubDate": "2024-07-17T16:09:49Z",
+    "categories": [
+      "personal-development",
+      "chess",
+      "business",
+      "business-strategy",
+      "self-improvement"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/0*gkOwIu1zkyiX8adS.jpg",
+        "alt": "",
+        "width": 1199,
+        "height": 800,
+        "caption": [
+          "Image by Muhammad Fatchurofi"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Besides a few random games with my dad or on my desktop computer when my internet was down, I did not start avidly playing chess until late in high school. A video of ",
+          {
+            "type": "link",
+            "href": "https://www.youtube.com/watch?v=U5vnpOp0U_g&ab_channel=GrandmasterMauriceAshley",
+            "children": [
+              "Maurice Ashley"
+            ]
+          },
+          ", ",
+          {
+            "type": "link",
+            "href": "https://en.wikipedia.org/wiki/Grandmaster_(chess)",
+            "children": [
+              "FIDE Grandmaster"
+            ]
+          },
+          ", playing a chess hustler in New York City came across my timeline, piquing my interest and eliciting a click. Maurice and his opponent were strikingly juxtaposed; Maurice played with a nonchalant yet coolly calculated demeanor, was well-dressed and spoke sparingly (until the end of the game when he picked up his trash talk). In contrast, his opponent played with a fervent and hacky manner, appeared slightly disheveled, and was talkative throughout the match (until he realized his impending doom)."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "I found Maurice’s play incredibly impressive. He did not seek to best his opponent through trickery or brute force but through calculated and thoughtful decision-making. He further reinforced his skills with his confident, yet humble demeanor. In short, he executed a superior strategy with both exceptional aptitude and grace. Inspired by his performance, I immediately created an account on ",
+          {
+            "type": "link",
+            "href": "http://chess.com/",
+            "children": [
+              "chess.com"
+            ]
+          },
+          ", marking the beginning of my chess journey, which continues to this day. Since then, I have developed an even deeper appreciation for the game, admiring its balanced pieces, the clarity from both players having complete information, and the endless variety of positions to analyze."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Chess matches are often used in movies or business as allegories for life, often in the most cliché way possible. For example:"
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "We are playing chess while they are playing checkers."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "https://medium.com/media/1a8fb30e6f7be42ce6a5408a6a47035f/href"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While sometimes true, statements like these are overly simplistic and fail to highlight the nuanced aspects of chess beyond the simple fact that the game is complex. Below, I will describe a lesson in business, and more generally in life, from chess that is not cliche (hopefully) and is ",
+          {
+            "type": "em",
+            "children": [
+              "actually"
+            ]
+          },
+          " derived from the individual characteristics of the game."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "To understand the lesson, we will explore two individual facets of the game and then join them together to form a cohesive thesis."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Prong 1: Positional Potential"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "To understand the beginning we must begin at the end (a bonus chess lesson). The ultimate objective of chess is to checkmate your opponent. Whereby you attack their king with one or more pieces, but your opponent cannot defend your attacker(s), block your attacker(s) from the king, and the king cannot escape to a different square where it will not be attacked. Below I have selected a few examples to provide clarity:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/480/0*gaIAE4KPr1Ar80IN.png",
+        "alt": "",
+        "width": 480,
+        "height": 480,
+        "caption": [
+          "Back Rank Mate: The rook will attack the black king with nowhere to escape."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/480/0*Nml8e1A2jAvFZIpT.png",
+        "alt": "",
+        "width": 480,
+        "height": 480,
+        "caption": [
+          "Damiano’s Mate: The queen will attack the black king, supported by the white pawn, and the placement of the black pieces blocks its king from evading the attack."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/480/0*IbNjGNLvLPcr0kgq.png",
+        "alt": "",
+        "width": 480,
+        "height": 480,
+        "caption": [
+          "Corner Mate: The knight attacks the black king but it cannot move because the rook is defending all squares on the G file."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "As you can see, checkmate does not involve knocking the king off the board, but rather that your ",
+          {
+            "type": "em",
+            "children": [
+              "next"
+            ]
+          },
+          " move will inevitably result in the king’s elimination from the game. What does this mean? The value of your position is best described by the outcome of where you ",
+          {
+            "type": "em",
+            "children": [
+              "can "
+            ]
+          },
+          "go. This also extrapolates beyond trying to checkmate your opponent. Chess is about space control, not piece placement, whereby you utilize your pieces to control a collection of squares across the board. This is why it is advantageous to think multiple moves ahead, as it forces you not only to consider your strategy but also the next logical moves of your opponent and therefore their strategy."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Prong 2: Collective Synergy"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Having understood the first prong, let’s examine the second. Checkmate is the goal, but it requires specific pieces. You must have your king, as if you are checkmated then the game is already lost. Additionally, a king cannot checkmate another king alone; it needs support from ",
+          {
+            "type": "em",
+            "children": [
+              "at least "
+            ]
+          },
+          "a rook, queen, or combination of minor pieces. Moreover, once you have the minimum pieces to checkmate, achieving it becomes significantly easier with additional pieces. The moral of the story:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "https://medium.com/media/a85281861bd9a1d8eb62d630674774bc/href"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "With more pieces, each providing unique or complementary skill sets, it becomes easier to achieve the collective’s ultimate goal of checkmate. This effect is reinforced by cohesive cooperation between the individual pieces. A collective strategy is more effective than a disparate one, and thus more pieces working together cohesively yields a higher likelihood of success."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Putting it all Together"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "To achieve any goal optimally, you need to maximize where you can go with the help of others. Identify your unique skills that allow you to tackle specific problems or seize opportunities. Then, collaborate with people whose complementary or reinforcing skills align with the same objective. This synergy, along with everyone’s willingness to contribute, opens new doors and enhances the collective effort towards success."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This lesson greatly emphasizes the social aspect of achievement. It highlights the importance of networking and socializing to identify individuals with similar goals and capacity for collaboration. It is extremely difficult to be a ‘one-man band,’ as a myriad of factors will limit your success if you try to go it alone."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Moreover, you can bolster your chances of finding individuals to collaborate with by continuously enhancing your own skillset and adopting an attitude of selflessness and generosity in your willingness to help others. By providing a valuable skillset and demonstrating your willingness to contribute towards a common objective, you can attract others to join your efforts or make collective progress towards a shared goal."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "So, pick up that course you never finished and RSVP to that meet-up you’ve been planning to attend. The best way to achieve your goals is to continuously improve yourself and actively seek out others who share your vision. Embrace the power of collaboration and let your combined efforts pave the way to success."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "6-pandas-techniques-that-saved-my-life",
+    "title": "6 Pandas Techniques that Saved My Life",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/6-pandas-techniques-that-saved-my-life-0d8fcf7d2c26",
+    "pubDate": "2024-06-21T17:14:42Z",
+    "categories": [
+      "data-science",
+      "data-visualization",
+      "pandas",
+      "data",
+      "python"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/750/1*AB7Ow6aGd8RMhN2uRSYFVw.png",
+        "alt": "",
+        "width": 750,
+        "height": 368
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If you work with data in your job or side projects, then you likely spend the vast majority of your time cleaning, manipulating, and transforming your data before you even get to work with it. In fact, it’s a popular trope among data scientists that 80% of their time is spent wrangling data."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Given this reality, you’ve probably worked with pandas, the essential Python library for data manipulation. I’ve used pandas extensively for everything from ad-hoc analyses to building production-level data pipelines. Through my experience, I’ve collected six cardinal techniques that have significantly streamlined my workflow and improved the quality of my code."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In this article, I’ll explore the techniques and demonstrate how to apply them effectively using the iconic ",
+          {
+            "type": "link",
+            "href": "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csvhttps://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
+            "children": [
+              "Titanic Dataset"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Chaining"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Chaining is at the center of all the techniques described below. It’s a method that allows you to apply multiple operations to your data in a single, continuous statement, creating a streamlined pipeline that looks more like a cohesive recipe than a series of separate steps. This style of pandas was popularized by Matt Harrison, a Python and data science trainer and author of ",
+          {
+            "type": "link",
+            "href": "https://www.amazon.com/Effective-Pandas-Patterns-Manipulation-Treading/dp/B09MYXXSFM",
+            "children": [
+              "Effective Pandas"
+            ]
+          },
+          " (highly recommend)."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Chaining does ",
+          {
+            "type": "strong",
+            "children": [
+              "not"
+            ]
+          },
+          " resemble traditional programming, which aims to make operations independent and functions small and simple. Instead, chaining represents data-oriented workflows more realistically, where data is gradually cleansed or augmented through a series of operations. This approach can be intimidating for beginners due to the potential length and complexity of workflows. However, chaining quickly becomes an easy and intuitive approach to creating robust data pipelines by understanding a few basic principles and breaking down workflows step by step."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Below I have created a sample workflow for performing a common set of operations on the dataset. I used variable reassignment in the first snippet and chaining in the second. Which one looks cleaner to you?"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*LNi3eEmnl6170PYPo-xQew.png",
+        "alt": "",
+        "width": 1600,
+        "height": 711,
+        "caption": [
+          "Without chaining"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*DSgEpPAEmh2iOZWz3-sbkQ.png",
+        "alt": "",
+        "width": 1600,
+        "height": 717,
+        "caption": [
+          "With chaining"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Notice how we did not have to create variables in the chain version! If you were executing this pipeline in a Jupyter Notebook, you could directly run the cell to inspect the results. In production, you would need to save the results to a variable, but you eliminate four other variable instantiations, resulting in cleaner and more maintainable code."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "To maintain visual clarity when chaining, arrange your pipeline code hierarchically, where each additional indent corresponds to a deeper level in the pipeline. This becomes increasingly crucial as the workflow becomes more complex. Additionally, note the use of “lambda” functions in the .assign method. While they may seem daunting at first, these lambdas simply reference the preceding DataFrame they are attached to, which is particularly useful when applying transformations to grouped or filtered data or when creating multiple interdependent columns."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Now that we understand the importance and advantages of chaining, let’s explore some techniques that leverage this approach to tackle complex tasks easily."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Inspecting Duplicated Rows"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Pandas’ built-in drop_duplicates function is useful for removing duplicate rows, but it doesn't show us the duplicated rows themselves. To identify duplicates, we use the .duplicated method, which returns a boolean series where rows are True if they are duplicates of a preceding row. However, this often leads to the creation of clunky code:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*eRDxebTO5Dkk-jA67I9b9w.png",
+        "alt": "",
+        "width": 1600,
+        "height": 554
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While this achieves our goal, we can improve our approach. First, we can replace vanilla boolean indexing with .loc , allowing us to create dynamic filtering expressions."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*Q3qp8tP88W3KVtXJ9MIRGw.png",
+        "alt": "",
+        "width": 1600,
+        "height": 559
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And voila! We filtered for the duplicated rows without variable reassignment. While you can use .drop_duplicates like we mentioned above to drop the duplicated rows, you can also filter them out using the same expression above with a ~ operator prepended to the row.duplicated filter."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*3g7I90oXCFDFD1eSmkJt8Q.png",
+        "alt": "",
+        "width": 1600,
+        "height": 559
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The ~ operator reverses the boolean conditions of the filter statement, such that only rows that were not duplicated would be returned. This is handy when you want to inspect your data and quickly peek at the duplicated and non-duplicated rows."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Value selection using .loc"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "One aspect of pandas I have found tricky is accessing a specific value in an individual cell. While we often use pandas to operate on rows or columns, sometimes we need to extract individual values. The general technique for doing this typically looks like the following:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*nZLMBDP5kKS8_-On4IJDfA.png",
+        "alt": "",
+        "width": 1600,
+        "height": 586
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While this does work, the .iloc property can feel a bit hacky. Fortunately, with a bit of preparation before using .loc method, we can access values directly. The key is to set the column you are filtering on as the ",
+          {
+            "type": "strong",
+            "children": [
+              "index"
+            ]
+          },
+          " of the DataFrame. This way, you can use the name as the first accessor in the .loc statement and then specify the desired column as the second accessor."
+        ]
+      },
+      {
+        "type": "quote",
+        "children": [
+          "Note that if the column you set as the index contains duplicate values, you may receive multiple rows as a result of your .loc statement. Therefore, ensure that duplicates are either handled or not present in the column you set as the index."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*GWbQRavdM4vCkvm82iXS8A.png",
+        "alt": "",
+        "width": 1600,
+        "height": 601
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The following techniques all revolve around .pipe, one of the handiest methods in pandas. It allows you to chain any custom function, whether predefined or expressed through lambda, onto a DataFrame or series. However, be cautious: the result of a DataFrame passed through a pipe function is not always a DataFrame itself. Depending on how the function returns, you may ",
+          {
+            "type": "strong",
+            "children": [
+              "not be able"
+            ]
+          },
+          " to chain additional pandas transformations. Let’s take a look at how it works."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Pipe Ternary"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Pandas is excellent at performing row, column, and table-oriented transformations on data, but ironically has poor support for conditional operations. One workaround I have leveraged is using ternary functions within lambdas in the .pipe method. Let’s say you are creating a pipeline for the Titanic dataset and it expects a column called “Cabin”. However, you cannot guarantee that the column will always be present. You may do something like this:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*lhdiM8nEa2kXKd0QvO9UdQ.png",
+        "alt": "",
+        "width": 1600,
+        "height": 586
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This works; however, it breaks your chain! For a one-off operation, this might be acceptable, but if multiple such instances occur in a larger pipeline, it quickly becomes unreadable. Instead, we can define a simple lambda function within the pipe to perform the ternary operation:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*m9xdh_TiPLcblEnH0i_wpw.png",
+        "alt": "",
+        "width": 1600,
+        "height": 730
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Using .pipe, we create a custom ternary function that checks if “Cabin” already exists in the DataFrame's columns. If it does, the function directly returns the DataFrame; if not, it assigns the column. Now, let's take a look at something a bit fancier…"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Apply Transformation to a Subset of Columns"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This is by far the most useful technique in my day-to-day work, as I often deal with datasets comprising multiple data types, with similar columns requiring the same transformations. Take the Titanic dataset, for example. There are null values across various columns, but let’s say we only want to forward-fill the “Age” and “Sex” columns. How would we do that? One way is by using the .assign method and lambda functions to overwrite the original columns:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*d2uKMDMiB0632m_wiVr99w.png",
+        "alt": "",
+        "width": 1600,
+        "height": 697
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "But what if, instead of transforming two columns, we want to transform ten? Typing the same transformation repeatedly becomes tedious, and if you need to change the transformation, you’ll have to update it ten times. Luckily, there’s a better way using .pipe, lambda, and a little Python unpacking magic:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*p-ZjA31xRnqMuTzYSRsNbA.png",
+        "alt": "",
+        "width": 1600,
+        "height": 826
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This may look confusing at first, but like any chained flow, let’s break it down step by step. First, the lambda function in the .pipe method passes the DataFrame into a new flow (yes, a flow within a flow). In this flow, we unpack a smaller DataFrame (comprising only the columns we want to transform) from the original DataFrame. Using this technique, we can apply .ffill to the smaller DataFrame, targeting only the desired columns, and then unpack these columns directly back onto the original DataFrame. This approach is not only syntactically clearer but also provides performance optimization, as .ffill is called only once!"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Next, we will explore how .pipe can help us flow our prepared data directly into visualization libraries."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Piping Transformed Data Directly into Plotly"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While I prefer Plotly for its intuitiveness and visual appeal, this strategy also works with Matplotlib, Seaborn, and other graphing libraries that interface directly with pandas DataFrames and NumPy series. Typically, we perform our data operations first and then create a secondary function for visualizing the results. However, when working with data, the speed of iteration is important. Ideally, we could append visualizations directly to our chained flow to better inspect the results of our analysis. Using the .pipe method, we can do just that. For example, let's say I want to take a glance at the distribution of fare prices aboard the Titanic:"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*p0cyOWlNhaY-1Alu4hPmbA.png",
+        "alt": "",
+        "width": 1600,
+        "height": 875
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In this flow, I do not use a lambda function but instead, pass the desired function directly as the first argument in the .pipe method. The subsequent arguments are associated with the px.histogram function and pandas smartly passes these as additional keyword arguments. The result of the .pipe method is a Plotly chart, allowing me to directly append Plotly methods to the chain, seamlessly merging my pipeline and visualization."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*h8-L2NCmrWYoAvZxnVg_HA.png",
+        "alt": "",
+        "width": 1250,
+        "height": 750
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "And there you have it — six life-saving techniques for writing better and more efficient pandas code. In each example, I started the flow with the original dataset. This is intentional, as it’s generally better to read the data directly from the source for each analysis, especially in notebook environments. This approach prevents previous data transformations from altering the results of your pipeline and ensures your pipelines remain reproducible, even if the notebook outputs are refreshed or removed."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If you’d like to experiment with the code examples mentioned above, check out the notebook version of this article on my ",
+          {
+            "type": "link",
+            "href": "https://github.com/derekmeegan/six_lifesaving_pandas_techniques",
+            "children": [
+              "GitHub"
+            ]
+          },
+          ". For more about me, my projects, and other work, visit my ",
+          {
+            "type": "link",
+            "href": "http://derekmeegan.com/",
+            "children": [
+              "website"
+            ]
+          },
+          "."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "the-case-for-categorical-scoring-in-sport-martial-arts",
+    "title": "The Case for Categorical Scoring in Sport Martial Arts",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/the-case-for-categorical-scoring-in-sport-martial-arts-c930f7f85c79",
+    "pubDate": "2024-06-17T21:51:32Z",
+    "categories": [
+      "martial-arts",
+      "sport-karate",
+      "karate",
+      "naska"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "5 reasons we need to rethink how we judge competitors"
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/1024/1*esj3vvZfMxQFak_iExwjHw.png",
+        "alt": "",
+        "width": 1600,
+        "height": 812,
+        "caption": [
+          "Photo by ",
+          {
+            "type": "link",
+            "href": "https://www.facebook.com/LindseyLittlePhoto",
+            "children": [
+              "Lindsey Little"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While there has been much discussion about legitimizing Sport Martial Arts, one critical issue is often overlooked: scoring. How can we professionalize our sport when our “modern” scoring system has barely evolved beyond its primitive origins? I raise this issue because getting the scoring system right is the ",
+          {
+            "type": "strong",
+            "children": [
+              "most crucial step"
+            ]
+          },
+          " we must take to ensure the sport’s credibility and future growth."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "The Current Scoring System"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The North American Sport Karate Association (NASKA) currently leverages relative ranking for scoring. Here is how it works:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          [
+            "As each competitor performs, you rank them in comparison to those who have already performed (e.g., the first competitor is ranked first, the second competitor is ranked first if better than the first, and so on)"
+          ],
+          [
+            "Once all competitors have performed, scores are assigned based on the final ranking, with the best competitor receiving a 9.99, the second-best a 9.98, and so forth."
+          ],
+          [
+            "Judges can only assign scores from 9.96 to 9.99 once (though this rule is frequently broken) but may give scores of 9.95 or below multiple times"
+          ],
+          [
+            "If one judge gives a score .02 lower then the next lowest score or higher than the next highest score, then that score is automatically adjusted to bring it within the respective range or scores of the other judges (to prevent wide variations in scoring and ensure consistency)"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While this system appears logical, it has significant shortcomings:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          [
+            {
+              "type": "strong",
+              "children": [
+                "Relative Ranking: "
+              ]
+            },
+            "Although logical in theory, the relative ranking rule becomes impractical with large division sizes. While it was developed to address the disadvantage faced by early competitors, it falls short in practice. As a judge, I often struggle to recall each competitor’s performance when the division exceeds 10–12 competitors. Consequently, early performers still tend to be less likely to win or place accurately relative to their skill."
+          ],
+          [
+            {
+              "type": "strong",
+              "children": [
+                "Definition of “Best”"
+              ]
+            },
+            ": The term “best” is ambiguous. What components are we judging, and how do we weigh them? Currently, much is left to the judges’ interpretation, leading to inconsistent and undesirable outcomes."
+          ],
+          [
+            {
+              "type": "strong",
+              "children": [
+                "Unique Scoring Rule"
+              ]
+            },
+            ": This rule is often violated. Additionally, it does not address situations where a deviation forces a judge to give the same score to two competitors. Overuse of the 9.95 or below scores leaves competitors with little feedback on their ranking if they place below fourth."
+          ],
+          [
+            {
+              "type": "strong",
+              "children": [
+                "Deviation Rule"
+              ]
+            },
+            ": While this rule adds some consistency, it is problematic when combined with the other rules."
+          ]
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "My Proposal"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "My proposal is general for a reason: these decisions should be made collectively by the community. Instead of a fully-fledged scoring system, I recommend a general framework to replace relative ranking. The arbitrary nature of relative ranking leads to variations among judges, is inadequate for large divisions, and allows undetected bias. Relative ranking should be replaced by absolute scoring with weighted categories. Judges would assign scores in specific categories (e.g., technique, performance, athleticism), which are then weighted and summed. This system, used by other martial arts leagues like the World Karate Federation (WKF), offers several benefits:"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "1. Community-Derived Prioritization"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "My primary concern with the current system is its subjective nature. One judge might heavily prioritize stances, while another might disregard them entirely. This inconsistency is exacerbated when tournaments rely on local judges, making it challenging to maintain uniformity across different events and even within the same tournament. Although not perfect, categorizing scores with specific weightings would enable the community to collectively determine the most important aspects of performances, leading to greater consistency and fairness."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "2. Concrete Judging Criteria"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "There has been significant effort over the past year to establish specific criteria for judging sport martial arts performance. This is a challenging task, especially given the variety of styles and types of martial arts on the circuit. However, establishing clear criteria is impossible with relative scoring. In each division, scores are relative to other competitors, making it difficult to assign discrete values to the difficulty of moves or the quality of performances. Absolute scoring would address this issue, allowing for specific weights to be assigned to different techniques on a discrete scale, thus providing clarity and objectivity in the judging process."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "3. Rationalizing Point Deductions"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "There are several ways to receive a point deduction, such as striking a bystander with a weapon or restarting a routine. However, deductions don’t make much sense in the context of relative scoring. If someone restarts their routine, I can’t simply ignore the restart, score them relative to their competitors, and then apply the deduction. Instead, judges often factor the restart into their initial scoring and then apply the deduction, which typically results in a lower score than deserved. Under an absolute and categorical scoring model, the highest score a judge can give in a category could be capped based on the type of mistake. For instance, if the maximum score for performance is 10, a restart could cap the score at 7 or 8. This way, the restart isn’t considered relative to other competitors’ performances; it’s judged on a separate scale, making the process fairer for the competitor."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "4. Improved Scoring for Large Divisions"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "With objective scores and categories, judges can directly provide a score to each competitor immediately after their routine. This approach addresses the issue with large divisions, where judges are expected to remember the routines of over twenty competitors (newsflash, they do not). By scoring immediately, competitors who perform first receive a fairer evaluation, as they won’t be overlooked or lost in the mix. This ensures a more accurate and consistent scoring process."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "5. Reduced Favoritism"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Yes, it happens, and I am not pointing any fingers; I have certainly benefited from it in my career. However, favoritism needs to be eliminated, and structural changes are necessary to achieve this. Implementing a robust, categorical scoring system will provide more structure around how judges formulate their scores. The more structured the system, the less arbitrary the scoring, making it harder to implement favoritism. Additionally, further developments should aim to create distance between competitors, parents, coaches, and judges to ensure impartiality."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Looking Forward"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "While the proposed scoring system offers significant improvements in fairness and objectivity, it also presents challenges that we ",
+          {
+            "type": "strong",
+            "children": [
+              "must"
+            ]
+          },
+          " anticipate. Implementing such a system will require extensive training for judges, and developing standardized criteria across various martial arts styles could be complex. The transition will also surely face resistance from those accustomed to the current system. Despite these potential drawbacks, the proposed system holds the promise of enhancing the overall professionalism of sport martial arts, provided it is implemented thoughtfully and inclusively."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We owe it to our competitors to perfect the scoring system. Failing to do so has likely led to the wrong elements being prioritized, undermining the integrity of our sport. A more optimal scoring system would not only elevate the quality of competition but also bring greater prestige and legitimacy to sport martial arts. Enhancing the objectivity and fairness of our scoring is essential for our sport’s future. To achieve this, we need the collective effort and unwavering commitment of our community. Together, with a shared vision for growth and excellence, we can transform sport martial arts into a platform that truly spotlights our athletes’ greatness, showcasing their skills and dedication with the professionalism and respect they deserve."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "should-we-be-talking-about-p-doom",
+    "title": "Should we be talking about p(doom)?",
+    "source": "medium",
+    "url": "https://derekmeegan.medium.com/should-we-be-talking-about-p-doom-277833aecf57",
+    "pubDate": "2024-06-06T18:27:12Z",
+    "categories": [
+      "technology",
+      "agi",
+      "artificial-intelligence",
+      "ai",
+      "philosophy"
+    ],
+    "authors": [
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "They’re talking about the world ending again."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "https://cdn-images-1.medium.com/max/700/1*xsyuwO5zwP22IRiFAhok3A.jpeg",
+        "alt": "",
+        "width": 700,
+        "height": 325,
+        "caption": [
+          "Hal from 2001: A Space Odyssey"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Unless you are an avid member of tech Twitter (now tech X?) or Reddit, then you likely have not heard of the term “p(doom)”. The structure of the term comes from probability theory, where the “P” stands for probability and the term in parenthesis is the event being considered. Therefore p(doom) in plain English is ",
+          {
+            "type": "strong",
+            "children": [
+              "the probability of doom"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "*queue ominous music*"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The rise of artificial intelligent systems like ChatGPT has shifted these discussions from niche corners of the internet to mainstream conversations. Suddenly, the concept of human-level artificial intelligence isn’t just sci-fi fantasy but a tangible possibility. This is further underscored by the rapid speed of enhancements in AI technology, particularly large language models (LLMs), which is happening at a pace that continually surprises even experts in the field. Developments in the capabilities of LLMs are also coming from all directions, including new input modalities (vision, audio, etc), increased context length (better ability to process large amounts of information), enhanced inference speed (response time), and improved accuracy. This accelerated progress has led to a surge in funding for AI research and a proliferation of startups, all racing to push the boundaries of what these systems can achieve."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "At the same time, there have been a slew of AI researchers, ethicists, and public figures voicing concerns about the potential risks of these advancements. The conversations around “p(doom)” and existential threats have gained traction, fueled by the fear that highly advanced AI systems, specifically ",
+          {
+            "type": "strong",
+            "children": [
+              "artificial general intelligence (AGI)"
+            ]
+          },
+          " and ",
+          {
+            "type": "strong",
+            "children": [
+              "artificial superintelligence (ASI)"
+            ]
+          },
+          ", could one day pose significant dangers if not properly controlled. “Artificial general intelligence (AGI) is a field of theoretical AI research that attempts to create software with human-like intelligence and the ability to self-teach. The aim is for the software to be able to perform tasks that it is not necessarily trained or developed for” (",
+          {
+            "type": "link",
+            "href": "https://aws.amazon.com/what-is/artificial-general-intelligence/",
+            "children": [
+              "Amazon"
+            ]
+          },
+          ", 2024). “Artificial superintelligence (ASI) is a hypothetical software-based artificial intelligence (AI) system with an intellectual scope beyond human intelligence. At the most fundamental level, this superintelligent AI has cutting-edge cognitive functions and highly developed thinking skills more advanced than any human” (",
+          {
+            "type": "link",
+            "href": "https://www.ibm.com/topics/artificial-superintelligence",
+            "children": [
+              "IBM"
+            ]
+          },
+          ", 2024)"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In the past, discussions focused on what humans ",
+          {
+            "type": "em",
+            "children": [
+              "theoretically"
+            ]
+          },
+          " thought would happen if AGI were developed; today, the conversations are about what ",
+          {
+            "type": "em",
+            "children": [
+              "will"
+            ]
+          },
+          " happen. On one side, we have team doom, like the former OpenAI governance researcher who just predicted that the development of AGI has a ",
+          {
+            "type": "strong",
+            "children": [
+              "70% chance "
+            ]
+          },
+          "of destroying humanity (",
+          {
+            "type": "link",
+            "href": "https://futurism.com/the-byte/openai-insider-70-percent-doom",
+            "children": [
+              "Futurism"
+            ]
+          },
+          ", 2024). On the other side, we have team optimism, like Sam Altman, CEO of OpenAI, who believes that AI will represent a material breakthrough for humanity and is willing to spend whatever it takes to develop it (",
+          {
+            "type": "link",
+            "href": "https://www.techopedia.com/news/sam-altman-stanford-university-talk-on-agi-5-things-we-learned",
+            "children": [
+              "Techopedia"
+            ]
+          },
+          ", 2024). Clearly, there are some differences of opinion at OpenAI and within the tech community at large. So, why does the narrative of impending doom resonate so strongly with us?"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The answer lies in our history. Humans have been fascinated with the end of the world for centuries, whether through religious prophecies, natural disasters, or speculative fiction. Here are just a few examples in recent history (",
+          {
+            "type": "link",
+            "href": "https://www.britannica.com/list/10-failed-doomsday-predictions",
+            "children": [
+              "Britannica"
+            ]
+          },
+          ", 2013):"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          [
+            "2012 Maya Apocalypse (2012)"
+          ],
+          [
+            "Harold Camping (1994)"
+          ],
+          [
+            "True Way (1988)"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Obviously, all of these turned out to be hoaxes, but even many of the real existential threats we have faced in the past like nuclear fallout, asteroids, or even global pandemics have raised discussions about the potential downfall of humanity. However, the development of AGI presents a material difference in the makeup of our world, representing a fundamentally new kind of risk. It’s not an external force like an asteroid or a pandemic, but ",
+          {
+            "type": "strong",
+            "children": [
+              "our own creation"
+            ]
+          },
+          ", with the ability to",
+          {
+            "type": "strong",
+            "children": [
+              " surpass human intelligence"
+            ]
+          },
+          " and potentially",
+          {
+            "type": "strong",
+            "children": [
+              " operate beyond our control"
+            ]
+          },
+          ". This shift from speculative fear to tangible technological possibility is what makes AGI such a compelling and urgent topic. The stakes are higher because the outcomes are less predictable and the potential impact on our society is unprecedented."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Ultimately, your calculation of p(doom) is likely dependent on your faith in humanity. Our collective decisions will determine the outcome of AGI, which makes it both comforting in that we are in control and discomforting in ",
+          {
+            "type": "em",
+            "children": [
+              "that we are in control"
+            ]
+          },
+          ". The development of AGI forces us to confront not just what might happen to us, but what we might bring upon ourselves. Do you trust your fellow humans? Do you trust corporations and regulators on the front line of development? Answers may vary."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "As we stand on the brink of this new technological and economic era, the importance of transparency, proper alignment of incentives, and global cooperation cannot be overstated. The immense uncertainty surrounding the outcome of AGI necessitates deep collaboration and wide discussion of its implications and development to ensure AGI benefits all humankind. Hopefully, we will all look back at this talk of the end of the world and laugh (as our AGI servants bring us mocktails and hors d’oeuvres of course)."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "So that leaves one last question: what is your p(doom)?"
+        ]
+      }
+    ]
+  }
+]

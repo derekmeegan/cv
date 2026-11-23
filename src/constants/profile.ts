@@ -28,7 +28,7 @@ const descriptors = [
   "I am a designer",
   "I am an artist",
   "I enjoy the sunset",
-  "I love my girlfriend <3",
+  "I love my fiance <3",
   "I am a nephew",
   "I am an uncle (in a second-cousin way)",
   "I lived in Philadelphia for 7 years",

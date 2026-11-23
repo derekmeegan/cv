@@ -1,0 +1,158 @@
+/* Long-form typography for /writing/<slug>, in the site's own typeface. */
+
+.article-body {
+  font-size: 15px;
+  line-height: 1.8;
+  color: hsl(var(--foreground) / 0.8);
+  overflow-wrap: break-word;
+}
+
+.article-body > * + * {
+  margin-top: 1.3em;
+}
+
+.article-body h2,
+.article-body h3 {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  text-wrap: balance;
+}
+
+.article-body h2 {
+  margin-top: 2.4em;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.article-body h3 {
+  margin-top: 2.2em;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.article-body :is(h2, h3) + * {
+  margin-top: 0.75em;
+}
+
+/* a heading that opens the article needs no run-up */
+.article-body > :first-child {
+  margin-top: 0;
+}
+
+.article-body p {
+  text-wrap: pretty;
+}
+
+.article-body strong {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.article-body a {
+  color: hsl(var(--foreground));
+  text-decoration: underline;
+  text-decoration-color: hsl(var(--foreground) / 0.3);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s;
+}
+
+.article-body a:hover {
+  text-decoration-color: currentColor;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.5em;
+}
+
+.article-body ul {
+  list-style: disc;
+}
+
+.article-body ol {
+  list-style: decimal;
+}
+
+.article-body li + li {
+  margin-top: 0.55em;
+}
+
+.article-body li::marker {
+  color: hsl(var(--muted-foreground));
+}
+
+.article-body blockquote {
+  padding-left: 1.1em;
+  border-left: 2px solid hsl(var(--foreground) / 0.18);
+  color: hsl(var(--foreground) / 0.66);
+}
+
+/* several quotes in a row read as one passage, under one rule */
+.article-body blockquote + blockquote {
+  margin-top: 0;
+  padding-top: 1.1em;
+}
+
+.article-body pre {
+  padding: 14px 16px;
+  overflow-x: auto;
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  background: hsl(var(--secondary) / 0.6);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: hsl(var(--foreground) / 0.88);
+  tab-size: 2;
+}
+
+.article-body :not(pre) > code {
+  padding: 0.12em 0.36em;
+  border-radius: 4px;
+  background: hsl(var(--secondary));
+  font-size: 0.92em;
+  color: hsl(var(--foreground));
+}
+
+.article-body figure {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.article-body figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border-radius: 6px;
+}
+
+.article-body figcaption {
+  margin-top: 0.7em;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+}
+
+.article-body hr {
+  width: 30%;
+  margin: 2.6em auto;
+  border: 0;
+  border-top: 1px solid hsl(var(--border));
+}
+
+@media (max-width: 480px) {
+  .article-body {
+    font-size: 14px;
+  }
+
+  .article-body pre {
+    font-size: 12px;
+  }
+}
+
+@media print {
+  .article-body pre {
+    white-space: pre-wrap;
+  }
+}

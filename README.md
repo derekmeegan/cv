@@ -1,5 +1,25 @@
 My virtual resume and personal website :)
 
+## Writing
+
+`/writing` lists my articles and `/writing/<slug>` renders each one on this
+site, with a link back to where it was first published.
+
+- **Medium** posts come from the Medium feed when the site is built, so a new
+  post appears on the next deploy with nothing to do here.
+- **Browserbase** posts have no feed, so their copy is stored in the repo:
+  `src/data/articles/browserbase.json`, with the pictures in
+  `public/images/articles/`.
+
+`pnpm articles:sync` refreshes both. To add a Browserbase post, put its URL
+in `src/data/articles/links.json` and run it. It also saves a snapshot of the
+Medium feed (`medium.json`), which the site falls back on if the feed cannot
+be reached and which keeps posts that have dropped off the feed (Medium only
+carries the latest ten) — so run it now and then.
+
+The stored files are plain data and can be edited by hand. The typography is
+in `src/app/(site)/writing/article.css`.
+
 ## Gallery
 
 `/gallery` is pieces I like, floating on the page: frame against frame,

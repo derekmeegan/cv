@@ -1,0 +1,1303 @@
+[
+  {
+    "slug": "internal-agents",
+    "title": "How we build internal agents at Browserbase",
+    "source": "browserbase",
+    "url": "https://www.browserbase.com/blog/internal-agents",
+    "pubDate": "2026-04-16",
+    "categories": [
+      "Browserbase",
+      "Engineering"
+    ],
+    "authors": [
+      "Kyle Jeong",
+      "Derek Meegan"
+    ],
+    "blocks": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "TLDR; Generalized agents will become the interface for knowledge work and the browser is the universal “API” for everything that doesn’t expose one."
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Bret Taylor theorizes that the ",
+          {
+            "type": "link",
+            "href": "https://x.com/tbpn/status/2041286830214259069",
+            "children": [
+              "future of work will be interfaced by agents"
+            ]
+          },
+          ", give them a task and have them complete it on your behalf. We agree."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "\"Now we think, in the future, most people are just going to be talking to AI agents, and they're just going to be performing those actions on your behalf.”"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Every closed support ticket, every meeting transcript, every data pull, and many PRs at Browserbase goes through one generalized agent. Its name is ",
+          {
+            "type": "strong",
+            "children": [
+              "bb"
+            ]
+          },
+          ". ",
+          {
+            "type": "code",
+            "text": "@bb"
+          },
+          " lives in Slack and can write PRs, investigate production sessions, query Snowflake, log feature requests to HubSpot, and run browser agents across engineering, ops, sales, support, and exec."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Instead of building a bot per task, we run one agent loop and “lazy load” two things per task: ",
+          {
+            "type": "strong",
+            "children": [
+              "skills"
+            ]
+          },
+          " (playbooks) and ",
+          {
+            "type": "strong",
+            "children": [
+              "permissions"
+            ]
+          },
+          " (scope). Today, ",
+          {
+            "type": "strong",
+            "children": [
+              "Agents are most valuable when you point them at easy problems you already know how to solve, giving you more time to work on the hard problems"
+            ]
+          },
+          ". We encode those playbooks as skills and let bb run them."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We’ve already connected it to a majority of our systems, but a lot of knowledge work doesn’t happen behind clean APIs. It happens in web apps built for humans (dashboards, portals, inboxes, PDFs). The Browserbase Platform ensures that BB can do all of the same work that we do."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "The results"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Our feature request pipeline runs at 100% coverage with zero human effort. Every closed support ticket and every meeting transcript gets scanned automatically, helping reduce 99% of our first response time to <24hrs. Session investigation dropped from 30–60 minutes of manual log-diving to a single Slack message. Many engineers went from writing a majority of PRs by hand to reviewing them."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This post is the full architecture. Sandbox, credential brokering, skill system, Slack integration, and the patterns that make it all work."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "/images/articles/internal-agents/1.webp",
+        "alt": "",
+        "width": 1600,
+        "height": 774
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "The Sandbox:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "At the core of any deployed agent is it’s execution environment. You need a place where the agent can read files, write code, run shell commands, call APIs, and do it all without touching production infrastructure or leaking credentials."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We run each agent session in an ",
+          {
+            "type": "strong",
+            "children": [
+              "isolated cloud sandbox,"
+            ]
+          },
+          " an ephemeral Linux VM with its own filesystem, network stack, and process tree. Think of it like a fresh laptop that boots in seconds, already has everything installed, and gets thrown away when the work is done. The sandbox idles out after 30 minutes of inactivity, and no state persists between sessions unless we explicitly snapshot it."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "What's inside"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The interesting part isn't the sandbox product, it's what we bake into it. Every sandbox starts from a ",
+          {
+            "type": "strong",
+            "children": [
+              "pre-warmed snapshot"
+            ]
+          },
+          " that gets rebuilt every 30 minutes via a cron job:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          [
+            {
+              "type": "strong",
+              "children": [
+                "Key Browserbase repositories"
+              ]
+            },
+            " cloned into a ",
+            {
+              "type": "code",
+              "text": "/knowledge/"
+            },
+            " directory. This is the agent's codebase brain. It can grep, read, and reason about any repo without a network fetch."
+          ],
+          [
+            "The ",
+            {
+              "type": "strong",
+              "children": [
+                "agents monorepo"
+              ]
+            },
+            " itself, fully built with dependencies installed."
+          ],
+          [
+            {
+              "type": "link",
+              "href": "https://opencode.ai/",
+              "children": [
+                {
+                  "type": "strong",
+                  "children": [
+                    "OpenCode"
+                  ]
+                }
+              ]
+            },
+            " (the agent runtime) pre-installed and pre-started on a local port, ready to accept prompts immediately."
+          ],
+          [
+            {
+              "type": "strong",
+              "children": [
+                "System tools"
+              ]
+            },
+            ": bun, git, GitHub CLI, ripgrep, prettier, pdftotext, a TypeScript LSP, and Tailscale for secure network access."
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The agent gets ",
+          {
+            "type": "strong",
+            "children": [
+              "6 tools"
+            ]
+          },
+          ":"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          [
+            {
+              "type": "code",
+              "text": "read"
+            },
+            ": Read files from the filesystem"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "write"
+            },
+            ": Create new files"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "edit"
+            },
+            ": Patch existing files"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "exec"
+            },
+            ": Execute JavaScript with access to all service integrations via proxy"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "safebash"
+            },
+            ": Run allowlisted shell commands (grep, git, find, jq, etc.)"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "skill"
+            },
+            ": Load domain-specific instruction sets into context"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The ",
+          {
+            "type": "code",
+            "text": "exec"
+          },
+          " tool is the gateway to everything external (Snowflake, HubSpot, Pylon, Grafana) all routed through a serverless proxy that we'll cover in the next section."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The 30-minute snapshot refresh means the sandbox is at most half an hour behind the latest code on main. When a new sandbox boots, it pulls just the delta (typically a handful of commits) making startup nearly instant."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Anthropic’s Managed Agents and OpenAI’s new agent SDK both separate the harness from the compute (filesystem/sandbox), something we’ve also found to be more performant over all. We’re currently migrating to that architecture, building composable units as isolated and modular as possible. The landscape of agents changes extremely fast, what started as thick custom-tool harnesses has simplified to while loops and separated “brain and hands”. Building our internal agents in “building blocks” helps us reconfigure to SOTA architectures rapidly."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Deployed → Background → UI Interface"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The same agent runs in 4 modes, and the transition between them is surprisingly smooth:"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "Deployed (Slack interactive)"
+            ]
+          },
+          ": Someone types ",
+          {
+            "type": "code",
+            "text": "@bb"
+          },
+          " in a Slack channel. The Slack events handler dispatches to an internal endpoint, which creates or reuses a sandbox keyed by the Slack thread ID in a KV store. The agent streams SSE events back, which get translated into real-time Slack message updates. The sandbox persists for multi-turn continuity and follow-up messages in the same thread hit the same sandbox with full conversation history."
+        ]
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "// Sample Implementation\nfunction dispatch(threadId: string, message: string, user: { displayName: string }) {\n  let sandboxId = KV.get(\"thread:\" + threadId + \":sandbox\");\n\n  if (!sandboxId) {\n    sandboxId = createSandbox({ fromSnapshot: latestSnapshot });\n    KV.set(\"thread:\" + threadId + \":sandbox\", sandboxId, 86400);\n  }\n\n  const stream = sendToAgent(sandboxId, {\n    message: message,\n    author: user.displayName,\n    sessionId: threadId,\n  });\n\n  for (const event of stream) {\n    updateSlackThread(threadId, event);\n  }\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "Background (webhooks)"
+            ]
+          },
+          ": External events like a Pylon support ticket closing or a Circleback meeting transcript landing trigger webhook handlers that dispatch to the same sandbox infrastructure in \"webhook\" mode. The agent does its work (detect feature requests, log to HubSpot, post a summary to a dedicated Slack channel) and the sandbox shuts down."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "UI Interface:"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "BB also has a rich UI interface, which displays reasoning traces, tool calls, and the sandbox state and filesystem, all in a beautifully designed chat. (Which you might ",
+          {
+            "type": "link",
+            "href": "http://director.ai",
+            "children": [
+              "recognize"
+            ]
+          },
+          ")"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "For agents to be used to their full capacity, you have to be able to meet people where they are (and where they work). This interface allows anyone to use BB at anytime, whenever, however, and wherever they are."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "/images/articles/internal-agents/2.webp",
+        "alt": "",
+        "width": 1600,
+        "height": 919
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Credential Brokering: The Sandbox never touches a secret"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Here's the uncomfortable truth about agent sandboxes: they run arbitrary code. The LLM decides what to execute, and the sandbox executes it. If you pass API keys as environment variables, nothing stops the agent from running ",
+          {
+            "type": "code",
+            "text": "echo $SOME_API_KEY"
+          },
+          " or writing credentials to a file that gets committed."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We solve this by splitting “access” into two layers: ",
+          {
+            "type": "strong",
+            "children": [
+              "credential brokering"
+            ]
+          },
+          " and a ",
+          {
+            "type": "strong",
+            "children": [
+              "secure integration proxy"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "/images/articles/internal-agents/3.webp",
+        "alt": "",
+        "width": 1600,
+        "height": 774
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Instead of baking secrets into the sandbox, the sandbox boots with only ",
+          {
+            "type": "em",
+            "children": [
+              "references"
+            ]
+          },
+          " and short-lived tokens:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          [
+            {
+              "type": "code",
+              "text": "BB_PROXY_URL"
+            },
+            " — the URL of a serverless integration proxy"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "BB_SESSION_TOKEN"
+            },
+            " — a rotating session token (TTL’d in a KV store)"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "AUTOMATION_BYPASS_TOKEN"
+            },
+            " — a second token required for certain third-party automation flows"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Most third-party access is served through the integration proxy, which holds the real credentials and enforces policy (what services/methods are allowed, and under what scope) before any request is executed."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "For a small set of integrations, we also do true credential brokering at the network layer (the sandbox never sees the real key). This is powerful, but it’s not a silver bullet."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In practice, only a few secrets are brokered. Everything else stays behind the integration proxy."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If a sandbox crashes, we don’t lose the conversation. Messages live in the KV store and the thread can be resumed. Some environment state may be lost, but the work can continue."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "How the proxy works"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The flow is simple:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          [
+            "The agent's ",
+            {
+              "type": "code",
+              "text": "exec"
+            },
+            " tool constructs a request: ",
+            {
+              "type": "code",
+              "text": "POST /api/proxy"
+            },
+            " with ",
+            {
+              "type": "code",
+              "text": "{ token, service, method, args }"
+            }
+          ],
+          [
+            "The proxy validates the token against the KV store and retrieves the session's permission scope"
+          ],
+          [
+            "The proxy checks if the requested ",
+            {
+              "type": "code",
+              "text": "service.method"
+            },
+            " is allowed"
+          ],
+          [
+            "If allowed, it calls the real service package (which has actual credentials available only inside the serverless function's environment) and returns the result"
+          ],
+          [
+            "If denied, it returns a 403"
+          ]
+        ]
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "// Simplified proxy handler\nconst serviceRegistry: Record<string, any> = {\n  dataWarehouse: DataWarehouseService,\n  crm: CrmService,\n  support: SupportService,\n  observability: ObservabilityService,\n  chat: ChatService,\n};\n\nexport async function POST(req: Request) {\n  const { token, service, method, args } = await req.json();\n\n  // Validate session token\n  const session = await kv.get<ProxySession>(`session:${token}`);\n  if (!session) return new Response(\"Unauthorized\", { status: 401 });\n\n  // Check permission scope\n  const allowed = matchesGlob(session.permissions.services, `${service}.${method}`);\n  if (!allowed) return new Response(\"Forbidden\", { status: 403 });\n\n  // Call the real service with real credentials\n  const svc = serviceRegistry[service];\n  const result = await svc[method](...args);\n\n  return Response.json(result);\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "For a small set of integrations (model providers and code hosting), credential brokering happens at the ",
+          {
+            "type": "strong",
+            "children": [
+              "network level"
+            ]
+          },
+          ". The sandbox firewall intercepts outbound HTTP requests to specific hosts and injects real API keys on egress. The sandbox environment variable is set to a placeholder string like ",
+          {
+            "type": "code",
+            "text": "\"credential-brokered\""
+          },
+          " so the SDK initializes without erroring, but the actual key gets injected transparently before the request ever leaves the sandbox."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Credential brokering isn’t the final frontier for secure agent access. Even with brokered credentials, an agent can still generate arbitrary HTTP requests, so we add request interception and domain allowlisting for sensitive internal APIs (e.g., enforcing what domains the browser tool is allowed to reach) regardless of what code the agent writes."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "RBAC & ABAC: Layering Agent Restrictions"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "BB has traditional RBAC, but also ABAC (Agent based access control). Each proxy session carries a default PermissionConfig with two dimensions:"
+        ]
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "type PermissionConfig = {\n  // Which service.method calls are allowed (glob patterns)\n  services?: string[]; // e.g., [\"crm.*\", \"support.getIssue\"]\n\n  // Which OpenCode tools the agent can use\n  tools?: {\n    read?: boolean;\n    write?: boolean;\n    edit?: boolean;\n    exec?: boolean;\n    safebash?: boolean;\n    skill?: boolean;\n  };\n};"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "Interactive Slack sessions"
+            ]
+          },
+          " get full access, the agent self-selects which skills and services it needs."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "Background webhook sessions"
+            ]
+          },
+          " get hard-scoped permissions at invocation time. For example, our Pylon ticket-closed webhook handler:"
+        ]
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "await dispatchWebhook({\n  prompt: `Analyze this closed support ticket for feature requests: ${issue.title}`,\n  permissions: {\n    tools: { exec: true, skill: true },\n    services: [\"crm.*\", \"support.*\"],\n  },\n});"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This is ",
+          {
+            "type": "strong",
+            "children": [
+              "defense in depth"
+            ]
+          },
+          ". We don't rely on the model to behave. The system makes misbehavior structurally impossible for a given session scope."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We combine traditional service-level RBAC (e.g., the Snowflake role is read-only) with ",
+          {
+            "type": "strong",
+            "children": [
+              "agent-specific restrictions"
+            ]
+          },
+          " layered on top. Even if the agent has access to Snowflake, it can only run SELECT queries. Even if it has access to HubSpot, a scoped session might only allow ",
+          {
+            "type": "code",
+            "text": "hubspot.search*"
+          },
+          " and not ",
+          {
+            "type": "code",
+            "text": "hubspot.delete*"
+          },
+          ". We’ve also noticed permissions tend to correlate with invocation source. For example webhooks carry intent, so a CRM-triggered run might need sales tools but not code access."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Credential brokering means we don’t have to just “trust the model”, we can just remove it’s ability to do wrong."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "One Agent, Many Skills: How bb Generalizes"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Most internal agents start as coding agents. Ours did too. The question that changed everything was: if the agent can already read code, write files, and call APIs, why can't it do everything else?"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "All we had to do was separate the agent's ",
+          {
+            "type": "strong",
+            "children": [
+              "capabilities"
+            ]
+          },
+          " from its ",
+          {
+            "type": "strong",
+            "children": [
+              "core loop"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The core loop is ",
+          {
+            "type": "link",
+            "href": "https://opencode.ai/",
+            "children": [
+              "OpenCode"
+            ]
+          },
+          ". It handles the LLM conversation, tool orchestration, context management, streaming, and context compaction. We don't touch any of that. Everything domain-specific lives in two layers on top:"
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Skills are just loadable context"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "strong",
+            "children": [
+              "Skills"
+            ]
+          },
+          " are markdown files in ",
+          {
+            "type": "code",
+            "text": ".opencode/skills/"
+          },
+          " that inject domain-specific workflows, schemas, and decision trees into the agent's context on demand. These md files give BB structured and detailed instructions on how to do a specific job."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This is progressive disclosure: the general agent stays simple, and only pulls in the minimum context it needs for the task. In practice, “building a general agent” can be as easy as adding heuristics in the system prompt for when to load which skill."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Some of our favorite skills:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "items": [
+          [
+            {
+              "type": "code",
+              "text": "data-warehouse"
+            },
+            ": Warehouse query patterns — table definitions, column types, common joins"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "customer-intelligence"
+            },
+            ": Cross-system query patterns (data warehouse + CRM + support system + billing)"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "crm"
+            },
+            ": Deal fields, pipeline stages, contact properties, dedup logic"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "investigate-session"
+            },
+            ": Multi-source log correlation (Tinybird + Loki + NATS message flow)"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "create-pr"
+            },
+            ": Linear ticket → git branch → code changes → PR workflow"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "write-browserbase-web-automations"
+            },
+            ": Stagehand scripting patterns for browser tasks"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "log-feature-request"
+            },
+            ": Feature request detection, CRM dedup, categorization"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "notion"
+            },
+            ": Read-only access to Notion pages and databases"
+          ],
+          [
+            {
+              "type": "code",
+              "text": "whimsy"
+            },
+            ": For fun (of course)"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "A typical skill file looks something like this:"
+        ]
+      },
+      {
+        "type": "code",
+        "code": "# Investigate Session\n\nWhen asked to investigate a Browserbase session, follow this process:\n\n## 1. Gather session metadata\n- Query Tinybird for the session record: `exec.queryTinybird(\"SELECT * FROM sessions WHERE id = '{session_id}'\")`\n- Check session status, timestamps, and error codes\n\n## 2. Pull service logs\n- Query Loki for browser service logs in the session's time window\n- Query Loki for connect service logs\n- Query Loki for API gateway logs\n- Look for: connection timeouts, NATS message drops, proxy chain failures\n\n## 3. Correlate and diagnose\n- Map the session lifecycle: create → connect → browser_ready → page_load → action → close\n- Identify where the lifecycle broke\n- Check for known patterns: race conditions in browser-connect handshake, ..."
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The skill encodes the exact debugging playbook a senior engineer would follow. The agent doesn't need to figure out which logs to check or what the session lifecycle looks like, the skill just tells it."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Service packages: Typed API wrappers"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The second layer is ",
+          {
+            "type": "strong",
+            "children": [
+              "service packages"
+            ]
+          },
+          ": typed TypeScript wrappers around external APIs that get called through the proxy. Each package exposes methods that the ",
+          {
+            "type": "code",
+            "text": "exec"
+          },
+          " tool can invoke."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This is a big reason bb is performant: it keeps the tool surface small, defines the TypeScript interfaces once in the ",
+          {
+            "type": "code",
+            "text": "exec"
+          },
+          " tool, and lets the agent do dynamic pre-transforming in deterministic code before results ever hit context."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "In practice that means parallel calls (",
+          {
+            "type": "code",
+            "text": "Promise.all"
+          },
+          "), parsing/normalizing outputs in TypeScript, and for large payloads writing results straight to disk via ",
+          {
+            "type": "code",
+            "text": "exec.writeToFile"
+          },
+          " instead of bloating the prompt."
+        ]
+      },
+      {
+        "type": "code",
+        "language": "typescript",
+        "code": "// Inside the exec tool's runtime, the agent can call:\nconst usage = await exec.queryWarehouse(`SELECT ...`);\n\nconst deals = await exec.searchCrm(\"deals\", {\n  filters: [{ property: \"company\", operator: \"EQ\", value: companyName }],\n});"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Adding a new integration is straightforward: write a service package, add it to the proxy dispatch map, expose an exec method, and write a skill with domain-specific instructions. Most integrations take less than an afternoon."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Routing: How the agent picks skills"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The system prompt in ",
+          {
+            "type": "code",
+            "text": "bb.md"
+          },
+          " contains a routing table that maps request patterns to skills:"
+        ]
+      },
+      {
+        "type": "code",
+        "code": "## Skill routing\n\nBased on the user's request, load the appropriate skills:\n\n- Session investigation, debugging, or error analysis → load `investigate-session`\n- Pull request, code change, or Linear ticket → load `create-pr`\n- Customer data, usage trends, or account questions → load `snowflake` + `customer-intelligence`\n- Feature request logging or triage → load `log-feature-request`\n- HubSpot deal or contact questions → load `hubspot-crm`\n- Browser automation or web data retrieval → load `write-browserbase-web-automations`\n- Notion page or database queries → load `notion`\n\nLoad only what you need. Do not load all skills for every request."
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "For interactive Slack sessions, the agent reads this routing table and self-selects. For background webhook sessions, the permissions system hard-restricts which tools and services are available so even if the routing table suggests loading a skill, the agent can only act within its scoped permissions."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "Slack: Where conversations become PRs"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Slack is the primary interface because that's where work conversations already happen. The entire interaction model is built around a simple premise: you describe intent, the agent executes, you course-correct."
+        ]
+      },
+      {
+        "type": "image",
+        "src": "/images/articles/internal-agents/4.webp",
+        "alt": "",
+        "width": 1064,
+        "height": 1342
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Day-to-day"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Someone types ",
+          {
+            "type": "code",
+            "text": "@bb investigate session sess_abc123"
+          },
+          " or ",
+          {
+            "type": "code",
+            "text": "@bb what's the usage trend for Acme Corp"
+          },
+          " in any Slack channel. bb reacts with a 🧑‍🍳 emoji, spins up a sandbox (or reuses an existing one for the same thread), and starts streaming its response back in real-time. You see text appear, tool calls flash by (file reads, SQL queries, API calls) and the final answer lands as a Slack message. Charts get uploaded as image attachments. CSV exports get sent as file uploads."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Follow-ups are natural: just ",
+          {
+            "type": "code",
+            "text": "@bb"
+          },
+          " again in the same thread. The sandbox persists, so the agent has all the context from the previous turn including files it read, queries it ran, results it got. You don't re-explain anything."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If bb is mid-response and you send a new message, the current run auto-aborts and restarts with your new context. No stale work, no waiting for a response you've already moved past."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "children": [
+          "Humans as channel managers"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The interaction model is closer to managing a competent teammate than running a tool. You describe what you need at a high level, \"check if Acme's sessions are failing more than usual this week\" and the agent figures out the implementation: which tables to query, which logs to check, how to format the answer."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Slack threads give you ",
+          {
+            "type": "strong",
+            "children": [
+              "free multi-turn state"
+            ]
+          },
+          ". Each thread is a persistent workspace with its own sandbox, conversation history, and file state. This is used across the entire company, engineering, ops, sales, support, and exec. The people using bb most heavily aren't always engineers."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "People are becoming \"channel managers.\" Instead of doing the work themselves, they manage agents running in Slack channels. It's a subtle but significant shift in how a team operates."
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "children": [
+          "So?"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If generalized agents are going to be the interface for knowledge work, then the winning systems won’t be a pile of one-off bots, they’ll be ",
+          {
+            "type": "strong",
+            "children": [
+              "one core loop"
+            ]
+          },
+          " with the right abstractions for ",
+          {
+            "type": "strong",
+            "children": [
+              "execution"
+            ]
+          },
+          " (the sandbox), ",
+          {
+            "type": "strong",
+            "children": [
+              "access"
+            ]
+          },
+          " (credential brokering + scoped permissions), and ",
+          {
+            "type": "strong",
+            "children": [
+              "repeatability"
+            ]
+          },
+          " (skills). The architecture is simple enough to replicate. You need four things:"
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "items": [
+          [
+            {
+              "type": "strong",
+              "children": [
+                "A sandbox"
+              ]
+            },
+            " — any isolated execution environment with snapshot support and fast cold starts"
+          ],
+          [
+            {
+              "type": "strong",
+              "children": [
+                "A proxy"
+              ]
+            },
+            " — a serverless function that holds real credentials and brokers access with scoped permissions"
+          ],
+          [
+            {
+              "type": "strong",
+              "children": [
+                "An agent harness"
+              ]
+            },
+            " — we use ",
+            {
+              "type": "link",
+              "href": "https://opencode.ai/",
+              "children": [
+                "OpenCode"
+              ]
+            },
+            ", but any agent loop with a server API works"
+          ],
+          [
+            {
+              "type": "strong",
+              "children": [
+                "An agent interface"
+              ]
+            },
+            " — Slack is the highest-leverage starting point because it's where your team already communicates"
+          ]
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "One agent with good abstractions beats a fleet of narrow/scoped bots. Build your own bb."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "what-does-browserbase-actually-do",
+    "title": "What does Browserbase actually do?",
+    "source": "browserbase",
+    "url": "https://www.browserbase.com/blog/what-does-browserbase-actually-do",
+    "pubDate": "2025-08-18",
+    "categories": [
+      "Browserbase",
+      "Company"
+    ],
+    "authors": [
+      "Derek Meegan",
+      "Paul Klein"
+    ],
+    "blocks": [
+      {
+        "type": "paragraph",
+        "children": [
+          "Browserbase began with a simple yet bold vision: the world needed a new kind of browser specifically designed for automated, AI-driven interactions. In his ",
+          {
+            "type": "link",
+            "href": "https://memos.hawkhill.ventures/p/an-internet-browser-for-ai",
+            "children": [
+              "founding memo"
+            ]
+          },
+          ", CEO Paul Klein IV questioned why we were still building web infrastructure for humans when almost half of internet traffic is generated by bots. Combined with the explosion of Large Language Models (LLMs) and autonomous agents, it was clear that the browser needed a fundamental rethinking."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This insight sparked the creation of what would become our core offering: a platform that makes accessing cloud-based browser infrastructure as simple as an API call."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Much like self-driving cars were built to navigate roads originally designed for humans, Browserbase serves as the adapter that enables automated agents to seamlessly navigate the internet. We provide dedicated browsing infrastructure for your agents and automations, an approach that fundamentally differs from consumer-oriented browsers. Our browsers do not live on your device and do not collect your data. Browserbase runs in secure, isolated execution environments where customer data is never shared, sold, or used as training material for third-party AI models."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Browserbase enables developers to effortlessly launch tens, hundreds, or even thousands of browsers simultaneously. Traditionally, managing such infrastructure has been notoriously complex, fragile, and expensive. Without these obstacles, developers can concentrate on core business logic instead of browser configuration and maintenance."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Spinning up a browser is as easy as:"
+        ]
+      },
+      {
+        "type": "code",
+        "language": "javascript",
+        "code": "const bb = new Browserbase({ \n\tapiKey: process.env.BROWSERBASE_API_KEY \n});\n\nconst session = await bb.sessions.create({ \n\tprojectId: process.env.BROWSERBASE_PROJECT_ID \n});"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We, however, recognized that providing robust, trustworthy infrastructure was not enough. Developers also needed intuitive ways for agents to interact seamlessly with the web. Existing frameworks were brittle, hard to use, and often required deep expertise to maintain. These technical hurdles served as fundamental barriers to the broader adoption of web automation. Enter ",
+          {
+            "type": "link",
+            "href": "https://www.stagehand.dev/",
+            "children": [
+              "Stagehand"
+            ]
+          },
+          "."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Stagehand bridges the gap between precise, step-by-step web automations and fully autonomous browsing agents. On one end of the spectrum, carefully scripted automations offer granular control, high-speed execution, and avoid costly inference steps. On the other end, fully autonomous agents are flexible, resilient to website changes, and continuously improve as the underlying models advance."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Stagehand balances these approaches by allowing users to define individual web interactions in natural language. Users specify actions like “click the login button” or “type my email address,” and Stagehand translates these into actionable browser steps. By decomposing complex automations into natural language steps, Stagehand ensures that each AI-enabled action remains focused on a single, unambiguous objective, improving model reliability and accuracy."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Stagehand also minimizes inference costs through its action caching mechanism. As it executes your commands, Stagehand identifies page elements and caches them for future runs, making automation faster and cheaper over time. When websites change, the framework gracefully falls back to AI and rebuilds its cache without disrupting your automation."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Beyond navigation, Stagehand provides a simple interface to extract structured data from any webpage. You define the desired schema, and it intelligently pulls the information you need, whether it’s product details, pricing tables, or complex nested data."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The result is a complete automation system that transforms web interaction and data extraction into plain English instructions that are self-documenting, instantly understandable by any team member, and resilient to the constant evolution of the web. You write what you want to happen, Stagehand figures out how to do it, and then remembers the solution for next time. Here’s what this looks like in practice:"
+        ]
+      },
+      {
+        "type": "code",
+        "language": "tsx",
+        "code": "// Step 1: Navigate to URL\nawait page.goto('https://www.nasdaq.com/');\n\n// Step 2: Perform action\nawait page.act('click the earnings link');\n\n// Step 3: Extract data\nconst extractedData = await page.extract({\n  instruction:\n    'extract all companies announcing earnings this week with their symbol, company name, market cap, fiscal quarter ending, consensus EPS forecast, and timing (pre-market or after-hours)',\n  schema: z.object({\n    companies: z\n      .array(\n        z.object({\n          symbol: z.string().optional(),\n          companyName: z.string().optional(),\n          marketCap: z.string().optional(),\n          fiscalQuarterEnding: z.string().optional(),\n          consensusEPSForecast: z.string().optional(),\n          timing: z.string().optional(),\n        }),\n      )\n      .optional(),\n  }),\n});"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The combination of Browserbase and Stagehand dramatically reduces the friction for developers creating automations or providing web access to their agents. Yet despite these advances, a significant technical barrier remained. The legacy applications and workflows that desperately need automation are often managed by professionals focused on their domain expertise: doctors managing patient systems, accountants navigating financial platforms, and operations teams coordinating across multiple platforms."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This gap became crystal clear when we started receiving calls from non-technical builders trying to implement Browserbase and Stagehand automations but struggling to translate their workflows into code. These conversations sparked an insight: what if you could directly harness the full power of browser automation without writing a single line of code?"
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Enter ",
+          {
+            "type": "link",
+            "href": "https://www.director.ai/",
+            "children": [
+              "Director"
+            ]
+          },
+          {
+            "type": "strong",
+            "children": [
+              "."
+            ]
+          },
+          " Director takes the powerful foundation of Browserbase and Stagehand and makes it accessible to everyone. Users describe their high-level tasks, such as “download all invoices from last month” or “update inventory across these three platforms,” and Director autonomously generates and executes the necessary Stagehand code. Throughout execution, Director leverages Browserbase to perform the task in real-time, self-correct when encountering obstacles, and adapt its approach until the task is complete. It unlocks web automation for the millions of people who know exactly what they need to automate; and they shouldn’t have to learn to program to make it happen."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "This completes the vision: Browserbase provides the infrastructure, Stagehand offers the intelligent automation layer, and Director makes it all accessible to anyone who can describe their problem. The technical complexity remains under the hood, but the user experience becomes as simple as having a conversation. The result, however, is not just another developer tool or automation framework. It’s a push towards a fundamental shift in how humans interact with the digital systems that increasingly dominate our working lives."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "Every day, millions of professionals waste countless hours on operational overhead. When we free professionals from clicking through the same workflows day after day, we create space for creativity, strategic thinking, and the uniquely human work that actually matters. The boring work dies so that the interesting work can flourish."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "The internet was built for human consumption, but it’s increasingly navigated by agents on our behalf. Browserbase ensures those agents have the tailored, trusted infrastructure they need. Stagehand gives them the tools to navigate complexity. Director extends that power to everyone, regardless of technical expertise. Together, they form a complete ecosystem for web automation that scales from simple tasks to complex workflows, from individuals to enterprise systems."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "We are building a future where Browserbase will be remembered for unlocking capabilities that AI alone could not reach. A future where the friction between human intent and digital execution disappears entirely. Where describing what you want is enough to make it happen, and the only limit to automation is your ability to imagine what’s possible."
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          "If you’re interested in building the future of web automation with us, ",
+          {
+            "type": "link",
+            "href": "https://www.browserbase.com/careers",
+            "children": [
+              "we’re hiring"
+            ]
+          },
+          "."
+        ]
+      }
+    ]
+  }
+]

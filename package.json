@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "gallery:sync": "node scripts/gallery/sync.mjs",
-    "gallery:frames": "python3 scripts/gallery/frames.py"
+    "gallery:frames": "python3 scripts/gallery/frames.py",
+    "articles:sync": "node scripts/articles/sync.mjs"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.0.4",
@@ -21,6 +22,7 @@
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.21.0",
     "next": "^16.2.9",
+    "parse5": "^8.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwind-merge": "^2.2.0",
