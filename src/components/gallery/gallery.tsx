@@ -240,10 +240,10 @@ function Fact({
  * The label: what you read standing next to the piece.
  *
  * The controls never move — stepping from one piece to the next must not
- * make them jump about with the length of the text — so they sit outside
- * the part that scrolls: on a desktop the pager at the top of the label and
- * the museum link at its foot, on a phone both in a bar directly under the
- * piece (the CSS places them; see .gal-label__bar).
+ * make them jump about with the length of the text — so they sit in a bar
+ * outside the part that scrolls: at the foot of the label on a desktop,
+ * directly under the piece on a phone (the CSS places it; see
+ * .gal-label__bar).
  */
 function Label({
   piece,

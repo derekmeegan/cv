@@ -419,26 +419,25 @@ html.gal-locked .gal-nav {
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
 }
 
-/* The controls stay put whatever piece is showing. On a desktop the bar
-   itself dissolves, so the pager can sit at the top of the label and the
-   museum link at its foot with the scrolling text between them. */
+/* The controls stay put whatever piece is showing: one bar pinned to the
+   foot of the label — the museum link on the left, the arrows on the right
+   — with the text scrolling in the space above it. */
 .gal-label__bar {
-  display: contents;
-}
-
-.gal-label .gal-pager {
-  order: 0;
+  order: 2;
   flex: none;
-  align-self: flex-start;
-  /* level with the close button */
-  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0 34px;
 }
 
 .gal-label .gal-link {
-  order: 2;
-  flex: none;
-  align-self: flex-start;
-  margin: 14px 0 34px;
+  order: 0;
+}
+
+.gal-label .gal-pager {
+  order: 1;
 }
 
 .gal-label__scroll {
@@ -449,9 +448,10 @@ html.gal-locked .gal-nav {
   flex-direction: column;
 }
 
+/* clear of the close button, and at the same height for every piece */
 .gal-label__head {
   flex: none;
-  padding-top: clamp(2px, 2.6vh, 30px);
+  padding-top: clamp(72px, calc(56px + 4vh), 96px);
 }
 
 /* the description and the facts scroll if there is more than fits */
@@ -685,25 +685,21 @@ html.gal-locked .gal-nav {
     transform: translateY(22px);
   }
 
-  /* the controls in one bar, straight under the piece */
+  /* the controls move to the top, straight under the piece: arrows on the
+     left, the museum link on the right */
   .gal-label__bar {
-    flex: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    order: 0;
     gap: 12px;
     padding: 2px 0 12px;
   }
 
   .gal-label .gal-pager {
-    height: auto;
+    order: 0;
   }
 
   .gal-label .gal-link {
-    order: 0;
-    align-self: auto;
+    order: 1;
     height: 38px;
-    margin: 0;
     padding: 0 16px;
     font-size: 15px;
   }
