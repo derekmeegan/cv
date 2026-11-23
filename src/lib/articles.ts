@@ -163,6 +163,15 @@ export function excerpt(article: Article, length = 170): string {
   return `${text.slice(0, text.lastIndexOf(" ", length))}…`;
 }
 
+/** The picture for an article's card: its cover, else its first image. */
+export function coverImage(
+  article: Article,
+): { src: string; alt: string; width?: number; height?: number } | null {
+  if (article.cover) return { ...article.cover, alt: "" };
+  const first = article.blocks.find((block) => block.type === "image");
+  return first?.type === "image" ? first : null;
+}
+
 const SOURCE_NAMES = {
   medium: "Medium",
   browserbase: "the Browserbase blog",

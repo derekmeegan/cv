@@ -9,7 +9,17 @@ import React from "react";
 
 const siteTitle = `${PROFILE.name} | ${PROFILE.about}`;
 const siteDescription = PROFILE.summary;
-const previewImage = "/images/cool-sky-og.jpg";
+// The link preview: the D m mark doing its wave. Messages on iOS and macOS
+// plays the video in the link bubble; everything else shows the still.
+// Both come from `pnpm preview:render`.
+const previewImage = "/images/preview/dm.png";
+// (a full address: unlike images, video tags are not resolved against
+// metadataBase)
+const previewVideo = new URL(
+  "/images/preview/dm.mp4",
+  PROFILE.personalWebsiteUrl,
+).toString();
+const previewSize = { width: 1200, height: 630 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(PROFILE.personalWebsiteUrl),
@@ -31,9 +41,18 @@ export const metadata: Metadata = {
     images: [
       {
         url: previewImage,
-        width: 1200,
-        height: 630,
-        alt: "Blue sky gradient",
+        ...previewSize,
+        type: "image/png",
+        alt: "The D m mark: three figures with stars for heads",
+      },
+    ],
+    // A direct link to the MP4 is what makes the preview move.
+    videos: [
+      {
+        url: previewVideo,
+        secureUrl: previewVideo,
+        type: "video/mp4",
+        ...previewSize,
       },
     ],
   },

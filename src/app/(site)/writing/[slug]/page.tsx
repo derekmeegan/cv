@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 
 import { ArticleBody } from "@/components/article-body";
-import { Badge } from "@/components/ui/badge";
 import { PROFILE } from "@/constants/profile";
 import {
+  coverImage,
   excerpt,
   formatDate,
   getArticles,
@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!article) return {};
 
   const description = excerpt(article);
-  const lead = article.blocks.find((block) => block.type === "image");
-  const images = lead?.type === "image" ? [lead.src] : undefined;
+  const cover = coverImage(article);
+  const images = cover ? [cover.src] : undefined;
 
   return {
     title: `${article.title} | ${PROFILE.name}`,
@@ -95,16 +95,6 @@ export default async function ArticlePage({ params }: Props) {
             </>
           ) : null}
         </p>
-
-        {article.categories.length ? (
-          <div className="flex flex-wrap gap-1">
-            {article.categories.map((category) => (
-              <Badge key={category} variant="secondary">
-                {category}
-              </Badge>
-            ))}
-          </div>
-        ) : null}
       </header>
 
       <div className="mt-10">

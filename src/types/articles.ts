@@ -37,6 +37,11 @@ export interface Article {
   pubDate: string;
   categories: string[];
   authors: string[];
+  /**
+   * The picture that stands for the article on /writing and in link
+   * previews, when that is not simply the first image in its body.
+   */
+  cover?: { src: string; width: number; height: number };
   blocks: Block[];
 }
 

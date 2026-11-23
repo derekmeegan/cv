@@ -1,5 +1,17 @@
 My virtual resume and personal website :)
 
+## Link preview
+
+Sharing the site's address shows the D m mark, and in Messages on iOS and
+macOS the mark moves: the three figures do a wave. That is an `og:video` tag
+pointing straight at a short MP4 (`public/images/preview/dm.mp4`), which
+Messages plays muted on a loop; everywhere else shows the still
+(`dm.png`). `pnpm preview:render` rebuilds both from `public/logo.svg`
+(needs ffmpeg). Messages caches a preview by its address, so after changing
+the animation rename the files and update the paths in `src/app/layout.tsx`.
+
+Articles keep their own picture as their preview.
+
 ## Writing
 
 `/writing` lists my articles and `/writing/<slug>` renders each one on this

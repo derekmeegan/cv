@@ -13,6 +13,11 @@
       "Kyle Jeong",
       "Derek Meegan"
     ],
+    "cover": {
+      "src": "/images/articles/internal-agents/cover.jpg",
+      "width": 1200,
+      "height": 812
+    },
     "blocks": [
       {
         "type": "paragraph",
@@ -1135,6 +1140,11 @@
       "Derek Meegan",
       "Paul Klein"
     ],
+    "cover": {
+      "src": "/images/articles/what-does-browserbase-actually-do/cover.jpg",
+      "width": 1200,
+      "height": 812
+    },
     "blocks": [
       {
         "type": "paragraph",

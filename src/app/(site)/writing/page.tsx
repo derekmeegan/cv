@@ -1,50 +1,80 @@
+import Image from "next/image";
 import Link from "next/link";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { formatDate, getArticles } from "@/lib/articles";
+import {
+  coverImage,
+  excerpt,
+  formatDate,
+  getArticles,
+  readingMinutes,
+} from "@/lib/articles";
+import type { Article } from "@/types/articles";
+
+/** The picture on a card, cropped to the card's frame. */
+function Cover({ article, eager }: { article: Article; eager: boolean }) {
+  const cover = coverImage(article);
+  if (!cover) return null;
+
+  return (
+    <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden rounded-lg bg-secondary sm:aspect-[4/3] sm:w-52">
+      {cover.src.startsWith("/") && cover.width && cover.height ? (
+        <Image
+          src={cover.src}
+          alt=""
+          width={cover.width}
+          height={cover.height}
+          sizes="(max-width: 640px) 100vw, 208px"
+          priority={eager}
+          className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+        />
+      ) : (
+        // Medium's own image CDN, at a size that suits the card.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={cover.src.replace(/\/max\/\d+\//, "/max/800/")}
+          alt=""
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+        />
+      )}
+    </div>
+  );
+}
 
 export default async function Writing() {
   const articles = await getArticles();
 
   return (
-    <div className="flex flex-col gap-5">
-      {articles.map((article) => {
-        return (
-          <Card
-            className="flex flex-col overflow-hidden border border-muted p-3"
-            key={article.slug}
+    <ul className="flex flex-col gap-4">
+      {articles.map((article, index) => (
+        <li key={article.slug}>
+          <Link
+            href={`/writing/${article.slug}`}
+            className="group flex flex-col gap-4 rounded-xl border border-muted p-3 transition-colors hover:border-foreground/15 hover:bg-secondary/40 sm:flex-row sm:gap-5"
           >
-            <CardContent className="mt-auto h-full flex-col">
-              <div className="flex w-full flex-row gap-5">
-                <div className="mt-2 w-full">
-                  <div className="mb-3 flex w-full flex-col items-start justify-between md:flex-row">
-                    <Link
-                      style={{ fontSize: "16px", lineHeight: "20px" }}
-                      className="text-card-foreground hover:underline"
-                      href={`/writing/${article.slug}`}
-                    >
-                      {article.title}
-                    </Link>
-                  </div>
-                  <div className="mb-2 flex flex-wrap gap-1">
-                    {article.categories.map((category) => {
-                      return (
-                        <Badge style={{ width: "fit-content" }} key={category}>
-                          {category}
-                        </Badge>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-md ml-auto">{formatDate(article.pubDate)}</p>
-              </div>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </div>
+            <Cover article={article} eager={index < 3} />
+
+            <div className="flex min-w-0 flex-1 flex-col px-1 pb-1 sm:px-0 sm:py-1">
+              <h2 className="text-pretty text-base font-medium leading-snug text-card-foreground decoration-foreground/30 underline-offset-4 group-hover:underline">
+                {article.title}
+              </h2>
+
+              <p className="mt-2 line-clamp-3 text-[13px] leading-relaxed text-muted-foreground">
+                {excerpt(article, 260)}
+              </p>
+
+              <p className="mt-auto pt-3 text-xs text-muted-foreground">
+                <time dateTime={new Date(article.pubDate).toISOString()}>
+                  {formatDate(article.pubDate)}
+                </time>
+                <span aria-hidden="true"> · </span>
+                {readingMinutes(article)} min read
+              </p>
+            </div>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

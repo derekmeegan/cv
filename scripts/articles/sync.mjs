@@ -7,8 +7,8 @@
 //
 //   browserbase.json   The copy of each Browserbase post listed there. Their
 //                      blog has no feed, so this file is the only place the
-//                      site gets them from. In-body images are saved under
-//                      public/images/articles/<slug>/.
+//                      site gets them from. In-body images and the cover are
+//                      saved under public/images/articles/<slug>/.
 //   medium.json        A snapshot of the Medium feed. The site reads the live
 //                      feed when it builds, so a new post shows up without
 //                      running this; the snapshot is there for when the feed
@@ -158,6 +158,28 @@ async function browserbase(url) {
     await sleep(300);
   }
 
+  // The picture at the head of the post is its cover: used for the card on
+  // /writing and for link previews, not repeated in the article itself.
+  let cover;
+  const hero = one((n) => hasClass(n, "post-header__hero"));
+  const heroImage = hero && all(hero, (n) => n.nodeName === "img")[0];
+  if (heroImage && attr(heroImage, "src")) {
+    const source = new URL(attr(heroImage, "src"));
+    source.search = "?w=1200&fit=max&fm=png";
+    // JPEG, which every link-preview service accepts
+    const output = await sharp(await fetchBuffer(source.toString()))
+      .flatten({ background: "#ffffff" })
+      .jpeg({ quality: 86, mozjpeg: true })
+      .toBuffer({ resolveWithObject: true });
+    await mkdir(path.join(IMAGES, slug), { recursive: true });
+    await writeFile(path.join(IMAGES, slug, "cover.jpg"), output.data);
+    cover = {
+      src: `/images/articles/${slug}/cover.jpg`,
+      width: output.info.width,
+      height: output.info.height,
+    };
+  }
+
   console.log(`  ✓ ${title} (${blocks.length} blocks, ${n} images)`);
   return {
     slug,
@@ -167,6 +189,7 @@ async function browserbase(url) {
     pubDate,
     categories: ["Browserbase", ...tags],
     authors,
+    ...(cover ? { cover } : {}),
     blocks,
   };
 }
