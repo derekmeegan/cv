@@ -4,16 +4,26 @@ import { FRAMES } from "@/lib/gallery-layout";
 import { cn } from "@/lib/utils";
 import type { Piece } from "@/types/gallery";
 
+/** `sizes` for the sharper image shown once you have stepped up to a piece. */
+const CLOSE_UP_SIZES = "(max-width: 899px) 95vw, 62vw";
+
+function reveal(event: React.SyntheticEvent<HTMLImageElement>) {
+  event.currentTarget.dataset.loaded = "true";
+}
+
 /**
- * A picture in its frame. Sizes come from the parent as CSS custom
- * properties in wall units (`--pw`, `--ph`, `--bw`) and a `--u` scale, so the
- * same markup serves the wall and the close-up.
+ * A picture in its frame, filling its parent. The parent supplies `--w` (the
+ * outer width in wall units) and `--u` (pixels per unit).
  *
  * Two kinds of frame:
  *  - a museum photograph of the work in its real frame (background removed),
  *    shown as-is;
  *  - otherwise a rendered period moulding, applied as a 9-slice border image
  *    so it fits any proportion.
+ *
+ * With `closeUp`, a sharper image is loaded and laid over the first once it
+ * has arrived — the picture on the wall is never taken away, so nothing
+ * flickers.
  */
 export function Framed({
   piece,
@@ -21,8 +31,7 @@ export function Framed({
   pw,
   ph,
   sizes,
-  priority,
-  detailSizes,
+  closeUp,
 }: {
   piece: Piece;
   /** Frame width and picture size, in wall units. */
@@ -31,39 +40,40 @@ export function Framed({
   ph: number;
   /** `sizes` for the image at wall scale. */
   sizes: string;
-  priority?: boolean;
-  /** When set, a sharper image is layered on top for the close-up. */
-  detailSizes?: string;
+  closeUp?: boolean;
 }) {
   const alt = `${piece.title}, ${piece.artist}`;
+  const source = piece.framed ?? piece.image;
+
+  const pictures = (
+    <>
+      <Image
+        src={source.src}
+        alt={alt}
+        width={source.width}
+        height={source.height}
+        sizes={sizes}
+        draggable={false}
+      />
+      {closeUp ? (
+        <Image
+          src={source.src}
+          alt=""
+          aria-hidden="true"
+          width={source.width}
+          height={source.height}
+          sizes={CLOSE_UP_SIZES}
+          loading="eager"
+          className="gal-sharp"
+          draggable={false}
+          onLoad={reveal}
+        />
+      ) : null}
+    </>
+  );
 
   if (piece.framed) {
-    const { framed } = piece;
-    return (
-      <span className="gal-framed gal-framed--real">
-        <Image
-          src={framed.src}
-          alt={alt}
-          width={framed.width}
-          height={framed.height}
-          sizes={sizes}
-          priority={priority}
-          draggable={false}
-        />
-        {detailSizes ? (
-          <Image
-            src={framed.src}
-            alt=""
-            aria-hidden="true"
-            width={framed.width}
-            height={framed.height}
-            sizes={detailSizes}
-            className="gal-detail"
-            draggable={false}
-          />
-        ) : null}
-      </span>
-    );
+    return <span className="gal-framed gal-framed--real">{pictures}</span>;
   }
 
   const spec = FRAMES[piece.frame];
@@ -83,29 +93,7 @@ export function Framed({
         } as React.CSSProperties
       }
     >
-      <span className="gal-picture">
-        <Image
-          src={piece.image.src}
-          alt={alt}
-          width={piece.image.width}
-          height={piece.image.height}
-          sizes={sizes}
-          priority={priority}
-          draggable={false}
-        />
-        {detailSizes ? (
-          <Image
-            src={piece.image.src}
-            alt=""
-            aria-hidden="true"
-            width={piece.image.width}
-            height={piece.image.height}
-            sizes={detailSizes}
-            className="gal-detail"
-            draggable={false}
-          />
-        ) : null}
-      </span>
+      <span className="gal-picture">{pictures}</span>
       <span className="gal-moulding" aria-hidden="true" />
       {centreX ? (
         <>

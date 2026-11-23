@@ -2,9 +2,10 @@ My virtual resume and personal website :)
 
 ## Gallery
 
-`/gallery` hangs pieces I like Salon-style: frame to frame, covering the
-wall, each picture keeping its own proportions. Click a piece to look closer
-and read about it.
+`/gallery` is one wall covered in pieces I like: frame against frame, fitted
+together like a collage, each picture keeping its own proportions, with a
+little ironwork in among them. Click a piece and the wall comes toward you,
+with the piece on one side and its label on the other.
 
 ### Adding a piece
 

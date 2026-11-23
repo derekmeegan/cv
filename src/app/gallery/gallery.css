@@ -1,61 +1,46 @@
 /* ==========================================================================
-   /gallery — a salon hang after the Barnes Foundation's wall ensembles.
+   /gallery — one wall, covered in pictures.
 
-   Everything on a wall is positioned in abstract "wall units" and multiplied
-   by --u, which each wall derives from its own width. The close-up reuses
-   the same markup with a larger --u.
+   Everything on the wall is positioned in abstract "wall units" and
+   multiplied by --u, which the wall derives from the size of the window.
+   Choosing a piece does not lift it off the wall: the wall itself is moved
+   and scaled (see `cameraFor` in gallery.tsx), the way walking up to a
+   picture brings it closer.
    ========================================================================== */
 
 .gal-page {
   --wall: #d3ab75;
   --plaster: #f5f0e6;
-  --ink: #2b2620;
   min-height: 100dvh;
-  background: var(--plaster);
-  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  background: var(--wall);
+  /* the wall, brought close, is far bigger than the window */
+  overflow: clip;
 }
 
 html.gal-locked {
   overflow: hidden;
 }
 
-.gal-header {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 28px 24px 30px;
-}
-
-.gal-header h1 {
-  margin: 34px 0 0;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.gal-header p {
-  max-width: 62ch;
-  margin: 8px 0 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #6f675c;
-  text-wrap: pretty;
-}
-
-.gal-footer {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 28px 24px 56px;
-  font-size: 12px;
-  line-height: 1.7;
-  color: #7a7164;
-}
-
-.gal-footer p {
-  max-width: 78ch;
-  margin: 0;
+.gal-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* --- the room ------------------------------------------------------------ */
+
+.gal-room,
+.gal-plan,
+.gal-wall {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 .gal-plan--wide {
   display: none;
@@ -63,7 +48,7 @@ html.gal-locked {
 
 @media (min-width: 900px) {
   .gal-plan--wide {
-    display: block;
+    display: flex;
   }
   .gal-plan--narrow {
     display: none;
@@ -71,20 +56,27 @@ html.gal-locked {
 }
 
 .gal-wall {
+  --cove: clamp(14px, 2.4vw, 36px);
+  --rail: clamp(7px, 0.9vw, 12px);
+  --base: clamp(13px, 1.9vw, 27px);
+  --floor: clamp(7px, 1.1vw, 16px);
+  --wall-pad: clamp(10px, 1.5vw, 24px);
   position: relative;
   container-type: inline-size;
 }
 
 /* plaster cove above the picture rail */
 .gal-cove {
-  height: clamp(26px, 5.5cqw, 78px);
+  flex: none;
+  height: var(--cove);
   background: linear-gradient(180deg, #f8f4ec 0%, #f1ebdf 62%, #e4dac7 100%);
 }
 
 .gal-rail {
   position: relative;
   z-index: 1;
-  height: clamp(8px, 1.1cqw, 15px);
+  flex: none;
+  height: var(--rail);
   background: linear-gradient(
     180deg,
     #dcb078 0%,
@@ -97,10 +89,12 @@ html.gal-locked {
 
 /* the burlap */
 .gal-burlap {
-  --wall-pad: clamp(12px, 2.4cqw, 40px);
+  position: relative;
+  flex: 1;
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: clamp(14px, 2.2cqw, 34px) var(--wall-pad) clamp(18px, 3cqw, 46px);
+  padding: var(--wall-pad);
   background-color: var(--wall);
   background-image:
     radial-gradient(
@@ -123,7 +117,9 @@ html.gal-locked {
 }
 
 .gal-base {
-  height: clamp(16px, 2.8cqw, 40px);
+  position: relative;
+  flex: none;
+  height: var(--base);
   background: linear-gradient(
     180deg,
     #8c6233 0%,
@@ -135,7 +131,8 @@ html.gal-locked {
 }
 
 .gal-floor {
-  height: clamp(12px, 2.6cqw, 38px);
+  flex: none;
+  height: var(--floor);
   background-image:
     linear-gradient(180deg, rgba(60, 35, 10, 0.45), rgba(60, 35, 10, 0) 58%),
     linear-gradient(180deg, #d6b88c, #e6d0ab);
@@ -146,11 +143,35 @@ html.gal-locked {
 .gal-hang {
   position: relative;
   flex: none;
-  --u: min(1.25px, calc((100cqw - 2 * var(--wall-pad)) / var(--wall-w)));
+  /* as large as fits the window both ways, so the whole wall is in view */
+  --u: min(
+    calc((100cqw - 2 * var(--wall-pad)) / var(--wall-w)),
+    calc(
+      (
+          100dvh - var(--cove) - var(--rail) - var(--base) - var(--floor) - 2 *
+            var(--wall-pad)
+        ) /
+        var(--wall-h)
+    )
+  );
   width: calc(var(--wall-w) * var(--u));
   height: calc(var(--wall-h) * var(--u));
+  transform-origin: 0 0;
+  transition: transform 0.82s cubic-bezier(0.22, 0.82, 0.2, 1);
 }
 
+/* A phone cannot show this many pictures at once and leave them big enough
+   to tap, so there the wall fills the width and runs on down the page. */
+.gal-plan--narrow .gal-hang {
+  --u: calc((100cqw - 2 * var(--wall-pad)) / var(--wall-w));
+}
+
+/* brought close, the wall passes in front of the rail and the skirting */
+.gal-hang[data-near] {
+  z-index: 5;
+}
+
+.gal-iron,
 .gal-piece {
   position: absolute;
   left: calc(var(--x) * var(--u));
@@ -159,23 +180,44 @@ html.gal-locked {
   height: calc(var(--h) * var(--u));
 }
 
+.gal-iron {
+  overflow: visible;
+  color: #4a4640;
+  /* a little wall around each piece of ironwork */
+  transform: scale(0.74);
+  filter: drop-shadow(
+    calc(1 * var(--u)) calc(2.2 * var(--u)) calc(1.4 * var(--u))
+      rgba(62, 36, 10, 0.5)
+  );
+}
+
 .gal-piece {
   display: block;
   padding: 0;
   border: 0;
   background: none;
-  cursor: zoom-in;
+  cursor: pointer;
+  outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.gal-piece:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 5px;
-  box-shadow: 0 0 0 9px rgba(40, 24, 8, 0.35);
+/* Everything but the chosen piece falls into shadow when you step up. */
+.gal-shade {
+  position: absolute;
+  inset: -4000px;
+  z-index: 1;
+  background: rgba(17, 11, 5, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
 }
 
-.gal-piece--away {
-  cursor: default;
+.gal-hang[data-near] .gal-shade {
+  opacity: 1;
+}
+
+.gal-piece[data-chosen] {
+  z-index: 2;
 }
 
 /* --- a picture in its frame ---------------------------------------------- */
@@ -186,18 +228,52 @@ html.gal-locked {
   width: 100%;
   height: 100%;
   --bw: calc(var(--frame-w) * var(--u));
-  /* frames hang against one another, so their shadows stay close */
-  filter: drop-shadow(
-      0 calc(4 * var(--u)) calc(5 * var(--u)) rgba(48, 26, 6, 0.5)
+  /* Frames stand proud of the wall and of each other: light from the upper
+     left, shadow thrown down and to the right onto whatever is next door. */
+  --lift: drop-shadow(
+      calc(1.6 * var(--u)) calc(4 * var(--u)) calc(4.5 * var(--u))
+        rgba(40, 20, 4, 0.58)
     )
-    drop-shadow(0 calc(1 * var(--u)) calc(1 * var(--u)) rgba(40, 22, 6, 0.55));
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    drop-shadow(
+      calc(0.4 * var(--u)) calc(1 * var(--u)) calc(0.8 * var(--u))
+        rgba(30, 15, 3, 0.6)
+    );
+  --glow: drop-shadow(0 0 0 rgba(255, 232, 186, 0));
+  filter: var(--glow) var(--lift);
+  transition: filter 0.3s ease;
 }
 
+/* Looking at a piece: a soft light behind it, nothing drawn around it. */
 @media (hover: hover) {
-  .gal-piece:hover .gal-framed {
-    transform: translateY(calc(-2 * var(--u))) scale(1.014);
+  .gal-piece:hover {
+    z-index: 3;
   }
+  .gal-piece:hover .gal-framed {
+    --glow: drop-shadow(0 0 calc(9 * var(--u)) rgba(255, 232, 186, 0.78));
+  }
+}
+
+.gal-piece:focus-visible {
+  z-index: 3;
+}
+
+.gal-piece:focus-visible .gal-framed {
+  --glow: drop-shadow(0 0 calc(11 * var(--u)) rgba(255, 238, 200, 0.95));
+}
+
+.gal-hang[data-near] .gal-piece {
+  cursor: default;
+}
+
+.gal-hang[data-near] .gal-piece .gal-framed {
+  --glow: drop-shadow(0 0 0 rgba(255, 232, 186, 0));
+}
+
+.gal-hang[data-near] .gal-piece[data-chosen] .gal-framed {
+  --glow: drop-shadow(0 0 calc(7 * var(--u)) rgba(255, 226, 170, 0.3));
+  --lift: drop-shadow(
+    calc(2 * var(--u)) calc(6 * var(--u)) calc(8 * var(--u)) rgba(0, 0, 0, 0.6)
+  );
 }
 
 .gal-picture {
@@ -224,6 +300,16 @@ html.gal-locked {
    also where museum photographs show bare edges and tacking margins. */
 .gal-picture img {
   transform: scale(1.022);
+}
+
+/* the sharper image, laid over the first once it has loaded */
+.gal-sharp {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.gal-sharp[data-loaded] {
+  opacity: 1;
 }
 
 .gal-moulding {
@@ -322,63 +408,74 @@ html.gal-locked {
   --frame-slice: 128;
 }
 
-/* --- the close-up -------------------------------------------------------- */
+/* --- standing in front of a piece ---------------------------------------- */
 
-.gal-veil {
+/* Darkens the side of the room the label is read against, and takes the
+   click that steps you back. */
+.gal-scrim {
+  --label-w: clamp(360px, 36vw, 540px);
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: rgba(250, 249, 247, 0.86);
-  -webkit-backdrop-filter: saturate(1.5) blur(28px);
-  backdrop-filter: saturate(1.5) blur(28px);
+  background: linear-gradient(
+    90deg,
+    rgba(13, 8, 3, 0) 0%,
+    rgba(13, 8, 3, 0) calc(100% - var(--label-w) - 16vw),
+    rgba(13, 8, 3, 0.86) calc(100% - var(--label-w) + 2vw),
+    rgba(13, 8, 3, 0.93) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
 }
 
-.gal-focus {
-  --info-w: clamp(330px, 33vw, 470px);
+.gal-scrim[data-open] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gal-label {
+  --ink: #f6f2ea;
+  --soft: rgba(246, 242, 234, 0.6);
+  --line: rgba(246, 242, 234, 0.16);
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   z-index: 61;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--info-w);
+  width: clamp(360px, 36vw, 540px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 72px clamp(28px, 3.4vw, 56px) 48px 8px;
   font-family:
     -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
     "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 400;
-  color: #1d1d1f;
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  opacity: 0;
+  transform: translateX(22px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.gal-stage {
-  --avail-w: calc(100vw - var(--info-w) - 104px);
-  --avail-h: calc(100dvh - 128px);
-  --u: min(
-    calc(var(--avail-w) / var(--w)),
-    calc(var(--avail-h) / var(--h)),
-    5px
-  );
-  display: grid;
-  place-items: center;
-  min-width: 0;
-  min-height: 0;
-  padding: 64px 40px 64px 64px;
+.gal-label[data-open] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  /* arrive after the walk-up has mostly finished */
+  transition:
+    opacity 0.5s ease 0.34s,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
 }
 
-.gal-stage__piece {
-  width: calc(var(--w) * var(--u));
-  height: calc(var(--h) * var(--u));
-}
-
-.gal-stage__piece .gal-framed {
-  filter: drop-shadow(0 30px 40px rgba(40, 26, 10, 0.26))
-    drop-shadow(0 4px 8px rgba(40, 26, 10, 0.3));
-}
-
-.gal-info {
-  align-self: center;
-  max-height: 100dvh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 76px 52px 56px 12px;
+/* centred when there is room, scrolling from the top when there is not */
+.gal-label__text {
+  margin: auto 0;
 }
 
 .gal-eyebrow {
@@ -388,7 +485,7 @@ html.gal-locked {
   letter-spacing: 0.06em;
   line-height: 1.35;
   text-transform: uppercase;
-  color: #86868b;
+  color: var(--soft);
 }
 
 .gal-title {
@@ -406,7 +503,7 @@ html.gal-locked {
   font-style: italic;
   letter-spacing: -0.012em;
   line-height: 1.25;
-  color: #86868b;
+  color: var(--soft);
 }
 
 .gal-artist {
@@ -418,7 +515,7 @@ html.gal-locked {
 
 .gal-date {
   margin-left: 0.55em;
-  color: #86868b;
+  color: var(--soft);
 }
 
 .gal-about {
@@ -444,7 +541,7 @@ html.gal-locked {
   border: 0;
   background: none;
   font: inherit;
-  color: #0066cc;
+  color: #6cb4ff;
   cursor: pointer;
 }
 
@@ -455,12 +552,12 @@ html.gal-locked {
 .gal-about .gal-attribution {
   font-size: 14px;
   letter-spacing: -0.01em;
-  color: #86868b;
+  color: var(--soft);
 }
 
 .gal-facts {
   margin: 26px 0 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid var(--line);
 }
 
 .gal-fact {
@@ -468,14 +565,14 @@ html.gal-locked {
   grid-template-columns: 76px minmax(0, 1fr);
   gap: 14px;
   padding: 11px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--line);
   font-size: 14px;
   letter-spacing: -0.01em;
   line-height: 1.42;
 }
 
 .gal-fact dt {
-  color: #86868b;
+  color: var(--soft);
 }
 
 .gal-fact dd {
@@ -498,8 +595,8 @@ html.gal-locked {
   height: 44px;
   padding: 0 22px;
   border-radius: 980px;
-  background: #0071e3;
-  color: #fff;
+  background: #f5f5f7;
+  color: #1d1d1f;
   font-size: 17px;
   letter-spacing: -0.022em;
   text-decoration: none;
@@ -507,7 +604,7 @@ html.gal-locked {
 }
 
 .gal-link:hover {
-  background: #0077ed;
+  background: #fff;
 }
 
 .gal-link svg {
@@ -521,7 +618,7 @@ html.gal-locked {
   gap: 10px;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
-  color: #86868b;
+  color: var(--soft);
 }
 
 .gal-pager button,
@@ -533,15 +630,15 @@ html.gal-locked {
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: rgba(118, 118, 128, 0.14);
-  color: #1d1d1f;
+  background: rgba(246, 242, 234, 0.14);
+  color: var(--ink);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .gal-pager button:hover,
 .gal-close:hover {
-  background: rgba(118, 118, 128, 0.24);
+  background: rgba(246, 242, 234, 0.26);
 }
 
 .gal-pager svg,
@@ -550,13 +647,13 @@ html.gal-locked {
   height: 18px;
 }
 
-.gal-focus :is(a, button):focus-visible {
-  outline: 3px solid rgba(0, 113, 227, 0.55);
-  outline-offset: 2px;
+.gal-label :is(a, button):focus-visible {
+  outline: 2px solid rgba(246, 242, 234, 0.8);
+  outline-offset: 3px;
 }
 
 .gal-close {
-  position: absolute;
+  position: fixed;
   top: 18px;
   right: 20px;
 }
@@ -565,93 +662,51 @@ html.gal-locked {
   margin: 18px 0 0;
   font-size: 12px;
   line-height: 1.4;
-  color: #86868b;
+  color: var(--soft);
 }
 
+/* On a phone: the piece in the upper half, the label below it. */
 @media (max-width: 899px) {
-  .gal-focus {
-    display: block;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+  .gal-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(13, 8, 3, 0) 0%,
+      rgba(13, 8, 3, 0) 38%,
+      rgba(13, 8, 3, 0.9) 52%,
+      rgba(13, 8, 3, 0.96) 100%
+    );
   }
 
-  .gal-stage {
-    --avail-w: calc(100vw - 40px);
-    --avail-h: 54dvh;
-    padding: 68px 20px 10px;
+  .gal-label {
+    top: 50dvh;
+    left: 0;
+    width: auto;
+    padding: 6px 24px 44px;
+    transform: translateY(22px);
   }
 
-  .gal-info {
-    max-height: none;
-    overflow: visible;
-    padding: 22px 24px 56px;
+  .gal-label__text {
+    margin: 0;
   }
 
   .gal-close {
-    position: fixed;
     top: 14px;
     right: 14px;
+    background: rgba(20, 13, 6, 0.5);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
   }
 }
 
-/* --- motion -------------------------------------------------------------- */
-
-::view-transition-group(.gal-morph) {
-  animation-duration: 520ms;
-  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
-}
-
-::view-transition-old(.gal-morph),
-::view-transition-new(.gal-morph) {
-  height: 100%;
-}
-
-::view-transition-new(.gal-veil-in) {
-  animation: 360ms ease-out both gal-fade-in;
-}
-
-::view-transition-old(.gal-veil-out) {
-  animation: 300ms ease-in both gal-fade-out;
-}
-
-::view-transition-new(.gal-info-in) {
-  animation: 460ms cubic-bezier(0.22, 1, 0.36, 1) 90ms both gal-rise;
-}
-
-::view-transition-old(.gal-info-out) {
-  animation: 180ms ease-in both gal-sink;
-}
-
-@keyframes gal-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes gal-fade-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes gal-rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-}
-
-@keyframes gal-sink {
-  to {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .gal-framed {
-    transition: none;
+  .gal-hang,
+  .gal-shade,
+  .gal-scrim,
+  .gal-label,
+  .gal-label[data-open],
+  .gal-framed,
+  .gal-sharp {
+    transition-duration: 0.01s;
+    transition-delay: 0s;
   }
 }

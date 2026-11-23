@@ -2,30 +2,36 @@ import frames from "@/data/gallery/frames.json";
 import type { FrameSpec, FrameStyle, Piece } from "@/types/gallery";
 
 /**
- * Hanging plan for the gallery, after the Paris Salon as Pietro Antonio
- * Martini engraved it in 1787: the wall covered from dado to cornice, frame
- * against frame.
+ * Hanging plan for the gallery: one wall, covered. The inspiration is the
+ * Paris Salon as Martini engraved it in 1787 — frame against frame from dado
+ * to cornice — but fitted together like a collage rather than ruled into
+ * rows, with pieces of wrought iron in among the pictures the way Albert
+ * Barnes hung them.
  *
- * The Salon's logic, in order:
+ * Every picture keeps its own proportions. The wall is a "slicing" layout: a
+ * binary tree whose leaves are pictures (and the odd piece of ironwork) and
+ * whose branches put two groups either side by side (equal heights) or one
+ * above the other (equal widths). For any such tree there is exactly one set
+ * of sizes that fills a wall of a given width with a fixed gap, so the work
+ * is choosing the tree. That is done by simulated annealing over the tree's
+ * postfix form — the classic floorplanning method — scoring how closely each
+ * picture's share of the wall matches the share its real size deserves.
  *
- *  - Registers. Pictures hang in rows that run the full width of the wall,
- *    every picture in a row the same height.
- *  - Big pictures go high. The largest canvases are "skied" in the top
- *    register and the rows get shorter going down, so the small pictures end
- *    up low, where you can get close to them.
- *  - Small pictures double up. Pairs of little ones are stacked to fill a
- *    place among bigger neighbours.
- *  - Symmetry. Each row is arranged about the centre line: widest in the
- *    middle, the rest mirrored outwards.
- *  - A crown. Three tall pictures stand above the top register, on the
- *    centre line, the middle one tallest.
- *
- * Every picture keeps its own proportions throughout. Sizes are in abstract
- * wall units; CSS scales the wall to its container. The plan is computed
- * once, on the server.
+ * Everything is in abstract wall units; CSS scales the wall to its container.
+ * The plan is computed once, on the server.
  */
 
 export const FRAMES = frames as Record<FrameStyle, FrameSpec>;
+
+export type IronKind =
+  | "scroll"
+  | "strap"
+  | "key"
+  | "fleur"
+  | "ring"
+  | "cock"
+  | "latch"
+  | "tongs";
 
 export interface Hung {
   /** The piece's id. */
@@ -41,20 +47,30 @@ export interface Hung {
   bw: number;
 }
 
+export interface Iron {
+  kind: IronKind;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  flip: boolean;
+}
+
 export interface Wall {
   id: string;
   width: number;
   height: number;
   pieces: Hung[];
+  ironwork: Iron[];
 }
 
 export type Plan = "wide" | "narrow";
 
 interface PlanSpec {
   width: number;
-  /** Intended shape of the registers (crown excluded), width ÷ height. */
+  /** Intended wall shape, width ÷ height. */
   aspect: number;
-  /** Space between frames. */
+  /** Space between the mouldings of neighbouring frames. */
   gap: number;
   /**
    * How strongly real size shows: the exponent on a work's side length, and
@@ -63,32 +79,48 @@ interface PlanSpec {
   contrast: number;
   smallest: number;
   largest: number;
-  /** One stacked pair of small pictures for every this many pieces; 0 = none. */
-  stackEvery: number;
+  /** One piece of ironwork for every this many pictures. */
+  ironEvery: number;
 }
 
 const PLANS: Record<Plan, PlanSpec> = {
-  // a broad wall: four or five registers under the crown
+  // about the shape of a laptop screen, so the whole wall is in view
   wide: {
     width: 1500,
     aspect: 1.95,
     gap: 5,
     contrast: 0.62,
-    smallest: 0.58,
+    smallest: 0.6,
     largest: 2.7,
-    stackEvery: 8,
+    ironEvery: 6,
   },
-  // a tall strip for phones, where nothing can afford to get tiny
+  // a tall strip for phones, a screen and a bit long; sizes kept closer
+  // together so nothing gets too small to tap
   narrow: {
     width: 620,
     aspect: 0.43,
     gap: 4,
-    contrast: 0.4,
+    contrast: 0.42,
     smallest: 0.74,
     largest: 1.9,
-    stackEvery: 0,
+    ironEvery: 9,
   },
 };
+
+/** The ironwork, in hanging order, with the shape of the place each needs. */
+const IRONWORK: { kind: IronKind; aspect: number }[] = [
+  { kind: "cock", aspect: 0.86 },
+  { kind: "scroll", aspect: 1.75 },
+  { kind: "strap", aspect: 0.42 },
+  { kind: "key", aspect: 0.46 },
+  { kind: "fleur", aspect: 0.6 },
+  { kind: "latch", aspect: 1.65 },
+  { kind: "ring", aspect: 0.92 },
+  { kind: "tongs", aspect: 0.45 },
+];
+
+/** A piece of ironwork gets this much wall, as a share of an average picture. */
+const IRON_SHARE = 0.26;
 
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
@@ -98,12 +130,20 @@ const round = (v: number) => Math.round(v * 100) / 100;
 /** What the packer needs to know about one framed picture. */
 interface Shape {
   id: string;
-  /** Outer box, width ÷ height. Fixed: a frame scales with its picture. */
+  /**
+   * Proportions of the moulding itself, width ÷ height. The frame textures
+   * carry a transparent margin for ornament that stands proud of the rail;
+   * frames are packed moulding to moulding and that ornament overlaps the
+   * neighbours a little, as carved corners do on a crowded wall.
+   */
   aspect: number;
   /** How much wall it should get, relative to the others. */
   weight: number;
-  /** Picture size and frame width for a given outer width. */
-  inside(w: number): { pw: number; ph: number; bw: number };
+  /**
+   * For a moulding `w` wide: how far the texture reaches beyond it, the
+   * picture's size, and the frame's (texture) width.
+   */
+  inside(w: number): { bleed: number; pw: number; ph: number; bw: number };
 }
 
 function shapeOf(piece: Piece, spec: PlanSpec): Shape {
@@ -133,12 +173,13 @@ function shapeOf(piece: Piece, spec: PlanSpec): Shape {
       weight: (width * width) / outer,
       inside(w) {
         const pw = w / grow;
-        return { pw, ph: pw / ratio, bw: (w - pw) / 2 };
+        return { bleed: 0, pw, ph: pw / ratio, bw: (w - pw) / 2 };
       },
     };
   }
 
   const moulding = FRAMES[piece.frame];
+  const visible = 1 - moulding.margin / moulding.slice;
   let frame = moulding.width;
   if (
     piece.framedWidthCm &&
@@ -154,12 +195,13 @@ function shapeOf(piece: Piece, spec: PlanSpec): Shape {
         (piece.framedHeightCm - piece.heightCm)) /
       4 /
       side;
-    const visible = 1 - moulding.margin / moulding.slice;
     frame = clamp(real / visible, moulding.width * 0.7, moulding.width * 1.35);
   }
-  // In units of the picture's mean side: the picture is √ratio by 1/√ratio.
-  const across = Math.sqrt(ratio) + 2 * frame;
-  const down = 1 / Math.sqrt(ratio) + 2 * frame;
+  // In units of the picture's mean side: the picture is √ratio by 1/√ratio,
+  // and the moulding adds `frame × visible` on every side.
+  const rail = frame * visible;
+  const across = Math.sqrt(ratio) + 2 * rail;
+  const down = 1 / Math.sqrt(ratio) + 2 * rail;
   return {
     id: piece.id,
     aspect: across / down,
@@ -167,6 +209,7 @@ function shapeOf(piece: Piece, spec: PlanSpec): Shape {
     inside(w) {
       const unit = w / across;
       return {
+        bleed: unit * (frame - rail),
         pw: unit * Math.sqrt(ratio),
         ph: unit / Math.sqrt(ratio),
         bw: unit * frame,
@@ -175,98 +218,147 @@ function shapeOf(piece: Piece, spec: PlanSpec): Shape {
   };
 }
 
-// --- registers --------------------------------------------------------------
+// --- slicing tree -----------------------------------------------------------
+
+/** Postfix tokens: a picture's index, or one of these two operators. */
+const BESIDE = -1;
+const ABOVE = -2;
 
 /**
- * One place in a row: a picture, or two small pictures stacked. Its width is
- * `p × height + q` (for a single picture simply aspect × height; a stack
- * loses the gap between its two pictures).
+ * A subtree's width is always `p × height + q` — pictures contribute their
+ * proportions to p, gaps accumulate in q.
  */
-interface Cell {
-  /** Indices into the shapes, top first. */
-  members: number[];
+interface Node {
   p: number;
   q: number;
-  /** The height it wants, relative to the other cells. */
-  natural: number;
+  leaf: number;
+  op: number;
+  a: Node | null;
+  b: Node | null;
 }
 
-interface Row {
-  cells: Cell[];
-  height: number;
-}
-
-/**
- * Split the cells (tallest first) into consecutive rows. A row's height is
- * fixed by what is in it — it must span the wall — so this looks for the
- * split where every picture lands closest to the height it wants, at the
- * overall scale that gives a wall of about the intended height.
- */
-function registers(cells: Cell[], spec: PlanSpec) {
-  const { width, gap } = spec;
-  const targetHeight = width / spec.aspect;
-  const n = cells.length;
-  let best: { score: number; rows: Row[]; scale: number } | null = null;
-
-  for (let step = 0; step <= 90; step++) {
-    // wall units per unit of natural height
-    const scale = 25 * Math.pow(700 / 25, step / 90);
-    const cost = new Array<number>(n + 1).fill(Infinity);
-    const cut = new Array<number>(n + 1).fill(0);
-    cost[0] = 0;
-
-    for (let end = 1; end <= n; end++) {
-      let p = 0;
-      let q = 0;
-      for (let start = end; start >= 1; start--) {
-        p += cells[start - 1].p;
-        q += cells[start - 1].q;
-        const height = (width - q - gap * (end - start)) / p;
-        if (height <= 0) break;
-        let miss = 0;
-        for (let i = start; i <= end; i++) {
-          const cell = cells[i - 1];
-          const off = Math.log(height / (scale * cell.natural));
-          miss += off * off * cell.members.length;
-        }
-        if (cost[start - 1] + miss < cost[end]) {
-          cost[end] = cost[start - 1] + miss;
-          cut[end] = start - 1;
-        }
-      }
-    }
-
-    const rows: Row[] = [];
-    for (let end = n; end > 0; end = cut[end]) {
-      const members = cells.slice(cut[end], end);
-      const p = members.reduce((sum, c) => sum + c.p, 0);
-      const q = members.reduce((sum, c) => sum + c.q, 0);
-      rows.unshift({
-        cells: members,
-        height: (width - q - gap * (members.length - 1)) / p,
+function parse(expr: number[], aspects: number[], gap: number): Node {
+  const stack: Node[] = [];
+  for (const token of expr) {
+    if (token >= 0) {
+      stack.push({
+        p: aspects[token],
+        q: 0,
+        leaf: token,
+        op: 0,
+        a: null,
+        b: null,
       });
+      continue;
     }
-    const total =
-      rows.reduce((sum, row) => sum + row.height, 0) + gap * (rows.length - 1);
-    const score = cost[n] / n + 4 * Math.log(total / targetHeight) ** 2;
-    if (!best || score < best.score) best = { score, rows, scale };
+    const b = stack.pop()!;
+    const a = stack.pop()!;
+    if (token === BESIDE) {
+      stack.push({
+        p: a.p + b.p,
+        q: a.q + b.q + gap,
+        leaf: -1,
+        op: BESIDE,
+        a,
+        b,
+      });
+    } else {
+      const p = 1 / (1 / a.p + 1 / b.p);
+      const q = p * (a.q / a.p + b.q / b.p - gap);
+      stack.push({ p, q, leaf: -1, op: ABOVE, a, b });
+    }
   }
-  return best!;
+  return stack[0];
 }
 
-/** Widest in the middle, the rest mirrored outwards; stacks hug the centre. */
-function mirrored(cells: Cell[], flip: boolean) {
-  const widest = (a: Cell, b: Cell) => b.p - a.p;
-  const singles = cells.filter((c) => c.members.length === 1).sort(widest);
-  const stacks = cells.filter((c) => c.members.length > 1).sort(widest);
-  const centre = singles.shift() ?? stacks.shift()!;
-  const left: Cell[] = [];
-  const right: Cell[] = [];
-  [...stacks, ...singles].forEach((cell, i) => {
-    if ((i % 2 === 0) !== flip) right.push(cell);
-    else left.unshift(cell);
-  });
-  return [...left, centre, ...right];
+/** Writes each leaf's x, y, w, h into `boxes` (4 numbers per picture). */
+function place(
+  node: Node,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  gap: number,
+  boxes: Float64Array,
+) {
+  if (node.leaf >= 0) {
+    boxes.set([x, y, w, h], node.leaf * 4);
+    return;
+  }
+  const a = node.a!;
+  const b = node.b!;
+  if (node.op === BESIDE) {
+    const wa = a.p * h + a.q;
+    place(a, x, y, wa, h, gap, boxes);
+    place(b, x + wa + gap, y, w - wa - gap, h, gap, boxes);
+  } else {
+    const ha = (w - a.q) / a.p;
+    place(a, x, y, w, ha, gap, boxes);
+    place(b, x, y + ha + gap, w, h - ha - gap, gap, boxes);
+  }
+}
+
+/** A balanced first guess: halve the pictures by weight, again and again. */
+function seedExpr(
+  items: number[],
+  weights: number[],
+  aspect: number,
+): number[] {
+  if (items.length === 1) return items;
+  const left: number[] = [];
+  const right: number[] = [];
+  let lw = 0;
+  let rw = 0;
+  for (const item of [...items].sort((i, j) => weights[j] - weights[i])) {
+    if (lw <= rw) {
+      left.push(item);
+      lw += weights[item];
+    } else {
+      right.push(item);
+      rw += weights[item];
+    }
+  }
+  const share = lw / (lw + rw);
+  const beside = aspect > 1;
+  return [
+    ...seedExpr(left, weights, beside ? aspect * share : aspect / share),
+    ...seedExpr(
+      right,
+      weights,
+      beside ? aspect * (1 - share) : aspect / (1 - share),
+    ),
+    beside ? BESIDE : ABOVE,
+  ];
+}
+
+/** Small seeded generator, so the same list always hangs the same way. */
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function hash(text: string) {
+  let h = 2166136261;
+  for (let i = 0; i < text.length; i++) {
+    h = Math.imul(h ^ text.charCodeAt(i), 16777619);
+  }
+  return h >>> 0;
+}
+
+/** A valid postfix expression has more operands than operators in every prefix. */
+function wellFormed(expr: number[]) {
+  let depth = 0;
+  for (const token of expr) {
+    depth += token >= 0 ? 1 : -1;
+    if (depth < 1) return false;
+  }
+  return depth === 1;
 }
 
 /**
@@ -275,134 +367,172 @@ function mirrored(cells: Cell[], flip: boolean) {
  */
 export function hang(all: Piece[], plan: Plan): Wall {
   const spec = PLANS[plan];
-  const { width, gap } = spec;
+  const { width, aspect, gap } = spec;
   const shapes = all.map((piece) => shapeOf(piece, spec));
   const n = shapes.length;
-  if (n === 0) return { id: plan, width, height: 0, pieces: [] };
+  if (n === 0) return { id: plan, width, height: 0, pieces: [], ironwork: [] };
 
-  // The height at which a picture gets the share of wall its size deserves.
-  const natural = shapes.map((s) => Math.sqrt(s.weight / s.aspect));
-  const tallestFirst = (i: number, j: number) => natural[j] - natural[i];
-  let pool = shapes.map((_, i) => i).sort(tallestFirst);
+  // Ironwork takes its place in the packing like a small picture would.
+  const average = shapes.reduce((sum, s) => sum + s.weight, 0) / n;
+  const irons = Array.from(
+    { length: Math.round(n / spec.ironEvery) },
+    (_, i) => IRONWORK[i % IRONWORK.length],
+  );
+  const aspects = [
+    ...shapes.map((s) => s.aspect),
+    ...irons.map((i) => i.aspect),
+  ];
+  const weights = [
+    ...shapes.map((s) => s.weight),
+    ...irons.map(() => average * IRON_SHARE),
+  ];
+  const count = aspects.length;
 
-  // The crown: the three tallest upright pictures, if there are enough
-  // pictures left over to make a wall beneath them.
-  let crown: number[] = [];
-  const upright = pool.filter((i) => shapes[i].aspect < 0.8);
-  if (n >= 14 && upright.length >= 3) {
-    crown = upright.slice(0, 3);
-    pool = pool.filter((i) => !crown.includes(i));
-  }
+  const total = weights.reduce((sum, w) => sum + w, 0);
+  const targets = weights.map((w) => w / total);
+  const largest = targets.indexOf(Math.max(...targets));
+  const targetHeight = width / aspect;
+  const boxes = new Float64Array(count * 4);
 
-  // Stacks: among the smallest third, pair pictures that want about the
-  // same width and hang one above the other.
-  const cells: Cell[] = [];
-  const stacked = new Set<number>();
-  const pairs = spec.stackEvery ? Math.round(n / spec.stackEvery) : 0;
-  if (pairs > 0) {
-    const wants = (i: number) => shapes[i].aspect * natural[i];
-    const small = pool
-      .slice(-Math.ceil(pool.length / 3))
-      .sort((i, j) => wants(i) - wants(j));
-    const candidates: { a: number; b: number; apart: number }[] = [];
-    for (let k = 0; k + 1 < small.length; k += 2) {
-      const [a, b] = [small[k], small[k + 1]];
-      candidates.push({ a, b, apart: Math.abs(Math.log(wants(a) / wants(b))) });
+  const score = (expr: number[]) => {
+    const root = parse(expr, aspects, gap);
+    const height = (width - root.q) / root.p;
+    if (!(height > 0)) return Infinity;
+    place(root, 0, 0, width, height, gap, boxes);
+
+    let covered = 0;
+    for (let i = 0; i < count; i++) {
+      const w = boxes[i * 4 + 2];
+      const h = boxes[i * 4 + 3];
+      if (!(w > 6 && h > 6)) return Infinity;
+      covered += w * h;
     }
-    candidates
-      .sort((x, y) => x.apart - y.apart)
-      .slice(0, pairs)
-      .forEach(({ a, b }) => {
-        // the wider-looking picture on top
-        const [top, bottom] =
-          shapes[a].aspect >= shapes[b].aspect ? [a, b] : [b, a];
-        const p = 1 / (1 / shapes[top].aspect + 1 / shapes[bottom].aspect);
-        cells.push({
-          members: [top, bottom],
-          p,
-          q: -p * gap,
-          natural: natural[top] + natural[bottom],
-        });
-        stacked.add(a).add(b);
-      });
-  }
-  for (const i of pool) {
-    if (stacked.has(i)) continue;
-    cells.push({
-      members: [i],
-      p: shapes[i].aspect,
-      q: 0,
-      natural: natural[i],
-    });
-  }
-  cells.sort((a, b) => b.natural - a.natural);
-
-  const { rows, scale } = registers(cells, spec);
-
-  const boxes = new Map<
-    number,
-    { x: number; y: number; w: number; h: number }
-  >();
-  const order: number[] = [];
-  let y = 0;
-
-  if (crown.length) {
-    // The tallest stands in the middle with the other two, a little
-    // shorter and matched in height, either side — and the whole group is
-    // kept smaller than the register it stands on, as in the print.
-    const [mid, ...sides] = crown;
-    const line = [sides[0], mid, sides[1]];
-    const centre = Math.min(scale * natural[mid], rows[0].height * 0.86);
-    let heights = [centre * 0.86, centre, centre * 0.86];
-    const span = () =>
-      line.reduce((sum, i, k) => sum + shapes[i].aspect * heights[k], 0) +
-      gap * 2;
-    if (span() > width * 0.7) {
-      const fit = (width * 0.7 - gap * 2) / (span() - gap * 2);
-      heights = heights.map((h) => h * fit);
+    // each picture's share of the wall against the share it deserves; the
+    // ironwork is less particular about its size than the pictures are
+    let fit = 0;
+    for (let i = 0; i < count; i++) {
+      const share = (boxes[i * 4 + 2] * boxes[i * 4 + 3]) / covered;
+      const off = Math.log(share / targets[i]);
+      fit += off * off * (i < n ? 1 : 0.4);
     }
-    const tall = Math.max(...heights);
-    let x = (width - span()) / 2;
-    line.forEach((i, k) => {
-      const w = shapes[i].aspect * heights[k];
-      boxes.set(i, { x, y: tall - heights[k], w, h: heights[k] });
-      order.push(i);
-      x += w + gap;
-    });
-    y = tall + gap;
-  }
-
-  rows.forEach((row, r) => {
-    let x = 0;
-    for (const cell of mirrored(row.cells, r % 2 === 1)) {
-      const w = cell.p * row.height + cell.q;
-      let top = y;
-      for (const i of cell.members) {
-        const h = w / shapes[i].aspect;
-        boxes.set(i, { x, y: top, w, h });
-        order.push(i);
-        top += h + gap;
+    // Ironwork is scattered: in among the pictures rather than out on the
+    // edge of the wall, and no two pieces of it close together.
+    let stray = 0;
+    const apart = 0.3 * Math.sqrt(width * height);
+    for (let i = n; i < count; i++) {
+      const x = boxes[i * 4];
+      const y = boxes[i * 4 + 1];
+      const w = boxes[i * 4 + 2];
+      const h = boxes[i * 4 + 3];
+      if (x < 1 || y < 1 || x + w > width - 1 || y + h > height - 1) {
+        stray += 1;
       }
-      x += w + gap;
+      for (let j = i + 1; j < count; j++) {
+        const dx = x + w / 2 - (boxes[j * 4] + boxes[j * 4 + 2] / 2);
+        const dy = y + h / 2 - (boxes[j * 4 + 1] + boxes[j * 4 + 3] / 2);
+        const near = 1 - Math.hypot(dx, dy) / apart;
+        if (near > 0) stray += 4 * near * near;
+      }
     }
-    y += row.height + gap;
-  });
+    // the wall should come out roughly the intended shape...
+    const shape = Math.log(height / targetHeight) ** 2;
+    // ...with the grandest picture near the middle of it.
+    const cx = (boxes[largest * 4] + boxes[largest * 4 + 2] / 2) / width - 0.5;
+    const cy =
+      (boxes[largest * 4 + 1] + boxes[largest * 4 + 3] / 2) / height - 0.5;
+    return fit / count + 5 * shape + 0.5 * (cx * cx + cy * cy) + 0.02 * stray;
+  };
 
-  // In hanging order: the crown, then each register left to right.
-  const pieces = order.map((i): Hung => {
-    const box = boxes.get(i)!;
-    const inside = shapes[i].inside(box.w);
+  const random = mulberry32(hash(`${plan}:${shapes.map((s) => s.id).join()}`));
+  const pick = (limit: number) => Math.floor(random() * limit);
+
+  let best = seedExpr(
+    aspects.map((_, i) => i),
+    targets,
+    aspect,
+  );
+  let bestScore = score(best);
+
+  if (count > 1) {
+    for (let run = 0; run < 3; run++) {
+      let current = [...best];
+      let currentScore = bestScore;
+      const steps = 14000;
+      for (let step = 0; step < steps; step++) {
+        const heat = 0.25 * Math.pow(0.004, step / steps);
+        const next = [...current];
+        const move = random();
+        if (move < 0.5) {
+          // swap two pictures
+          let i = pick(next.length);
+          while (next[i] < 0) i = pick(next.length);
+          let j = pick(next.length);
+          while (next[j] < 0 || j === i) j = pick(next.length);
+          [next[i], next[j]] = [next[j], next[i]];
+        } else if (move < 0.8) {
+          // turn a side-by-side pair into a stacked one, or back
+          let i = pick(next.length);
+          while (next[i] >= 0) i = pick(next.length);
+          next[i] = next[i] === BESIDE ? ABOVE : BESIDE;
+        } else {
+          // regroup: slide an operator past a neighbouring picture
+          const i = pick(next.length - 1);
+          if (next[i] >= 0 === next[i + 1] >= 0) continue;
+          [next[i], next[i + 1]] = [next[i + 1], next[i]];
+          if (!wellFormed(next)) continue;
+        }
+        const nextScore = score(next);
+        if (
+          nextScore < currentScore ||
+          random() < Math.exp((currentScore - nextScore) / heat)
+        ) {
+          current = next;
+          currentScore = nextScore;
+          if (currentScore < bestScore) {
+            best = [...current];
+            bestScore = currentScore;
+          }
+        }
+      }
+    }
+  }
+
+  const root = parse(best, aspects, gap);
+  const height = (width - root.q) / root.p;
+  place(root, 0, 0, width, height, gap, boxes);
+
+  const pieces = shapes.map((shape, i): Hung => {
+    const w = boxes[i * 4 + 2];
+    const { bleed, pw, ph, bw } = shape.inside(w);
     return {
-      id: shapes[i].id,
-      x: round(box.x),
-      y: round(box.y),
-      w: round(box.w),
-      h: round(box.h),
-      pw: round(inside.pw),
-      ph: round(inside.ph),
-      bw: round(inside.bw),
+      id: shape.id,
+      x: round(boxes[i * 4] - bleed),
+      y: round(boxes[i * 4 + 1] - bleed),
+      w: round(w + 2 * bleed),
+      h: round(boxes[i * 4 + 3] + 2 * bleed),
+      pw: round(pw),
+      ph: round(ph),
+      bw: round(bw),
     };
   });
 
-  return { id: plan, width, height: round(y - gap), pieces };
+  // Reading order for stepping through: across the wall, left to right.
+  pieces.sort((a, b) => a.x + a.w / 2 - (b.x + b.w / 2) || a.y - b.y);
+
+  const ironwork = irons.map((iron, k): Iron => {
+    const i = n + k;
+    const x = boxes[i * 4];
+    const w = boxes[i * 4 + 2];
+    return {
+      kind: iron.kind,
+      x: round(x),
+      y: round(boxes[i * 4 + 1]),
+      w: round(w),
+      h: round(boxes[i * 4 + 3]),
+      // hooks and scrolls turn toward the middle of the wall
+      flip: x + w / 2 > width / 2,
+    };
+  });
+
+  return { id: plan, width, height: round(height), pieces, ironwork };
 }
