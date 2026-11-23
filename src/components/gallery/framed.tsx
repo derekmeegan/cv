@@ -137,6 +137,9 @@ export function Framed({
         width={source.width}
         height={source.height}
         sizes={sizes}
+        // Drawn with its frame, never a moment after it: Chrome is free to
+        // fill an "async" picture in late each time the wall is redrawn.
+        decoding="sync"
         draggable={false}
         onLoad={arrived}
         onError={arrived}
@@ -149,6 +152,7 @@ export function Framed({
           width={source.width}
           height={source.height}
           sizes={CLOSE_UP_SIZES}
+          decoding="sync"
           loading="eager"
           className="gal-sharp"
           draggable={false}

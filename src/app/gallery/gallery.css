@@ -256,7 +256,15 @@ html.gal-dragging .gal-hang {
    for each: the same offsets and softness, cast by the frame's rectangle
    rather than its outline. Everything but the chosen piece is under the
    white veil for the whole of that time. */
-.gal-hang[data-shadows="flat"] .gal-framed,
+/* The pieces keep a filter all the same, one that draws nothing and costs
+   next to nothing: it is the blur that is slow. Chrome draws what is inside
+   a filter all in one go, where a bare picture may be filled in a moment
+   after its frame — which, with the wall redrawn at each change of size,
+   showed as pictures going blank and coming back on the way out. */
+.gal-hang[data-shadows="flat"] .gal-framed {
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+}
+
 .gal-hang[data-shadows="flat"] .gal-iron {
   filter: none;
 }
