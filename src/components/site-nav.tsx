@@ -2,9 +2,11 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
+// Students is hidden for now: its page lives in app/(site)/_students, and the
+// underscore keeps Next from serving it. To bring it back, rename that folder
+// to "students" and add { href: "/students", label: "Students" } here.
 const LINKS = [
   { href: "/", label: "About" },
-  { href: "/students", label: "Students" },
   { href: "/writing", label: "Writing" },
   { href: "/gallery", label: "Gallery" },
 ];

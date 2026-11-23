@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 import { ArticleBody } from "@/components/article-body";
 import { Badge } from "@/components/ui/badge";
@@ -77,15 +77,7 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <article className="pb-10">
-      <Link
-        href="/writing"
-        className="inline-flex items-center gap-1.5 font-mono text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="size-3.5" aria-hidden="true" />
-        Writing
-      </Link>
-
-      <header className="mt-8 space-y-4">
+      <header className="space-y-4">
         <h1 className="text-balance text-2xl font-semibold leading-tight md:text-[28px]">
           {article.title}
         </h1>

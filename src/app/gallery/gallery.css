@@ -77,7 +77,21 @@ html.gal-locked .gal-nav {
   width: calc(var(--wall-w) * var(--u));
   height: calc(var(--wall-h) * var(--u));
   transform-origin: 0 0;
-  transition: transform 0.82s cubic-bezier(0.22, 0.82, 0.2, 1);
+  /* `translate` is separate from the camera's transform: it is how the piece
+     follows a finger dragging it down (see onSwipeMove in gallery.tsx). */
+  translate: 0 0;
+  transition:
+    transform 0.82s cubic-bezier(0.22, 0.82, 0.2, 1),
+    translate 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gal-hang[data-near] {
+  translate: 0 var(--gal-drag, 0px);
+}
+
+/* under the finger there is no easing */
+html.gal-dragging .gal-hang {
+  transition: none;
 }
 
 /* With room to spare, everything is in view at once: the page is exactly
@@ -378,6 +392,18 @@ html.gal-locked .gal-nav {
 .gal-scrim[data-open] {
   opacity: 1;
   pointer-events: auto;
+  /* a drag here is the swipe that steps back, not a scroll */
+  touch-action: none;
+}
+
+/* The dialog: the label and the close button. It covers the window but is
+   itself untouchable, so taps fall through to the scrim. */
+.gal-near {
+  position: fixed;
+  inset: 0;
+  z-index: 61;
+  pointer-events: none;
+  outline: none;
 }
 
 .gal-label {
@@ -388,7 +414,6 @@ html.gal-locked .gal-nav {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 61;
   width: clamp(360px, 36vw, 540px);
   /* a column: pager, then the text (the part that scrolls), then the link */
   display: flex;
@@ -409,7 +434,7 @@ html.gal-locked .gal-nav {
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.gal-label[data-open] {
+.gal-near[data-open] .gal-label {
   opacity: 1;
   transform: none;
   pointer-events: auto;
@@ -647,15 +672,27 @@ html.gal-locked .gal-nav {
   height: 18px;
 }
 
-.gal-label :is(a, button):focus-visible {
+.gal-near :is(a, button):focus-visible {
   outline: 2px solid rgba(29, 29, 31, 0.6);
   outline-offset: 2px;
 }
 
+/* Fixed to the window's corner, and outside the label, so it is in place
+   the moment a piece is chosen. */
 .gal-close {
   position: fixed;
   top: 18px;
   right: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    background-color 0.2s;
+}
+
+.gal-near[data-open] .gal-close {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .gal-credit {
@@ -737,7 +774,8 @@ html.gal-locked .gal-nav {
   .gal-shade,
   .gal-scrim,
   .gal-label,
-  .gal-label[data-open],
+  .gal-near[data-open] .gal-label,
+  .gal-close,
   .gal-framed,
   .gal-sharp {
     transition-duration: 0.01s;

@@ -20,6 +20,15 @@ interface Selection {
 
 const WIDE_QUERY = "(min-width: 900px)";
 
+/** A finger dragging the piece, between touching down and letting go. */
+interface Swipe {
+  pointer: number;
+  y: number;
+  time: number;
+  distance: number;
+  dragging: boolean;
+}
+
 const MUSEUM_SHORT: Record<string, string> = {
   "The Metropolitan Museum of Art": "The Met",
   "Barnes Foundation": "the Barnes",
@@ -81,22 +90,25 @@ function cameraFor(hang: HTMLElement, wall: Wall, hung: Hung) {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   const wide = window.matchMedia(WIDE_QUERY).matches;
-  // the part of the screen the piece gets; the label has the rest
+  // The part of the screen the piece gets; the label has the rest. On a
+  // phone that is the upper half, starting below the close button so the two
+  // can never overlap.
   const stage = wide
     ? {
-        w: vw - clamp(vw * 0.36, 360, 540),
-        h: vh,
+        top: 0,
+        width: vw - clamp(vw * 0.36, 360, 540),
+        height: vh,
         padX: vw * 0.045,
         padY: vh * 0.07,
       }
-    : { w: vw, h: vh * 0.5, padX: 20, padY: 24 };
+    : { top: 56, width: vw, height: vh * 0.5 - 56, padX: 20, padY: 8 };
 
   const scale = Math.min(
-    (stage.w - 2 * stage.padX) / w,
-    (stage.h - 2 * stage.padY) / h,
+    (stage.width - 2 * stage.padX) / w,
+    (stage.height - 2 * stage.padY) / h,
   );
-  const left = (stage.w - w * scale) / 2;
-  const top = (stage.h - h * scale) / 2 + (wide ? 0 : 6);
+  const left = (stage.width - w * scale) / 2;
+  const top = stage.top + (stage.height - h * scale) / 2;
   const dx = left - ox - hung.x * u * scale;
   const dy = top - oy - hung.y * u * scale;
   return `translate(${dx.toFixed(2)}px, ${dy.toFixed(2)}px) scale(${scale.toFixed(4)})`;
@@ -365,9 +377,11 @@ export function Gallery({
 
   const wideRef = React.useRef<HTMLDivElement>(null);
   const narrowRef = React.useRef<HTMLDivElement>(null);
-  const closeRef = React.useRef<HTMLButtonElement>(null);
+  const nearRef = React.useRef<HTMLDivElement>(null);
   const previous = React.useRef<Selection | null>(null);
   const linger = React.useRef<number | null>(null);
+  const swipe = React.useRef<Swipe | null>(null);
+  const swipeEnded = React.useRef(0);
 
   const markSeen = React.useCallback((id: string) => {
     setSeen((current) =>
@@ -451,7 +465,9 @@ export function Gallery({
         : window.location.pathname + window.location.search,
     );
 
-    if (selection && !was) closeRef.current?.focus({ preventScroll: true });
+    // Focus moves into the dialog as a whole, so nothing is ringed until
+    // someone actually tabs to a control.
+    if (selection && !was) nearRef.current?.focus({ preventScroll: true });
     // On stepping back, hand focus to the picture's place on the wall.
     if (!selection && was) {
       document
@@ -477,6 +493,58 @@ export function Gallery({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [selection, close, step]);
+
+  // On a touch screen, dragging the piece down puts it back: it follows the
+  // finger (--gal-drag, see gallery.css) and lets go past a threshold.
+  const onSwipeStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse" || swipe.current) return;
+    swipe.current = {
+      pointer: event.pointerId,
+      y: event.clientY,
+      time: event.timeStamp,
+      distance: 0,
+      dragging: false,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const onSwipeMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const current = swipe.current;
+    if (!current || current.pointer !== event.pointerId) return;
+    current.distance = event.clientY - current.y;
+    if (!current.dragging && Math.abs(current.distance) < 6) return;
+    current.dragging = true;
+    const root = document.documentElement;
+    root.classList.add("gal-dragging");
+    // down follows the finger; up barely gives
+    const shown =
+      current.distance > 0 ? current.distance : current.distance * 0.15;
+    root.style.setProperty("--gal-drag", `${shown.toFixed(1)}px`);
+  };
+
+  const onSwipeEnd = (event: React.PointerEvent<HTMLDivElement>) => {
+    const current = swipe.current;
+    if (!current || current.pointer !== event.pointerId) return;
+    swipe.current = null;
+    const root = document.documentElement;
+    root.classList.remove("gal-dragging");
+    root.style.removeProperty("--gal-drag");
+    if (!current.dragging) return;
+
+    // the tap that may follow a drag is not a request to step back
+    swipeEnded.current = event.timeStamp;
+    const speed =
+      current.distance / Math.max(1, event.timeStamp - current.time);
+    // a long pull, or a short quick flick (speed is in pixels per millisecond)
+    const far = current.distance > 80;
+    const flicked = current.distance > 28 && speed > 0.35;
+    if (event.type === "pointerup" && (far || flicked)) close();
+  };
+
+  const onScrimClick = (event: React.MouseEvent) => {
+    if (event.timeStamp - swipeEnded.current < 400) return;
+    close();
+  };
 
   const near = Boolean(selection);
   const piece = labelled ? byId.get(labelled.id) : undefined;
@@ -505,32 +573,43 @@ export function Gallery({
         ))}
       </div>
 
-      {/* Stepping back: anywhere that is not the label. */}
+      {/* Stepping back: a tap anywhere that is not the label, or (on a touch
+          screen) a swipe down on the piece. */}
       <div
         className="gal-scrim"
         data-open={near ? "" : undefined}
-        onClick={close}
+        onClick={onScrimClick}
+        onPointerDown={onSwipeStart}
+        onPointerMove={onSwipeMove}
+        onPointerUp={onSwipeEnd}
+        onPointerCancel={onSwipeEnd}
         aria-hidden="true"
       />
 
-      <aside
-        className="gal-label"
+      {/* The label slides in with a transform, which would drag a fixed
+          close button along with it; so the button sits beside the label,
+          not inside it, and is in its corner from the first frame. */}
+      <div
+        ref={nearRef}
+        className="gal-near"
         data-open={near ? "" : undefined}
         role="dialog"
         aria-modal="true"
         aria-labelledby="gal-label-title"
+        tabIndex={-1}
         inert={near ? undefined : true}
       >
-        {piece ? (
-          <Label
-            piece={piece}
-            position={position}
-            total={list.length}
-            onStep={step}
-          />
-        ) : null}
+        <aside className="gal-label">
+          {piece ? (
+            <Label
+              piece={piece}
+              position={position}
+              total={list.length}
+              onStep={step}
+            />
+          ) : null}
+        </aside>
         <button
-          ref={closeRef}
           type="button"
           className="gal-close"
           aria-label="Step back"
@@ -538,7 +617,7 @@ export function Gallery({
         >
           <X aria-hidden="true" />
         </button>
-      </aside>
+      </div>
     </>
   );
 }
