@@ -1,35 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { Section } from "@/components/ui/section";
 import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Library } from "@/components/library";
 import { TypingDescriptor } from "@/components/typing-descriptor";
 import { CONTACT } from "@/constants/contact";
 import { EDUCATION } from "@/constants/education";
 import { PROFILE } from "@/constants/profile";
-import { PROJECTS, PROJECTS_PER_PAGE } from "@/constants/projects";
 import { ROLES } from "@/constants/roles";
 import { formatDateRange, formatPositionDuration } from "@/lib/dates";
-import { ProjectCard } from "@/components/project-card";
 
 export default async function Page() {
-  const projectGroups = Array.from(
-    { length: Math.ceil(PROJECTS.length / PROJECTS_PER_PAGE) },
-    (_, index) =>
-      PROJECTS.slice(
-        index * PROJECTS_PER_PAGE,
-        index * PROJECTS_PER_PAGE + PROJECTS_PER_PAGE,
-      ),
-  );
   const leadingAboutParagraphs = PROFILE.aboutParagraphs.slice(0, -1);
   const closingAboutParagraph =
     PROFILE.aboutParagraphs[PROFILE.aboutParagraphs.length - 1];
@@ -110,9 +92,13 @@ export default async function Page() {
             {paragraph}
           </p>
         ))}
-        <p className="text-pretty font-sans text-sm text-muted-foreground">
+        <p className="text-balance font-sans text-sm text-muted-foreground">
+          {/* The typed sentence has a line to itself: it is never typed
+              across the end of one, and even the longest fits a phone
+              without wrapping (so no spare line is held for it below). */}
           <TypingDescriptor descriptors={PROFILE.descriptors}>
-            {closingAboutParagraph} Among other things,{" "}
+            {closingAboutParagraph} Among other things,
+            <br />
           </TypingDescriptor>
         </p>
       </Section>
@@ -188,41 +174,9 @@ export default async function Page() {
           );
         })}
       </Section>
-      <Section className="print-force-new-page scroll-mb-16">
-        <h2 className="text-xl font-semibold">Projects</h2>
-        <Carousel opts={{ align: "start" }} className="w-full print:hidden">
-          <CarouselContent>
-            {projectGroups.map((projectGroup, index) => (
-              <CarouselItem key={index}>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {projectGroup.map((project) => (
-                    <ProjectCard
-                      key={project.title}
-                      title={project.title}
-                      description={project.description}
-                      tags={project.techStack}
-                      link={project.link?.href}
-                    />
-                  ))}
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden md:inline-flex" />
-          <CarouselNext className="hidden md:inline-flex" />
-        </Carousel>
-        <div className="-mx-3 hidden grid-cols-1 gap-3 print:grid print:grid-cols-3 print:gap-2">
-          {PROJECTS.map((project) => (
-            <ProjectCard
-              key={project.title}
-              title={project.title}
-              description={project.description}
-              tags={project.techStack}
-              link={project.link?.href}
-            />
-          ))}
-        </div>
-      </Section>
+      {/* Projects is hidden for now. The projects are still in
+          constants/projects.ts and their card in components/project-card.tsx;
+          the section that showed them is in this file's history. */}
       <Section>
         <h2 className="text-xl font-semibold">Education</h2>
         {EDUCATION.map((education) => {
@@ -250,10 +204,6 @@ export default async function Page() {
             </Card>
           );
         })}
-      </Section>
-      <Section className="print:hidden">
-        <h2 className="text-xl font-semibold">Library</h2>
-        <Library />
       </Section>
     </>
   );

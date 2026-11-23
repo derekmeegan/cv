@@ -1,0 +1,968 @@
+/* ==========================================================================
+   /library — the books, standing on one long shelf.
+
+   The whole library is bound as one edition: cloth, foil lettering, a pair
+   of rules at the head of each spine. A book is drawn in abstract units
+   multiplied by --u, so the spine on the shelf and the book in the hand are
+   the same drawing at two sizes. Taking a book down does not swap one
+   picture for another: a real box (boards, spine, pages) starts exactly
+   over the spine and turns to face you (see FlyingBook in library.tsx).
+   ========================================================================== */
+
+.lib-page {
+  --lib-move: 0.86s;
+  --lib-ease: cubic-bezier(0.22, 0.82, 0.2, 1);
+  --ink: #1d1d1f;
+  --soft: #6e6e73;
+  --line: rgba(0, 0, 0, 0.1);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+html.lib-locked {
+  overflow: hidden;
+}
+
+/* The nav steps out of the way while a book is in the hand. */
+.lib-nav {
+  flex: none;
+  transition: opacity 0.4s ease;
+}
+
+html.lib-locked .lib-nav {
+  opacity: 0;
+}
+
+.lib-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The shelf sits in the middle of whatever the nav leaves of the window. */
+.lib-room {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 0 clamp(20px, 5vh, 56px);
+}
+
+/* --- the name of the book under the pointer ------------------------------- */
+
+.lib-readout {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  height: 24px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 24px;
+  white-space: nowrap;
+  color: hsl(var(--muted-foreground));
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.lib-readout[data-reading] {
+  opacity: 1;
+}
+
+.lib-readout__title {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  color: hsl(var(--foreground));
+}
+
+.lib-readout span:last-child {
+  flex: none;
+}
+
+/* --- the shelf ------------------------------------------------------------ */
+
+.lib-shelf {
+  /* One unit is about a millimetre of book. The books are as big as the
+     height of the window allows — the shelf has all the width it wants —
+     but not so big that a phone shows only a handful of them at once. */
+  --u: clamp(
+    1.25px,
+    min((100dvh - 250px) / (var(--tallest) + 20), 100vw / 250),
+    2.15px
+  );
+  /* the board the books stand on, and the shadow under it */
+  --ledge: 30px;
+  /* where the page's column starts: the first book stands under the nav */
+  --edge: 16px;
+  flex: none;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scroll-padding-inline: var(--edge);
+  /* room for the light behind a book to spread */
+  padding-top: calc(16 * var(--u));
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  /* The board does not slide with the books: a line where they stand, a
+     pale edge, and the shadow it throws on the wall below. */
+  background-image: linear-gradient(
+    180deg,
+    rgba(40, 32, 20, 0.34) 0,
+    rgba(40, 32, 20, 0.34) 1px,
+    #f1efeb 1px,
+    #f8f7f4 6px,
+    rgba(40, 32, 20, 0.1) 6px,
+    rgba(40, 32, 20, 0) 17px
+  );
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% var(--ledge);
+  /* the shelf runs out of sight at both ends */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 32px,
+    #000 calc(100% - 32px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 32px,
+    #000 calc(100% - 32px),
+    transparent 100%
+  );
+}
+
+.lib-shelf::-webkit-scrollbar {
+  display: none;
+}
+
+.lib-shelf[data-sliding] {
+  cursor: grabbing;
+}
+
+/* the same sums as the site's container, so the edge is the column's edge */
+@media (min-width: 640px) {
+  .lib-shelf {
+    --edge: calc((100vw - 640px) / 2 + 16px);
+  }
+}
+
+@media (min-width: 768px) {
+  .lib-shelf {
+    --edge: calc((100vw - 768px) / 2 + 64px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lib-shelf {
+    --edge: calc((100vw - 672px) / 2);
+  }
+}
+
+.lib-row {
+  flex: none;
+  display: flex;
+  align-items: flex-end;
+  /* in the middle, should the window be wider than the shelf is long */
+  margin-inline: auto;
+  padding: 0 var(--edge) var(--ledge);
+}
+
+.lib-book {
+  position: relative;
+  flex: none;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  filter: drop-shadow(0 0 0 rgba(222, 176, 92, 0));
+  transition: filter 0.3s ease;
+}
+
+.lib-shelf[data-sliding] .lib-book {
+  cursor: grabbing;
+}
+
+/* Looking at a book: the same soft warm light as behind the pictures in the
+   gallery, and nothing drawn around it. It falls on the books either side. */
+@media (hover: hover) {
+  .lib-shelf:not([data-sliding]) .lib-book:hover {
+    z-index: 2;
+    filter: drop-shadow(0 0 calc(7 * var(--u)) rgba(222, 176, 92, 0.72));
+  }
+}
+
+.lib-book:focus-visible {
+  z-index: 2;
+  filter: drop-shadow(0 0 calc(8 * var(--u)) rgba(214, 160, 60, 0.95));
+}
+
+/* Taken down, a book leaves its gap on the shelf. */
+.lib-book[data-away] {
+  visibility: hidden;
+}
+
+/* --- the binding ---------------------------------------------------------- */
+
+/* The weave of the cloth. Declared wherever --u is, so that it is as coarse
+   as the book is big. */
+.lib-bound {
+  --weave:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.05) 0 calc(0.75 * var(--u)),
+      transparent calc(0.75 * var(--u)) calc(1.5 * var(--u))
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.055) 0 calc(0.75 * var(--u)),
+      transparent calc(0.75 * var(--u)) calc(1.5 * var(--u))
+    );
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lib-spine {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--t) * var(--u));
+  height: calc(var(--h) * var(--u));
+  padding: calc(17 * var(--u)) 0 calc(13 * var(--u));
+  overflow: hidden;
+  border-radius: calc(1.3 * var(--u));
+  background-color: var(--cloth);
+  background-image:
+    /* the round of the back */
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.3) 0,
+      rgba(0, 0, 0, 0.05) 14%,
+      rgba(255, 255, 255, 0.13) 32%,
+      rgba(255, 255, 255, 0.03) 52%,
+      rgba(0, 0, 0, 0.07) 82%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    /* head and tail */
+    linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.2) 0,
+        transparent calc(3 * var(--u)),
+        transparent calc(100% - 3 * var(--u)),
+        rgba(0, 0, 0, 0.24) 100%
+      ),
+    var(--weave);
+  color: var(--foil);
+  text-align: left;
+}
+
+/* Two rules at the head, in the same foil. (None at the tail: side by side
+   on the board they would run together into one long line.) */
+.lib-spine::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(7 * var(--u));
+  height: calc(2.2 * var(--u));
+  border-top: calc(0.8 * var(--u)) solid currentColor;
+  border-bottom: calc(0.8 * var(--u)) solid currentColor;
+  opacity: 0.78;
+}
+
+/* Lettered down the spine, to be read with the head tilted to the right. */
+.lib-spine__title,
+.lib-spine__author {
+  flex: none;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  text-shadow: 0 calc(0.3 * var(--u)) calc(0.3 * var(--u)) rgba(0, 0, 0, 0.2);
+}
+
+.lib-spine__title {
+  font-size: calc(var(--fs) * var(--u));
+  font-weight: 600;
+  letter-spacing: 0.012em;
+  line-height: 1.13;
+}
+
+.lib-spine__title span {
+  display: block;
+}
+
+.lib-spine__author {
+  margin-top: auto;
+  font-size: calc(6.2 * var(--u));
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: 0.84;
+}
+
+/* --- the boards ----------------------------------------------------------- */
+
+.lib-board {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--cloth);
+  color: var(--foil);
+}
+
+.lib-board--front {
+  border-radius: calc(1 * var(--u)) calc(2.4 * var(--u)) calc(2.4 * var(--u))
+    calc(1 * var(--u));
+  background-image:
+    /* light across the cloth */
+    linear-gradient(
+      112deg,
+      rgba(255, 255, 255, 0.13) 0,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(0, 0, 0, 0.1) 100%
+    ),
+    /* the joint, where the board hinges on the spine */
+    linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.14) 0,
+        rgba(0, 0, 0, 0) calc(2.5 * var(--u)),
+        rgba(0, 0, 0, 0) calc(7 * var(--u)),
+        rgba(0, 0, 0, 0.24) calc(9.4 * var(--u)),
+        rgba(255, 255, 255, 0.14) calc(10.6 * var(--u)),
+        rgba(255, 255, 255, 0) calc(14 * var(--u))
+      ),
+    var(--weave);
+}
+
+.lib-board--back {
+  border-radius: calc(2.4 * var(--u)) calc(1 * var(--u)) calc(1 * var(--u))
+    calc(2.4 * var(--u));
+  background-image:
+    linear-gradient(
+      112deg,
+      rgba(255, 255, 255, 0.1) 0,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(0, 0, 0, 0.1) 100%
+    ),
+    linear-gradient(
+      270deg,
+      rgba(0, 0, 0, 0.14) 0,
+      rgba(0, 0, 0, 0) calc(2.5 * var(--u)),
+      rgba(0, 0, 0, 0) calc(7 * var(--u)),
+      rgba(0, 0, 0, 0.24) calc(9.4 * var(--u)),
+      rgba(255, 255, 255, 0.14) calc(10.6 * var(--u)),
+      rgba(255, 255, 255, 0) calc(14 * var(--u))
+    ),
+    var(--weave);
+}
+
+/* a rule pressed into the cloth with no foil: a blind stamp */
+.lib-board__frame {
+  position: absolute;
+  inset: calc(9 * var(--u));
+  border: calc(0.7 * var(--u)) solid rgba(0, 0, 0, 0.17);
+  box-shadow:
+    0 calc(0.5 * var(--u)) 0 rgba(255, 255, 255, 0.09),
+    inset 0 calc(0.5 * var(--u)) 0 rgba(0, 0, 0, 0.06);
+}
+
+.lib-board--front .lib-board__frame {
+  left: calc(17 * var(--u));
+}
+
+.lib-board--back .lib-board__frame {
+  right: calc(17 * var(--u));
+}
+
+.lib-board__lettering {
+  position: absolute;
+  top: calc(21 * var(--u));
+  left: calc(27 * var(--u));
+  right: calc(15 * var(--u));
+  text-shadow: 0 calc(0.3 * var(--u)) calc(0.3 * var(--u)) rgba(0, 0, 0, 0.2);
+}
+
+.lib-board__title {
+  margin: 0;
+  font-size: calc(var(--cs) * var(--u));
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.lib-board__rule {
+  display: block;
+  width: calc(17 * var(--u));
+  height: calc(0.9 * var(--u));
+  margin: calc(10 * var(--u)) 0 calc(8.5 * var(--u));
+  background: currentColor;
+  opacity: 0.85;
+}
+
+.lib-board__author {
+  margin: 0;
+  font-size: calc(8.6 * var(--u));
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1.25;
+}
+
+/* --- the book in the hand ------------------------------------------------- */
+
+.lib-fly {
+  /* how thick a board is, and how far it stands proud of the pages */
+  --board: 2.2;
+  --square: 2.8;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 62;
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+  /* its transform places its centre */
+  margin: calc(var(--h) * var(--u) / -2) 0 0 calc(var(--w) * var(--u) / -2);
+  pointer-events: none;
+  /* nothing behind it but the page, so, like the pictures, it floats */
+  filter: drop-shadow(0 0 0 rgba(24, 16, 6, 0));
+}
+
+.lib-fly[data-held] {
+  filter: drop-shadow(
+    calc(3 * var(--u)) calc(9 * var(--u)) calc(11 * var(--u))
+      rgba(24, 16, 6, 0.26)
+  );
+}
+
+.lib-solid {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+  cursor: grab;
+  /* a drag turns the book; it is never a scroll */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.lib-fly[data-dragging] .lib-solid {
+  cursor: grabbing;
+}
+
+.lib-fly:not([data-held]) .lib-solid {
+  pointer-events: none;
+}
+
+/* Put back to make way for another book, it joins the rest of the shelf in
+   fading back as soon as it leaves the hand, not when it lands. */
+.lib-fly[data-dimmed] {
+  opacity: 0.05;
+  transition: opacity 0.26s ease;
+}
+
+.lib-fly[data-moving] {
+  transition:
+    transform var(--lib-move) var(--lib-ease),
+    filter var(--lib-move) ease,
+    opacity 0.26s ease;
+}
+
+.lib-fly[data-moving] .lib-solid {
+  transition: transform var(--lib-move) var(--lib-ease);
+}
+
+.lib-fly[data-moving] .lib-face::after {
+  transition: opacity var(--lib-move) ease;
+}
+
+/* leaning toward the pointer */
+.lib-fly[data-following] .lib-solid {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lib-fly[data-following] .lib-face::after {
+  transition: opacity 0.5s ease;
+}
+
+/* Six sides and the edges of the two boards, each placed from the centre of
+   the box. Only the sides turned toward you are drawn. */
+.lib-face {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* the shadow on a side turned from the light (see `shades`) */
+.lib-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #0c0a08;
+  opacity: var(--shade, 0);
+  pointer-events: none;
+}
+
+.lib-face--front,
+.lib-face--back {
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+  margin: calc(var(--h) * var(--u) / -2) 0 0 calc(var(--w) * var(--u) / -2);
+}
+
+.lib-face--front {
+  --shade: var(--sh-front);
+  border-radius: calc(1 * var(--u)) calc(2.4 * var(--u)) calc(2.4 * var(--u))
+    calc(1 * var(--u));
+  transform: translateZ(calc(var(--t) * var(--u) / 2));
+}
+
+.lib-face--back {
+  --shade: var(--sh-back);
+  border-radius: calc(2.4 * var(--u)) calc(1 * var(--u)) calc(1 * var(--u))
+    calc(2.4 * var(--u));
+  transform: rotateY(180deg) translateZ(calc(var(--t) * var(--u) / 2));
+}
+
+.lib-face--spine {
+  --shade: var(--sh-spine);
+  width: calc(var(--t) * var(--u));
+  height: calc(var(--h) * var(--u));
+  margin: calc(var(--h) * var(--u) / -2) 0 0 calc(var(--t) * var(--u) / -2);
+  border-radius: calc(1.3 * var(--u));
+  transform: rotateY(-90deg) translateZ(calc(var(--w) * var(--u) / 2));
+}
+
+/* The block of pages: a little smaller than the boards all round. */
+.lib-pages {
+  background-color: #f4eedf;
+}
+
+.lib-face--fore {
+  --shade: var(--sh-fore);
+  --pw: calc((var(--t) - 2 * var(--board)) * var(--u));
+  --ph: calc((var(--h) - 2 * var(--square)) * var(--u));
+  width: var(--pw);
+  height: var(--ph);
+  margin: calc(var(--ph) / -2) 0 0 calc(var(--pw) / -2);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(120, 98, 60, 0) 0 calc(0.9 * var(--u)),
+    rgba(120, 98, 60, 0.3) calc(0.9 * var(--u)) calc(1.25 * var(--u))
+  );
+  transform: rotateY(90deg)
+    translateZ(calc((var(--w) / 2 - var(--square)) * var(--u)));
+}
+
+.lib-face--top,
+.lib-face--bottom {
+  --pw: calc((var(--w) - var(--square) - 1) * var(--u));
+  --ph: calc((var(--t) - 2 * var(--board)) * var(--u));
+  width: var(--pw);
+  height: var(--ph);
+  /* from just inside the spine to short of the fore-edge */
+  margin: calc(var(--ph) / -2) 0 0
+    calc(var(--pw) / -2 - (var(--square) - 1) * var(--u) / 2);
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(120, 98, 60, 0) 0 calc(0.9 * var(--u)),
+    rgba(120, 98, 60, 0.3) calc(0.9 * var(--u)) calc(1.25 * var(--u))
+  );
+}
+
+.lib-face--top {
+  --shade: var(--sh-top);
+  transform: rotateX(90deg)
+    translateZ(calc((var(--h) / 2 - var(--square)) * var(--u)));
+}
+
+.lib-face--bottom {
+  --shade: var(--sh-bottom);
+  transform: rotateX(-90deg)
+    translateZ(calc((var(--h) / 2 - var(--square)) * var(--u)));
+}
+
+/* the thickness of the boards, seen from above and from the fore-edge */
+.lib-edge {
+  --z: calc((var(--t) - var(--board)) * var(--u) / 2);
+  background-color: var(--cloth);
+  background-image: var(--weave);
+}
+
+.lib-edge--top-front,
+.lib-edge--top-back {
+  --shade: var(--sh-top);
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--board) * var(--u));
+  margin: calc(var(--board) * var(--u) / -2) 0 0 calc(var(--w) * var(--u) / -2);
+}
+
+.lib-edge--top-front {
+  transform: translateZ(var(--z)) rotateX(90deg)
+    translateZ(calc(var(--h) * var(--u) / 2));
+}
+
+.lib-edge--top-back {
+  transform: translateZ(calc(var(--z) * -1)) rotateX(90deg)
+    translateZ(calc(var(--h) * var(--u) / 2));
+}
+
+.lib-edge--fore-front,
+.lib-edge--fore-back {
+  --shade: var(--sh-fore);
+  width: calc(var(--board) * var(--u));
+  height: calc(var(--h) * var(--u));
+  margin: calc(var(--h) * var(--u) / -2) 0 0 calc(var(--board) * var(--u) / -2);
+}
+
+.lib-edge--fore-front {
+  transform: translateZ(var(--z)) rotateY(90deg)
+    translateZ(calc(var(--w) * var(--u) / 2));
+}
+
+.lib-edge--fore-back {
+  transform: translateZ(calc(var(--z) * -1)) rotateY(90deg)
+    translateZ(calc(var(--w) * var(--u) / 2));
+}
+
+/* --- with a book in the hand ---------------------------------------------- */
+
+/* Everything else fades back, and a click on it puts the book away. */
+.lib-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.lib-scrim[data-open] {
+  opacity: 1;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* The dialog: the label and the close button. It covers the window but is
+   itself untouchable, so clicks fall through to the scrim. */
+.lib-near {
+  position: fixed;
+  inset: 0;
+  z-index: 63;
+  pointer-events: none;
+  outline: none;
+}
+
+.lib-label {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(360px, 36vw, 540px);
+  /* a column: the text (the part that scrolls), then the controls */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 clamp(28px, 3.4vw, 56px) 0 8px;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  opacity: 0;
+  transform: translateX(22px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lib-near[data-open] .lib-label {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  /* arrive once the book has mostly come */
+  transition:
+    opacity 0.5s ease 0.34s,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+
+.lib-label__bar {
+  order: 2;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0 34px;
+}
+
+.lib-label .lib-link {
+  order: 0;
+}
+
+.lib-label .lib-pager {
+  order: 1;
+}
+
+.lib-label__scroll {
+  order: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* clear of the close button, and at the same height for every book */
+.lib-label__head {
+  flex: none;
+  padding-top: clamp(72px, calc(56px + 4vh), 96px);
+}
+
+.lib-label__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 4px 30px 0;
+}
+
+.lib-title {
+  margin: 0;
+  font-size: clamp(28px, 2.5vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.lib-author {
+  margin: 12px 0 0;
+  font-size: 19px;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+}
+
+.lib-note {
+  margin-top: 22px;
+  font-size: 17px;
+  letter-spacing: -0.014em;
+  line-height: 1.5;
+}
+
+.lib-note p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.lib-note p + p {
+  margin-top: 0.8em;
+}
+
+.lib-facts {
+  margin: 26px 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.lib-fact {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  line-height: 1.42;
+}
+
+.lib-fact dt {
+  color: var(--soft);
+}
+
+.lib-fact dd {
+  margin: 0;
+}
+
+.lib-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 980px;
+  background: rgba(118, 118, 128, 0.14);
+  color: var(--ink);
+  font-size: 16px;
+  letter-spacing: -0.012em;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.lib-link:hover {
+  background: rgba(118, 118, 128, 0.26);
+}
+
+.lib-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+.lib-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--soft);
+}
+
+/* fixed width, so "9 of 32" and "10 of 32" leave the arrows where they are */
+.lib-pager span {
+  min-width: 4.6em;
+  text-align: center;
+}
+
+.lib-pager button,
+.lib-close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(118, 118, 128, 0.14);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.lib-pager button:hover,
+.lib-close:hover {
+  background: rgba(118, 118, 128, 0.26);
+}
+
+.lib-pager svg,
+.lib-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.lib-near :is(a, button):focus-visible {
+  outline: 2px solid rgba(29, 29, 31, 0.6);
+  outline-offset: 2px;
+}
+
+/* Fixed to the window's corner, and outside the label, so it is in place
+   the moment a book is taken down. */
+.lib-close {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    background-color 0.2s;
+}
+
+.lib-near[data-open] .lib-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* On a phone: the book in the upper half, the label below it. */
+@media (max-width: 899px) {
+  /* the label is read over the shelf, so there the shelf goes altogether */
+  .lib-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.95) 44%,
+      rgba(255, 255, 255, 0.99) 52%,
+      rgba(255, 255, 255, 0.99) 100%
+    );
+  }
+
+  .lib-label {
+    top: 50dvh;
+    left: 0;
+    width: auto;
+    padding: 0 20px;
+    transform: translateY(22px);
+  }
+
+  /* the controls move to the top, straight under the book */
+  .lib-label__bar {
+    order: 0;
+    gap: 12px;
+    padding: 2px 0 12px;
+  }
+
+  .lib-label .lib-pager {
+    order: 0;
+  }
+
+  .lib-label .lib-link {
+    order: 1;
+    height: 38px;
+    padding: 0 16px;
+    font-size: 15px;
+  }
+
+  .lib-label__scroll {
+    display: block;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: 44px;
+  }
+
+  .lib-label__head {
+    padding-top: 4px;
+  }
+
+  .lib-label__body {
+    overflow: visible;
+    padding: 0;
+  }
+
+  .lib-close {
+    top: 14px;
+    right: 14px;
+    background: rgba(232, 232, 236, 0.72);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lib-page {
+    --lib-move: 0.01s;
+  }
+
+  .lib-book,
+  .lib-scrim,
+  .lib-label,
+  .lib-near[data-open] .lib-label,
+  .lib-close,
+  .lib-fly[data-following] .lib-solid {
+    transition-duration: 0.01s;
+    transition-delay: 0s;
+  }
+}

@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/", label: "About" },
   { href: "/writing", label: "Writing" },
   { href: "/gallery", label: "Gallery" },
+  { href: "/library", label: "Library" },
 ];
 
 export function SiteNav({ className }: { className?: string }) {
